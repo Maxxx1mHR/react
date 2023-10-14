@@ -1,5 +1,10 @@
 function App() {
-  return <div>Hello World</div>;
+  return <div>lorem100</div>;
 }
+
+const test = () => {
+  console.log('Hello');
+};
+test();
 
 export default App;
