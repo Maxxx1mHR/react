@@ -1,0 +1,15 @@
+.pokemon__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  row-gap: 40px;
+  column-gap: 20px;
+  list-style: none;
+}
+
+.pokemon__item {
+  text-align: center;
+}
+
+.pokemon__img {
+  width: 150px;
+}
