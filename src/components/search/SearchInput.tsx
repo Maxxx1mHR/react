@@ -1,12 +1,42 @@
+import { Component } from 'react';
 import './search.scss';
 
-const SearchInput = () => {
-  return (
-    <div className="search-input">
-      <input></input>
-      <button>Search</button>
-    </div>
-  );
-};
+interface IPokemon {
+  name: string;
+  url: string;
+}
 
-export default SearchInput;
+export default class SearchInput extends Component<
+  { searchPokemon: CallableFunction; pokemonList: IPokemon[] },
+  { inputValue: string }
+> {
+  constructor(props: { searchPokemon: CallableFunction; pokemonList: IPokemon[] }) {
+    super(props);
+    this.state = {
+      inputValue: '',
+    };
+  }
+
+  // onSearchPokemon = (e: { target: HTMLInputElement }) => {
+  //   this.setState({ inputValue: e.target.value });
+  // };
+
+  render() {
+    return (
+      <div className="search-input">
+        <input
+          onChange={(e) => {
+            this.setState({ inputValue: e.target.value });
+          }}
+        ></input>
+        <button
+          onClick={() => {
+            this.props.searchPokemon(this.state.inputValue);
+          }}
+        >
+          Search
+        </button>
+      </div>
+    );
+  }
+}

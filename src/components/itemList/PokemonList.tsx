@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import PokeService from '../services/PokeService';
 
 import './pokemonList.scss';
 
@@ -8,35 +7,9 @@ interface IPokemon {
   url: string;
 }
 
-export default class PokemonList extends Component<object, { pokemonList: IPokemon[] }> {
-  state = {
-    pokemonList: [],
-  };
-
-  pokemonService = new PokeService();
-
-  componentDidMount() {
-    this.getAllPokemons();
-  }
-
-  getAllPokemons = async () => {
-    const result = await this.pokemonService.getAllPokemon();
-
-    result.results.map(async (item: IPokemon) => {
-      await this.pokemonService.getPokemonByName(item.name).then((res) => {
-        this.setState((prev) => ({
-          pokemonList: [
-            ...prev.pokemonList,
-            { name: res.name, url: res.sprites.other.dream_world.front_default },
-          ],
-        }));
-        console.log(res);
-      });
-    });
-  };
-
+export default class PokemonList extends Component<{ pokemonList: IPokemon[] }> {
   render() {
-    const { pokemonList } = this.state;
+    const { pokemonList } = this.props;
     return (
       <div className="pokemon">
         <ul className="pokemon__list">
