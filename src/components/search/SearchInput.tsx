@@ -7,19 +7,23 @@ interface IPokemon {
 }
 
 export default class SearchInput extends Component<
-  { searchPokemon: CallableFunction; pokemonList: IPokemon[] },
+  {
+    // searchPokemon: CallableFunction;
+    pokemonList: IPokemon[];
+    isLoading: boolean;
+  },
   { inputValue: string }
 > {
-  constructor(props: { searchPokemon: CallableFunction; pokemonList: IPokemon[] }) {
+  constructor(props: {
+    // searchPokemon: CallableFunction;
+    pokemonList: IPokemon[];
+    isLoading: boolean;
+  }) {
     super(props);
     this.state = {
       inputValue: '',
     };
   }
-
-  // onSearchPokemon = (e: { target: HTMLInputElement }) => {
-  //   this.setState({ inputValue: e.target.value });
-  // };
 
   render() {
     return (
@@ -31,7 +35,7 @@ export default class SearchInput extends Component<
         ></input>
         <button
           onClick={() => {
-            this.props.searchPokemon(this.state.inputValue);
+            // this.props.searchPokemon(this.state.inputValue);
           }}
         >
           Search
