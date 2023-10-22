@@ -1,5 +1,15 @@
+#root {
+  background-color: #fcf5d2;
+  min-height: 100%;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .app {
   margin: 0 auto;
   max-width: 1200px;
+  max-height: 100%;
   padding-top: 50px;
 }

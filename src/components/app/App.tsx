@@ -14,16 +14,6 @@ class App extends Component<
   object,
   { pokemonList: IPokemon[]; inputValue: string; isLoading: boolean }
 > {
-  constructor(props: object) {
-    super(props);
-
-    //   this.state = {
-    //     pokemonList: [],
-    //     inputValue: '',
-    //     isLoading: true,
-    //   };
-  }
-
   state = {
     pokemonList: [],
     inputValue: '',
@@ -37,50 +27,56 @@ class App extends Component<
   }
 
   getAllPokemons = async () => {
+    console.time('Time to fetch');
     const result = await this.pokemonService.getAllPokemon();
-    console.log(result);
-
-    result.results.map(async (item: IPokemon) => {
-      this.pokemonService.getPokemonByName(item.name).then((res) => {
-        this.setState((prev) => ({
-          pokemonList: [
-            ...prev.pokemonList,
-            { name: res.name, url: res.sprites.other.dream_world.front_default },
-          ],
-          isLoading: false,
-        }));
-      });
-    });
-    // this.setState(() => ({ isLoading: false }));
+    const allPokemons: IPokemon[] = [];
+    await Promise.all(
+      result.results.map(async (item: IPokemon) => {
+        return this.pokemonService.getPokemonByName(item.name).then((res) => {
+          allPokemons.push({ name: res.name, url: res.sprites.other.dream_world.front_default });
+        });
+      })
+    );
+    console.timeEnd('Time to fetch');
+    this.setState({ isLoading: false, pokemonList: allPokemons });
   };
 
-  // searchPokemon = async (inputValue: string) => {
-  //   if (inputValue.length === 0) {
-  //     this.setState(() => ({
-  //       pokemonList: [],
-  //     }));
-  //     return this.getAllPokemons();
-  //   }
+  searchPokemon = async (inputValue: string) => {
+    if (inputValue.length === 0) {
+      this.setState(() => ({
+        pokemonList: [],
+      }));
+      return this.getAllPokemons();
+    }
 
-  //   const res = await this.pokemonService.getPokemonByName(inputValue);
-  //   this.setState(() => ({
-  //     pokemonList: [{ name: res.name, url: res.sprites.other.dream_world.front_default }],
-  //   }));
-  //   console.log('test', res);
-  // };
+    this.setState(() => ({
+      isLoading: true,
+    }));
+
+    const res = await this.pokemonService.getPokemonByName(inputValue);
+    this.setState(() => ({
+      pokemonList: [{ name: res.name, url: res.sprites.other.dream_world.front_default }],
+    }));
+    console.log('test', res);
+    console.log(this.state.isLoading);
+    this.setState(() => ({
+      isLoading: false,
+    }));
+  };
 
   render() {
-    if (this.state.isLoading) return <PuffLoader color="#36d7b7" />;
-
     return (
       <div className="app">
         <SearchInput
-          // searchPokemon={this.searchPokemon}
+          searchPokemon={this.searchPokemon}
           pokemonList={this.state.pokemonList}
           isLoading={this.state.isLoading}
         />
-
-        <PokemonList pokemonList={this.state.pokemonList} />
+        {this.state.isLoading ? (
+          <PuffLoader color="#ad5905" size={150} className="spinner" />
+        ) : (
+          <PokemonList pokemonList={this.state.pokemonList} />
+        )}
       </div>
     );
   }

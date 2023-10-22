@@ -8,14 +8,14 @@ interface IPokemon {
 
 export default class SearchInput extends Component<
   {
-    // searchPokemon: CallableFunction;
+    searchPokemon: CallableFunction;
     pokemonList: IPokemon[];
     isLoading: boolean;
   },
   { inputValue: string }
 > {
   constructor(props: {
-    // searchPokemon: CallableFunction;
+    searchPokemon: CallableFunction;
     pokemonList: IPokemon[];
     isLoading: boolean;
   }) {
@@ -35,7 +35,7 @@ export default class SearchInput extends Component<
         ></input>
         <button
           onClick={() => {
-            // this.props.searchPokemon(this.state.inputValue);
+            this.props.searchPokemon(this.state.inputValue);
           }}
         >
           Search
