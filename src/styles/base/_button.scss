@@ -1,0 +1,21 @@
+@import '../../styles/abstracts/variables';
+
+.button {
+  display: flex;
+  align-items: center;
+  font-family: 'Century Gothic';
+  font-weight: 400;
+  color: $color-primary;
+  height: 30px;
+  padding: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.button_danger {
+  color: $color-danger;
+}
+.button_success {
+  color: $color-success;
+}

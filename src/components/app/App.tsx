@@ -1,25 +1,17 @@
+import { Component } from 'react';
+import { PuffLoader } from 'react-spinners';
+
 import SearchInput from '../search/SearchInput';
 import PokemonList from '../itemList/PokemonList';
 import PokeService from '../services/PokeService';
-import './app.scss';
-import { Component } from 'react';
-import { PuffLoader } from 'react-spinners';
+
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
+import { IAppState, IPokemon } from '../../types/index';
 
-interface IPokemon {
-  name: string;
-  url: string;
-}
+import logo from '../../assets/img/logo.png';
+import './app.scss';
 
-class App extends Component<
-  object,
-  {
-    pokemonList: IPokemon[];
-    inputValue: string;
-    isLoading: boolean;
-    isBreak: boolean;
-  }
-> {
+class App extends Component<object, IAppState> {
   state = {
     pokemonList: [],
     inputValue: '',
@@ -27,21 +19,23 @@ class App extends Component<
     isBreak: false,
   };
 
-  pokemonService = new PokeService();
-
   componentDidMount(): void {
-    const getLocalStorageData = localStorage.getItem('pokemonQuery');
-    getLocalStorageData
-      ? (this.searchPokemon(getLocalStorageData),
+    this.getLocalStorageSearchData
+      ? (this.searchPokemon(this.getLocalStorageSearchData),
         this.setState({
-          inputValue: localStorage.getItem('pokemonQuery')?.toString() || '',
+          inputValue: this.getLocalStorageSearchData?.toString() || '',
         }))
       : this.getAllPokemons();
   }
 
-  getAllPokemons = async () => {
-    localStorage.setItem('pokemonQuery', '');
+  pokemonService = new PokeService();
+  getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
+  setLocalStorageSearchData = (localStorageValue: string = '') => {
+    localStorage.setItem('pokemonQuery', localStorageValue);
+  };
 
+  getAllPokemons = async () => {
+    this.setLocalStorageSearchData();
     try {
       const result = await this.pokemonService.getAllPokemon();
       const allPokemons: IPokemon[] = [];
@@ -73,7 +67,7 @@ class App extends Component<
       isLoading: true,
     }));
 
-    localStorage.setItem('pokemonQuery', `${inputValue}`);
+    this.setLocalStorageSearchData(inputValue);
 
     try {
       const res = await this.pokemonService.getPokemonByName(inputValue);
@@ -92,31 +86,29 @@ class App extends Component<
 
   setBreak = () => {
     this.setState(() => ({ isBreak: true }));
-    // console.log(this.state.isBreak);
   };
 
   render() {
+    const { pokemonList, isLoading, isBreak } = this.state;
     return (
       <div className="app">
+        <img src={logo} alt="pokemon logo" className="logo" />
         <ErrorBoundary>
           <SearchInput
             searchPokemon={this.searchPokemon}
-            pokemonList={this.state.pokemonList}
-            isLoading={this.state.isLoading}
-            inputValue={localStorage.getItem('pokemonQuery')?.toString() || ''}
+            pokemonList={pokemonList}
+            isLoading={isLoading}
+            inputValue={this.getLocalStorageSearchData?.toString() || ''}
             setBreak={this.setBreak}
           />
         </ErrorBoundary>
-        {this.state.isLoading ? (
+        {isLoading ? (
           <ErrorBoundary>
             <PuffLoader color="#ad5905" size={150} className="spinner" />
           </ErrorBoundary>
         ) : (
           <ErrorBoundary>
-            <PokemonList
-              pokemonList={this.state.pokemonList}
-              isBreak={this.state.isBreak}
-            />
+            <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
           </ErrorBoundary>
         )}
       </div>

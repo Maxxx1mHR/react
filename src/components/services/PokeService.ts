@@ -1,4 +1,6 @@
 class PokeService {
+  _api = 'https://pokeapi.co/api/v2/pokemon';
+
   getResource = async (url: string) => {
     const res = await fetch(url);
 
@@ -9,16 +11,12 @@ class PokeService {
   };
 
   getAllPokemon = () => {
-    return this.getResource('https://pokeapi.co/api/v2/pokemon/');
+    return this.getResource(this._api);
   };
 
   getPokemonByName = (name: string) => {
-    return this.getResource(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    return this.getResource(`${this._api}/${name}`);
   };
-
-  // getSinglePokemon = (name: string) => {
-  //   return this.getResource(`https://pokeapi.co/api/v2/pokemon/${name}`);
-  // };
 }
 
 export default PokeService;

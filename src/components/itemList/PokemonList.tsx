@@ -1,20 +1,14 @@
 import { Component } from 'react';
+import { IPokemon } from '../../types/index';
 
 import './pokemonList.scss';
-
-interface IPokemon {
-  name: string;
-  url: string;
-}
 
 export default class PokemonList extends Component<{
   pokemonList: IPokemon[];
   isBreak: boolean;
 }> {
   render() {
-    const { pokemonList } = this.props;
-    const { isBreak } = this.props;
-    console.log(isBreak);
+    const { pokemonList, isBreak } = this.props;
     if (isBreak) throw Error('error!');
     return (
       <div className="pokemon">

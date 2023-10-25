@@ -1,28 +1,12 @@
 import { Component } from 'react';
+import { ISearchInputProps, ISearchInputState } from '../../types/index';
 import './search.scss';
 
-interface IPokemon {
-  name: string;
-  url: string;
-}
-
 export default class SearchInput extends Component<
-  {
-    searchPokemon: CallableFunction;
-    pokemonList: IPokemon[];
-    isLoading: boolean;
-    inputValue: string;
-    setBreak: CallableFunction;
-  },
-  { inputValue: string }
+  ISearchInputProps,
+  ISearchInputState
 > {
-  constructor(props: {
-    searchPokemon: CallableFunction;
-    pokemonList: IPokemon[];
-    isLoading: boolean;
-    inputValue: string;
-    setBreak: CallableFunction;
-  }) {
+  constructor(props: ISearchInputProps) {
     super(props);
     this.state = {
       inputValue: this.props.inputValue,
@@ -31,27 +15,32 @@ export default class SearchInput extends Component<
 
   render() {
     return (
-      <div className="search-input">
+      <div className="search">
         <input
           value={this.state.inputValue}
           onChange={(e) => {
             this.setState({ inputValue: e.target.value });
           }}
+          className="search__input"
         ></input>
-        <button
-          onClick={() => {
-            this.props.searchPokemon(this.state.inputValue);
-          }}
-        >
-          Search
-        </button>
-        <button
-          onClick={() => {
-            this.props.setBreak();
-          }}
-        >
-          Break app
-        </button>
+        <div className="search__button">
+          <button
+            onClick={() => {
+              this.props.searchPokemon(this.state.inputValue);
+            }}
+            className="button button_success"
+          >
+            Search
+          </button>
+          <button
+            onClick={() => {
+              this.props.setBreak();
+            }}
+            className="button button_danger"
+          >
+            Break app
+          </button>
+        </div>
       </div>
     );
   }

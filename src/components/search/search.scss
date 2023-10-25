@@ -1,3 +1,23 @@
-.search-input {
-  text-align: center;
+@import '../../styles/abstracts/variables';
+
+.search {
+  display: flex;
+  justify-content: center;
+}
+
+.search__input {
+  width: 300px;
+  padding: 7px;
+  margin-right: 20px;
+  border-radius: 20px;
+  box-shadow: 2px 4px 4px $color-border;
+  color: $color-primary;
+  border: none;
+  outline: none;
+}
+
+.search__button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
