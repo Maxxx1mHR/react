@@ -1,5 +1,7 @@
+@import '../../styles/abstracts/variables';
+
 #root {
-  background-color: #fcf5d2;
+  background-color: $color-background;
   min-height: 100%;
   width: 100%;
   height: auto;

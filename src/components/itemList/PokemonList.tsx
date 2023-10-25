@@ -7,9 +7,15 @@ interface IPokemon {
   url: string;
 }
 
-export default class PokemonList extends Component<{ pokemonList: IPokemon[] }> {
+export default class PokemonList extends Component<{
+  pokemonList: IPokemon[];
+  isBreak: boolean;
+}> {
   render() {
     const { pokemonList } = this.props;
+    const { isBreak } = this.props;
+    console.log(isBreak);
+    if (isBreak) throw Error('error!');
     return (
       <div className="pokemon">
         <ul className="pokemon__list">

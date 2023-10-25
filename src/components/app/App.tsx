@@ -4,6 +4,7 @@ import PokeService from '../services/PokeService';
 import './app.scss';
 import { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
+import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 interface IPokemon {
   name: string;
@@ -12,33 +13,52 @@ interface IPokemon {
 
 class App extends Component<
   object,
-  { pokemonList: IPokemon[]; inputValue: string; isLoading: boolean }
+  {
+    pokemonList: IPokemon[];
+    inputValue: string;
+    isLoading: boolean;
+    isBreak: boolean;
+  }
 > {
   state = {
     pokemonList: [],
     inputValue: '',
     isLoading: true,
+    isBreak: false,
   };
 
   pokemonService = new PokeService();
 
   componentDidMount(): void {
-    this.getAllPokemons();
+    const getLocalStorageData = localStorage.getItem('pokemonQuery');
+    getLocalStorageData
+      ? (this.searchPokemon(getLocalStorageData),
+        this.setState({
+          inputValue: localStorage.getItem('pokemonQuery')?.toString() || '',
+        }))
+      : this.getAllPokemons();
   }
 
   getAllPokemons = async () => {
-    console.time('Time to fetch');
-    const result = await this.pokemonService.getAllPokemon();
-    const allPokemons: IPokemon[] = [];
-    await Promise.all(
-      result.results.map(async (item: IPokemon) => {
-        return this.pokemonService.getPokemonByName(item.name).then((res) => {
-          allPokemons.push({ name: res.name, url: res.sprites.other.dream_world.front_default });
-        });
-      })
-    );
-    console.timeEnd('Time to fetch');
-    this.setState({ isLoading: false, pokemonList: allPokemons });
+    localStorage.setItem('pokemonQuery', '');
+
+    try {
+      const result = await this.pokemonService.getAllPokemon();
+      const allPokemons: IPokemon[] = [];
+      await Promise.all(
+        result.results.map(async (item: IPokemon) => {
+          return this.pokemonService.getPokemonByName(item.name).then((res) => {
+            allPokemons.push({
+              name: res.name,
+              url: res.sprites.other.dream_world.front_default,
+            });
+          });
+        })
+      );
+      this.setState({ isLoading: false, pokemonList: allPokemons });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   searchPokemon = async (inputValue: string) => {
@@ -53,29 +73,51 @@ class App extends Component<
       isLoading: true,
     }));
 
-    const res = await this.pokemonService.getPokemonByName(inputValue);
-    this.setState(() => ({
-      pokemonList: [{ name: res.name, url: res.sprites.other.dream_world.front_default }],
-    }));
-    console.log('test', res);
-    console.log(this.state.isLoading);
-    this.setState(() => ({
-      isLoading: false,
-    }));
+    localStorage.setItem('pokemonQuery', `${inputValue}`);
+
+    try {
+      const res = await this.pokemonService.getPokemonByName(inputValue);
+      this.setState(() => ({
+        pokemonList: [
+          { name: res.name, url: res.sprites.other.dream_world.front_default },
+        ],
+      }));
+      this.setState(() => ({
+        isLoading: false,
+      }));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  setBreak = () => {
+    this.setState(() => ({ isBreak: true }));
+    // console.log(this.state.isBreak);
   };
 
   render() {
     return (
       <div className="app">
-        <SearchInput
-          searchPokemon={this.searchPokemon}
-          pokemonList={this.state.pokemonList}
-          isLoading={this.state.isLoading}
-        />
+        <ErrorBoundary>
+          <SearchInput
+            searchPokemon={this.searchPokemon}
+            pokemonList={this.state.pokemonList}
+            isLoading={this.state.isLoading}
+            inputValue={localStorage.getItem('pokemonQuery')?.toString() || ''}
+            setBreak={this.setBreak}
+          />
+        </ErrorBoundary>
         {this.state.isLoading ? (
-          <PuffLoader color="#ad5905" size={150} className="spinner" />
+          <ErrorBoundary>
+            <PuffLoader color="#ad5905" size={150} className="spinner" />
+          </ErrorBoundary>
         ) : (
-          <PokemonList pokemonList={this.state.pokemonList} />
+          <ErrorBoundary>
+            <PokemonList
+              pokemonList={this.state.pokemonList}
+              isBreak={this.state.isBreak}
+            />
+          </ErrorBoundary>
         )}
       </div>
     );

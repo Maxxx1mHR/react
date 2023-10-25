@@ -11,6 +11,8 @@ export default class SearchInput extends Component<
     searchPokemon: CallableFunction;
     pokemonList: IPokemon[];
     isLoading: boolean;
+    inputValue: string;
+    setBreak: CallableFunction;
   },
   { inputValue: string }
 > {
@@ -18,10 +20,12 @@ export default class SearchInput extends Component<
     searchPokemon: CallableFunction;
     pokemonList: IPokemon[];
     isLoading: boolean;
+    inputValue: string;
+    setBreak: CallableFunction;
   }) {
     super(props);
     this.state = {
-      inputValue: '',
+      inputValue: this.props.inputValue,
     };
   }
 
@@ -29,6 +33,7 @@ export default class SearchInput extends Component<
     return (
       <div className="search-input">
         <input
+          value={this.state.inputValue}
           onChange={(e) => {
             this.setState({ inputValue: e.target.value });
           }}
@@ -39,6 +44,13 @@ export default class SearchInput extends Component<
           }}
         >
           Search
+        </button>
+        <button
+          onClick={() => {
+            this.props.setBreak();
+          }}
+        >
+          Break app
         </button>
       </div>
     );
