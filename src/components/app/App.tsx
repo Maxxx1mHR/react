@@ -45,10 +45,13 @@ class App extends Component<object, IAppState> {
             allPokemons.push({
               name: res.name,
               url: res.sprites.other.dream_world.front_default,
+              abilities: res.abilities,
+              types: res.types,
             });
           });
         })
       );
+      console.log(allPokemons);
       this.setState({ isLoading: false, pokemonList: allPokemons });
     } catch (err) {
       console.log(err);
@@ -71,9 +74,15 @@ class App extends Component<object, IAppState> {
 
     try {
       const res = await this.pokemonService.getPokemonByName(inputValue);
+      console.log(res);
       this.setState(() => ({
         pokemonList: [
-          { name: res.name, url: res.sprites.other.dream_world.front_default },
+          {
+            name: res.name,
+            url: res.sprites.other.dream_world.front_default,
+            abilities: res.abilities,
+            types: res.types,
+          },
         ],
       }));
       this.setState(() => ({

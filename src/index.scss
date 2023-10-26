@@ -1,5 +1,10 @@
 @import './styles/base/normalize';
 @import './styles/base/typography';
 @import './styles/abstracts/spinner';
+@import './styles/abstracts/mixins';
 @import './styles/base/logo';
 @import './styles//base/button';
+
+html {
+  font-size: 10px;
+}

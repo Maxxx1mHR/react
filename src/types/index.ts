@@ -1,6 +1,8 @@
 export interface IPokemon {
   name: string;
   url: string;
+  abilities: IAbility[];
+  types: ITypes[];
 }
 
 export interface ISearchInputProps {
@@ -20,4 +22,16 @@ export interface IAppState {
   inputValue: string;
   isLoading: boolean;
   isBreak: boolean;
+}
+
+interface IAbility {
+  ability: {
+    name: string;
+  };
+}
+
+interface ITypes {
+  type: {
+    name: string;
+  };
 }

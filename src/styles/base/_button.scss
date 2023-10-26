@@ -3,14 +3,18 @@
 .button {
   display: flex;
   align-items: center;
-  font-family: 'Century Gothic';
-  font-weight: 400;
+  font-family: 'Century';
+  font-weight: 700;
   color: $color-primary;
-  height: 30px;
-  padding: 20px;
+  height: 3rem;
+  padding: 2rem;
   background: transparent;
   border: none;
   cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
 .button_danger {

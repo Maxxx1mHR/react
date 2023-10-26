@@ -1,23 +1,33 @@
 @import '../../styles/abstracts/variables';
+@import '../../styles/abstracts/mixins';
 
 .search {
   display: flex;
   justify-content: center;
+  @include media-mobile {
+    flex-direction: column;
+  }
 }
 
 .search__input {
-  width: 300px;
-  padding: 7px;
-  margin-right: 20px;
-  border-radius: 20px;
+  max-width: 50rem;
+  width: 100%;
+  padding: 1rem;
+  margin-right: 2rem;
+  border-radius: 2rem;
   box-shadow: 2px 4px 4px $color-border;
   color: $color-primary;
   border: none;
   outline: none;
+  &::first-letter {
+    text-transform: lowercase;
+  }
 }
 
 .search__button {
   display: flex;
-  gap: 10px;
   align-items: center;
+  @include media-mobile {
+    justify-content: center;
+  }
 }

@@ -26,7 +26,9 @@ export default class SearchInput extends Component<
         <div className="search__button">
           <button
             onClick={() => {
-              this.props.searchPokemon(this.state.inputValue);
+              this.props.searchPokemon(
+                this.state.inputValue.toLocaleLowerCase()
+              );
             }}
             className="button button_success"
           >
