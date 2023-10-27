@@ -1,4 +1,9 @@
-@import './variables';
+@mixin font($size: 2rem, $weight: 400, $style: normal) {
+  font-family: 'Century', sans-serif;
+  font-size: $size;
+  font-weight: $weight;
+  font-style: $style;
+}
 
 @mixin media-mobile {
   @media (max-width: $mobile-width) {

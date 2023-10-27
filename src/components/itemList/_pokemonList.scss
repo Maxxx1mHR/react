@@ -1,5 +1,3 @@
-@import '../../styles/abstracts/variables';
-
 .pokemon {
   padding-top: 5rem;
 }
@@ -10,10 +8,9 @@
   row-gap: 4rem;
   column-gap: 2rem;
   list-style: none;
-  font-family: 'Century';
-  font-weight: 400;
   color: $color-primary;
   cursor: pointer;
+  @include font();
 }
 
 .pokemon__item {

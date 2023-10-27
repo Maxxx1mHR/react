@@ -1,5 +1,4 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import './errorBoundary.scss';
 import error from '../../assets/img/error.gif';
 
 export default class ErrorBoundary extends Component<{

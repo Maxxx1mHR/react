@@ -9,7 +9,6 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import { IAppState, IPokemon } from '../../types/index';
 
 import logo from '../../assets/img/logo.png';
-import './app.scss';
 
 class App extends Component<object, IAppState> {
   state = {
@@ -51,7 +50,6 @@ class App extends Component<object, IAppState> {
           });
         })
       );
-      console.log(allPokemons);
       this.setState({ isLoading: false, pokemonList: allPokemons });
     } catch (err) {
       console.log(err);
@@ -74,7 +72,6 @@ class App extends Component<object, IAppState> {
 
     try {
       const res = await this.pokemonService.getPokemonByName(inputValue);
-      console.log(res);
       this.setState(() => ({
         pokemonList: [
           {
@@ -100,9 +97,9 @@ class App extends Component<object, IAppState> {
   render() {
     const { pokemonList, isLoading, isBreak } = this.state;
     return (
-      <div className="app">
-        <img src={logo} alt="pokemon logo" className="logo" />
-        <ErrorBoundary>
+      <ErrorBoundary>
+        <div className="app">
+          <img src={logo} alt="pokemon logo" className="logo" />
           <SearchInput
             searchPokemon={this.searchPokemon}
             pokemonList={pokemonList}
@@ -110,17 +107,13 @@ class App extends Component<object, IAppState> {
             inputValue={this.getLocalStorageSearchData?.toString() || ''}
             setBreak={this.setBreak}
           />
-        </ErrorBoundary>
-        {isLoading ? (
-          <ErrorBoundary>
+          {isLoading ? (
             <PuffLoader color="#ad5905" size={150} className="spinner" />
-          </ErrorBoundary>
-        ) : (
-          <ErrorBoundary>
+          ) : (
             <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
-          </ErrorBoundary>
-        )}
-      </div>
+          )}
+        </div>
+      </ErrorBoundary>
     );
   }
 }

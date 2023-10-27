@@ -1,14 +1,11 @@
 import { Component } from 'react';
 import { IPokemon } from '../../types/index';
 
-import './pokemonList.scss';
-
 export default class PokemonList extends Component<{
   pokemonList: IPokemon[];
   isBreak: boolean;
 }> {
   render() {
-    console.log(this.props.pokemonList);
     const { pokemonList, isBreak } = this.props;
     if (isBreak) throw Error('error!');
     return (
@@ -23,21 +20,19 @@ export default class PokemonList extends Component<{
               <div className="pokemon__info">
                 <ul className="pokemon-ability__list">
                   Abilities:
-                  {abilities.map((item, index) => (
+                  {abilities.map(({ ability }, index) => (
                     <li key={index}>
                       {index + 1 < abilities.length
-                        ? item.ability.name + ','
-                        : item.ability.name}
+                        ? ability.name + ','
+                        : ability.name}
                     </li>
                   ))}
                 </ul>
                 <ul className="pokemon-type__list">
                   Types:
-                  {types.map((item, index) => (
+                  {types.map(({ type }, index) => (
                     <li key={index}>
-                      {index + 1 < types.length
-                        ? item.type.name + ','
-                        : item.type.name}
+                      {index + 1 < types.length ? type.name + ',' : type.name}
                     </li>
                   ))}
                 </ul>

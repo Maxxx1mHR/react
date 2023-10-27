@@ -3,10 +3,7 @@
 .button {
   display: flex;
   align-items: center;
-  font-family: 'Century';
-  font-weight: 700;
   color: $color-primary;
-  height: 3rem;
   padding: 2rem;
   background: transparent;
   border: none;
@@ -15,6 +12,7 @@
   &:hover {
     transform: scale(1.2);
   }
+  @include font($weight: 700);
 }
 
 .button_danger {

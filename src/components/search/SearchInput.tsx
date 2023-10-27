@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import { ISearchInputProps, ISearchInputState } from '../../types/index';
-import './search.scss';
 
 export default class SearchInput extends Component<
   ISearchInputProps,
