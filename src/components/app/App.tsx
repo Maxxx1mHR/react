@@ -24,7 +24,7 @@ class App extends Component<object, IAppState> {
         this.setState({
           inputValue: this.getLocalStorageSearchData?.toString() || '',
         }))
-      : this.getAllPokemons();
+      : this.getPokemons();
   }
 
   pokemonService = new PokeService();
@@ -33,58 +33,48 @@ class App extends Component<object, IAppState> {
     localStorage.setItem('pokemonQuery', localStorageValue);
   };
 
-  getAllPokemons = async () => {
+  getPokemon = async (name: string, arr: IPokemon[]) => {
+    this.setState(() => ({
+      isLoading: true,
+    }));
+    const res = await this.pokemonService.getPokemonByName(name);
+    arr.push({
+      name: res.name,
+      url: res.sprites.other.dream_world.front_default,
+      abilities: res.abilities,
+      types: res.types,
+    });
+    this.setState({ isLoading: false, pokemonList: arr });
+  };
+  allPokemons: IPokemon[] = [];
+
+  getPokemons = async () => {
     this.setLocalStorageSearchData();
     try {
       const result = await this.pokemonService.getAllPokemon();
       const allPokemons: IPokemon[] = [];
+      this.allPokemons;
       await Promise.all(
         result.results.map(async (item: IPokemon) => {
-          return this.pokemonService.getPokemonByName(item.name).then((res) => {
-            allPokemons.push({
-              name: res.name,
-              url: res.sprites.other.dream_world.front_default,
-              abilities: res.abilities,
-              types: res.types,
-            });
-          });
+          return this.getPokemon(item.name, allPokemons);
         })
       );
-      this.setState({ isLoading: false, pokemonList: allPokemons });
     } catch (err) {
       console.log(err);
     }
   };
 
   searchPokemon = async (inputValue: string) => {
-    if (inputValue.length === 0) {
+    if (!inputValue.length) {
       this.setState(() => ({
         pokemonList: [],
       }));
-      return this.getAllPokemons();
+      return this.getPokemons();
     }
-
-    this.setState(() => ({
-      isLoading: true,
-    }));
-
     this.setLocalStorageSearchData(inputValue);
-
     try {
-      const res = await this.pokemonService.getPokemonByName(inputValue);
-      this.setState(() => ({
-        pokemonList: [
-          {
-            name: res.name,
-            url: res.sprites.other.dream_world.front_default,
-            abilities: res.abilities,
-            types: res.types,
-          },
-        ],
-      }));
-      this.setState(() => ({
-        isLoading: false,
-      }));
+      const Pokemon: IPokemon[] = [];
+      this.getPokemon(inputValue, Pokemon);
     } catch (err) {
       console.log(err);
     }

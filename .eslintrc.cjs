@@ -19,9 +19,18 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['react', 'react-refresh', '@typescript-eslint', 'react-hooks', 'prettier'],
+  plugins: [
+    'react',
+    'react-refresh',
+    '@typescript-eslint',
+    'react-hooks',
+    'prettier',
+  ],
   rules: {
-    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'comma-dangle': ['error', 'only-multiline'],
