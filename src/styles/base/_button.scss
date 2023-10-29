@@ -1,0 +1,23 @@
+@import '../../styles/abstracts/variables';
+
+.button {
+  display: flex;
+  align-items: center;
+  color: $color-primary;
+  padding: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.5s;
+  &:hover {
+    transform: scale(1.2);
+  }
+  @include font($weight: 700);
+}
+
+.button_danger {
+  color: $color-danger;
+}
+.button_success {
+  color: $color-success;
+}

@@ -1,0 +1,15 @@
+@import './styles/base/normalize';
+@import './styles/base/typography';
+@import './styles/abstracts/spinner';
+@import './styles/abstracts/variables';
+@import './styles/abstracts/mixins';
+@import './styles/base/logo';
+@import './styles//base/button';
+@import './components/app/app';
+@import './components/errorBoundary/errorBoundary';
+@import './components/itemList/pokemonList';
+@import './components/search/search';
+
+html {
+  font-size: 10px;
+}
