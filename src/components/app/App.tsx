@@ -1,111 +1,128 @@
-import { Component } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 
-import SearchInput from '../search/SearchInput';
-import PokemonList from '../itemList/PokemonList';
+import { SearchInput } from '../search/SearchInput';
+import { PokemonList } from '../itemList/PokemonList';
 import PokeService from '../services/PokeService';
 
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
-import { IAppState, IPokemon } from '../../types/index';
+import { IPokemon } from '../../types/index';
 
 import logo from '../../assets/img/logo.png';
 
-class App extends Component<object, IAppState> {
-  state = {
-    pokemonList: [],
-    inputValue: '',
-    isLoading: true,
-    isBreak: false,
-  };
+const pokemonService = new PokeService();
 
-  componentDidMount(): void {
-    this.getLocalStorageSearchData
-      ? (this.searchPokemon(this.getLocalStorageSearchData),
-        this.setState({
-          inputValue: this.getLocalStorageSearchData?.toString() || '',
-        }))
-      : this.getPokemons();
-  }
+const App = () => {
+  const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBreak, setIsBreak] = useState(false);
 
-  pokemonService = new PokeService();
-  getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
-  setLocalStorageSearchData = (localStorageValue: string = '') => {
+  const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
+  const setLocalStorageSearchData = (localStorageValue: string = '') => {
     localStorage.setItem('pokemonQuery', localStorageValue);
   };
 
-  getPokemon = async (name: string, arr: IPokemon[]) => {
-    this.setState(() => ({
-      isLoading: true,
-    }));
-    const res = await this.pokemonService.getPokemonByName(name);
-    arr.push({
-      name: res.name,
-      url: res.sprites.other.dream_world.front_default,
-      abilities: res.abilities,
-      types: res.types,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const getPokemon = useCallback(async (name: string, arr: IPokemon[]) => {
+    setIsLoading(true);
+    await pokemonService.getPokemonByName(name).then((res) => {
+      arr?.push({
+        id: res.id,
+        name: res.name,
+        url: res.sprites.other.dream_world.front_default,
+        abilities: res.abilities,
+        types: res.types,
+      });
     });
-    this.setState({ isLoading: false, pokemonList: arr });
-  };
-  allPokemons: IPokemon[] = [];
 
-  getPokemons = async () => {
-    this.setLocalStorageSearchData();
+    // }
+    // setIsLoading(false);
+
+    // console.log('arr', arr);
+    // return arr;
+    // if (arr.length <= 1) {
+    // }
+    // setIsLoading(false);
+  }, []);
+
+  const getPokemons = useCallback(async () => {
+    setLocalStorageSearchData();
     try {
-      const result = await this.pokemonService.getAllPokemon();
+      const result = await pokemonService.getAllPokemon();
+      console.log(result);
       const allPokemons: IPokemon[] = [];
-      this.allPokemons;
       await Promise.all(
         result.results.map(async (item: IPokemon) => {
-          return this.getPokemon(item.name, allPokemons);
+          return pokemonService.getPokemonByName(item.name).then((res) => {
+            allPokemons.push({
+              id: res.id,
+              name: res.name,
+              url: res.sprites.other.dream_world.front_default,
+              abilities: res.abilities,
+              types: res.types,
+            });
+          });
         })
       );
+      setPokemonList(allPokemons);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, []);
 
-  searchPokemon = async (inputValue: string) => {
-    if (!inputValue.length) {
-      this.setState(() => ({
-        pokemonList: [],
-      }));
-      return this.getPokemons();
-    }
-    this.setLocalStorageSearchData(inputValue);
-    try {
-      const Pokemon: IPokemon[] = [];
-      this.getPokemon(inputValue, Pokemon);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const searchPokemon = useCallback(
+    async (inputValue: string) => {
+      if (!inputValue.length) {
+        return getPokemons();
+      }
+      setLocalStorageSearchData(inputValue);
+      try {
+        const res = await pokemonService.getPokemonByName(inputValue);
+        console.log(res);
+        setPokemonList([
+          {
+            id: res.id,
+            name: res.name,
+            url: res.sprites.other.dream_world.front_default,
+            abilities: res.abilities,
+            types: res.types,
+          },
+        ]);
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [getPokemons]
+  );
 
-  setBreak = () => {
-    this.setState(() => ({ isBreak: true }));
-  };
+  useEffect(() => {
+    getLocalStorageSearchData
+      ? (searchPokemon(getLocalStorageSearchData),
+        setInputValue(getLocalStorageSearchData?.toString() || ''))
+      : getPokemons();
+  }, [getLocalStorageSearchData, getPokemons, searchPokemon]);
 
-  render() {
-    const { pokemonList, isLoading, isBreak } = this.state;
-    return (
-      <ErrorBoundary>
-        <div className="app">
-          <img src={logo} alt="pokemon logo" className="logo" />
-          <SearchInput
-            searchPokemon={this.searchPokemon}
-            pokemonList={pokemonList}
-            isLoading={isLoading}
-            inputValue={this.getLocalStorageSearchData?.toString() || ''}
-            setBreak={this.setBreak}
-          />
-          {isLoading ? (
-            <PuffLoader color="#ad5905" size={150} className="spinner" />
-          ) : (
-            <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
-          )}
-        </div>
-      </ErrorBoundary>
-    );
-  }
-}
+  return (
+    <ErrorBoundary>
+      <div className="app">
+        <img src={logo} alt="pokemon logo" className="logo" />
+        <SearchInput
+          searchPokemon={searchPokemon}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          setIsBreak={setIsBreak}
+        />
+        {isLoading ? (
+          <PuffLoader color="#ad5905" size={150} className="spinner" />
+        ) : (
+          <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
+        )}
+      </div>
+    </ErrorBoundary>
+  );
+};
 
 export default App;
