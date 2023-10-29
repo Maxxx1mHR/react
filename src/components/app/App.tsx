@@ -46,14 +46,12 @@ class App extends Component<object, IAppState> {
     });
     this.setState({ isLoading: false, pokemonList: arr });
   };
-  allPokemons: IPokemon[] = [];
 
   getPokemons = async () => {
     this.setLocalStorageSearchData();
     try {
       const result = await this.pokemonService.getAllPokemon();
       const allPokemons: IPokemon[] = [];
-      this.allPokemons;
       await Promise.all(
         result.results.map(async (item: IPokemon) => {
           return this.getPokemon(item.name, allPokemons);
