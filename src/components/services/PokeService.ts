@@ -10,8 +10,8 @@ class PokeService {
     return await res.json();
   };
 
-  getAllPokemon = () => {
-    return this.getResource(this._api);
+  getAllPokemon = (offset = 0, limit = 6) => {
+    return this.getResource(`${this._api}?limit=${limit}&offset=${offset}`);
   };
 
   getPokemonByName = (name: string) => {
