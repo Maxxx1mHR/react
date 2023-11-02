@@ -8,125 +8,113 @@ import { useCallback, useEffect, useState } from 'react';
 import { IPokemon } from '../../types';
 import PokeService from '../services/PokeService';
 import Navigation from '../navigation/Navigation';
+import NotFound from '../notFound/NotFound';
 
 const pokemonService = new PokeService();
-// let countAllPokemons = 0;
 
-const MainPage = () =>
-  // { offset }: { offset: number }
-  {
-    const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
-    const [inputValue, setInputValue] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-    const [isBreak, setIsBreak] = useState(false);
-    const [offset, setOffset] = useState(0);
-    // let countAllPokemons = 0;
+const MainPage = () => {
+  const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [isBreak, setIsBreak] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [isNotFound, setIsNotFound] = useState(false);
 
-    const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
-    const setLocalStorageSearchData = (localStorageValue: string = '') => {
-      localStorage.setItem('pokemonQuery', localStorageValue);
-    };
+  const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
+  const setLocalStorageSearchData = (localStorageValue: string = '') => {
+    localStorage.setItem('pokemonQuery', localStorageValue);
+  };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const getPokemon = useCallback(async (name: string, arr: IPokemon[]) => {
-      setIsLoading(true);
-      await pokemonService.getPokemonByName(name).then((res) => {
-        arr?.push({
+  const getPokemon = useCallback(async (name: string) => {
+    setIsLoading(true);
+    try {
+      return pokemonService.getPokemonByName(name).then((res) => {
+        return {
           id: res.id,
           name: res.name,
           url: res.sprites.other.dream_world.front_default,
           abilities: res.abilities,
           types: res.types,
-        });
+        };
       });
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
-      // }
-      // setIsLoading(false);
+  const getPokemons = useCallback(async () => {
+    setLocalStorageSearchData();
+    try {
+      const result = await pokemonService.getAllPokemon(offset);
+      const allPokemons: IPokemon[] = [];
+      await Promise.all(
+        result.results.map(async (item: IPokemon) => {
+          const tmp = await getPokemon(item.name);
+          if (tmp) {
+            allPokemons.push(tmp);
+          }
+        })
+      );
+      setPokemonList(allPokemons);
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [getPokemon, offset]);
 
-      // console.log('arr', arr);
-      // return arr;
-      // if (arr.length <= 1) {
-      // }
-      // setIsLoading(false);
-    }, []);
-
-    const getPokemons = useCallback(async () => {
-      setLocalStorageSearchData();
+  const searchPokemon = useCallback(
+    async (inputValue: string) => {
+      setIsNotFound(false);
+      if (inputValue === '') {
+        return getPokemons();
+      }
+      setLocalStorageSearchData(inputValue);
       try {
-        const result = await pokemonService.getAllPokemon(offset);
-        // countAllPokemons = result.count;
-        // console.log(result.count);
-        const allPokemons: IPokemon[] = [];
-        await Promise.all(
-          result.results.map(async (item: IPokemon) => {
-            return pokemonService.getPokemonByName(item.name).then((res) => {
-              allPokemons.push({
-                id: res.id,
-                name: res.name,
-                url: res.sprites.other.dream_world.front_default,
-                abilities: res.abilities,
-                types: res.types,
-              });
-            });
-          })
-        );
-        setPokemonList(allPokemons);
+        const tmp = await getPokemon(inputValue);
+        if (tmp) {
+          setPokemonList([tmp]);
+        }
         setIsLoading(false);
       } catch (err) {
-        console.log(err);
+        setIsLoading(false);
+        setIsNotFound(true);
+        setLocalStorageSearchData();
+        console.error(err);
       }
-    }, [offset]);
+    },
+    [getPokemon, getPokemons]
+  );
 
-    const searchPokemon = useCallback(
-      async (inputValue: string) => {
-        if (!inputValue.length) {
-          return getPokemons();
-        }
-        setLocalStorageSearchData(inputValue);
-        try {
-          const res = await pokemonService.getPokemonByName(inputValue);
-          // console.log(res);
-          setPokemonList([
-            {
-              id: res.id,
-              name: res.name,
-              url: res.sprites.other.dream_world.front_default,
-              abilities: res.abilities,
-              types: res.types,
-            },
-          ]);
-          setIsLoading(false);
-        } catch (err) {
-          console.log(err);
-        }
-      },
-      [getPokemons]
-    );
+  useEffect(() => {
+    getLocalStorageSearchData
+      ? (searchPokemon(getLocalStorageSearchData),
+        setInputValue(getLocalStorageSearchData?.toString() || ''))
+      : getPokemons();
+  }, [getLocalStorageSearchData, getPokemons, searchPokemon]);
 
-    useEffect(() => {
-      getLocalStorageSearchData
-        ? (searchPokemon(getLocalStorageSearchData),
-          setInputValue(getLocalStorageSearchData?.toString() || ''))
-        : getPokemons();
-    }, [getLocalStorageSearchData, getPokemons, searchPokemon]);
-
-    return (
-      <>
-        <img src={logo} alt="pokemon logo" className="logo" />
-        <SearchInput
-          searchPokemon={searchPokemon}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-          setIsBreak={setIsBreak}
-        />
-        {isLoading ? (
-          <PuffLoader color="#ad5905" size={150} className="spinner" />
-        ) : (
-          <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
-        )}
-        <Navigation setOffset={setOffset} />
-      </>
-    );
-  };
+  return (
+    <>
+      <img src={logo} alt="pokemon logo" className="logo" />
+      {isNotFound ? (
+        <NotFound />
+      ) : (
+        <>
+          <SearchInput
+            searchPokemon={searchPokemon}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            setIsBreak={setIsBreak}
+          />
+          {isLoading ? (
+            <PuffLoader color="#ad5905" size={150} className="spinner" />
+          ) : (
+            <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
+          )}
+          <Navigation setOffset={setOffset} />
+        </>
+      )}
+    </>
+  );
+};
 
 export default MainPage;

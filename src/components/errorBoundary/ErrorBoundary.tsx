@@ -9,15 +9,17 @@ export default class ErrorBoundary extends Component<{
   };
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.log(error, errorInfo);
+    console.error(error, errorInfo);
+
     this.setState({
       error: true,
     });
   }
 
   render() {
-    if (this.state.error)
+    if (this.state.error) {
       return <img src={error} alt="error" className="error" />;
+    }
 
     return this.props.children;
   }

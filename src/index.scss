@@ -5,11 +5,12 @@
 @import './styles/abstracts/mixins';
 @import './styles/base/logo';
 @import './styles//base/button';
+@import './components/navigation/navigation';
+@import './components/notFound/notFound';
 @import './components/app/app';
 @import './components/errorBoundary/errorBoundary';
 @import './components/itemList/pokemonList';
 @import './components/search/search';
-@import './components/navigation/navigation';
 
 html {
   font-size: 10px;

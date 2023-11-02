@@ -17,7 +17,7 @@ export const SearchInput = ({
           setInputValue(e.target.value);
         }}
         className="search__input"
-      ></input>
+      />
       <div className="search__button">
         <button
           onClick={() => {

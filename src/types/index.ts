@@ -23,6 +23,7 @@ export interface IAppState {
   inputValue: string;
   isLoading: boolean;
   isBreak: boolean;
+  isNotFound: boolean;
 }
 
 interface IAbility {

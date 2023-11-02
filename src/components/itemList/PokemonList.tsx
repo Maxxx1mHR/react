@@ -19,17 +19,17 @@ export const PokemonList = ({
             </div>
             <div className="pokemon__info">
               <ul className="pokemon-ability__list">
-                Abilities:
+                <span className="pokemon__info-header">Abilities:</span>
                 {abilities.map(({ ability }, index) => (
                   <li key={index}>
-                    {index + 1 < abilities.length
+                    {index < abilities.length - 1
                       ? ability.name + ','
                       : ability.name}
                   </li>
                 ))}
               </ul>
               <ul className="pokemon-type__list">
-                Types:
+                <span className="pokemon__info-header">Types:</span>
                 {types.map(({ type }, index) => (
                   <li key={index}>
                     {index + 1 < types.length ? type.name + ',' : type.name}

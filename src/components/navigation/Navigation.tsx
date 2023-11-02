@@ -5,7 +5,6 @@ const Navigation = ({
   setOffset, // countAllPokemons,
 }: {
   setOffset: CallableFunction;
-  // countAllPokemons: number;
 }) => {
   const [, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,20 +12,12 @@ const Navigation = ({
   const countAllPokemons = 648;
   const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
 
-  // const [offset, setOffset] = useState(0);
-
-  // useEffect(() => {
-  //   console.log(offset);
-  //   console.log(page);
-  // }, [offset, page]);
-
   const incrementPage = () => {
     if (currentPage === countsPage) {
       return;
     }
     setOffset((offset: number) => offset + pokemonsPerPage);
     setCurrentPage((currentPage) => currentPage + 1);
-    // console.log('+', offset);
   };
 
   const decrementPage = () => {
@@ -35,12 +26,6 @@ const Navigation = ({
     }
     setOffset((offset: number) => offset - pokemonsPerPage);
     setCurrentPage((currentPage) => currentPage - 1);
-
-    // console.log('-', offset);
-
-    // setSearchParams({ page: offset.toString() });
-
-    // setSearchParams((page) => page - 1);
   };
 
   const firstPage = () => {
