@@ -12,7 +12,11 @@ export const PokemonList = ({
     <div className="pokemon">
       <ul className="pokemon__list">
         {pokemonList.map(({ id, abilities, name, url, types }) => (
-          <li key={id} className="pokemon__item">
+          <li
+            key={id}
+            className="pokemon__item"
+            onClick={() => console.log(name)}
+          >
             <h2 className="pokemon__name">{name}</h2>
             <div className="pokemon__wrapper">
               <img src={url} alt={name} className="pokemon__img" />

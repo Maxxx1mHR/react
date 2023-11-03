@@ -9,16 +9,20 @@ import { IPokemon } from '../../types';
 import PokeService from '../services/PokeService';
 import Navigation from '../navigation/Navigation';
 import NotFound from '../notFound/NotFound';
+import { useSearchParams } from 'react-router-dom';
 
 const pokemonService = new PokeService();
 
 const MainPage = () => {
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isBreak, setIsBreak] = useState(false);
   const [offset, setOffset] = useState(0);
   const [isNotFound, setIsNotFound] = useState(false);
+  const [, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
   const setLocalStorageSearchData = (localStorageValue: string = '') => {
@@ -68,9 +72,13 @@ const MainPage = () => {
       if (inputValue === '') {
         return getPokemons();
       }
-      setLocalStorageSearchData(inputValue);
+
+      const input = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+      setLocalStorageSearchData(input);
+
       try {
-        const tmp = await getPokemon(inputValue);
+        const tmp = await getPokemon(inputValue.toLowerCase());
+        console.log('in', inputValue);
         if (tmp) {
           setPokemonList([tmp]);
         }
@@ -92,6 +100,20 @@ const MainPage = () => {
       : getPokemons();
   }, [getLocalStorageSearchData, getPokemons, searchPokemon]);
 
+  useEffect(() => {
+    if (searchValue) {
+      setSearchParams({ search: searchValue });
+    } else if (pokemonList.length > 1) {
+      setSearchParams({ page: currentPage.toString() });
+    }
+  }, [
+    currentPage,
+    inputValue.length,
+    pokemonList.length,
+    searchValue,
+    setSearchParams,
+  ]);
+
   return (
     <>
       <img src={logo} alt="pokemon logo" className="logo" />
@@ -104,13 +126,22 @@ const MainPage = () => {
             inputValue={inputValue}
             setInputValue={setInputValue}
             setIsBreak={setIsBreak}
+            setSearchValue={setSearchValue}
           />
           {isLoading ? (
             <PuffLoader color="#ad5905" size={150} className="spinner" />
           ) : (
             <PokemonList pokemonList={pokemonList} isBreak={isBreak} />
           )}
-          <Navigation setOffset={setOffset} />
+          {searchValue ? (
+            ''
+          ) : (
+            <Navigation
+              setOffset={setOffset}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          )}
         </>
       )}
     </>

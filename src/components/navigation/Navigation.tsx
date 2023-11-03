@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-
 const Navigation = ({
-  setOffset, // countAllPokemons,
+  setOffset,
+  currentPage,
+  setCurrentPage,
 }: {
   setOffset: CallableFunction;
+  currentPage: number;
+  setCurrentPage: CallableFunction;
 }) => {
-  const [, setSearchParams] = useSearchParams();
-  const [currentPage, setCurrentPage] = useState(1);
   const pokemonsPerPage = 6;
   const countAllPokemons = 648;
   const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
@@ -17,7 +16,7 @@ const Navigation = ({
       return;
     }
     setOffset((offset: number) => offset + pokemonsPerPage);
-    setCurrentPage((currentPage) => currentPage + 1);
+    setCurrentPage(() => currentPage + 1);
   };
 
   const decrementPage = () => {
@@ -25,7 +24,7 @@ const Navigation = ({
       return;
     }
     setOffset((offset: number) => offset - pokemonsPerPage);
-    setCurrentPage((currentPage) => currentPage - 1);
+    setCurrentPage(() => currentPage - 1);
   };
 
   const firstPage = () => {
@@ -37,10 +36,6 @@ const Navigation = ({
     setOffset(countAllPokemons - pokemonsPerPage);
     setCurrentPage(countsPage);
   };
-
-  useEffect(() => {
-    setSearchParams({ page: currentPage.toString() });
-  }, [currentPage, setSearchParams]);
 
   return (
     <div className="navigation">

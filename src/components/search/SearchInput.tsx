@@ -3,11 +3,13 @@ export const SearchInput = ({
   inputValue,
   setInputValue,
   setIsBreak,
+  setSearchValue,
 }: {
   searchPokemon: CallableFunction;
   inputValue: string;
   setInputValue: CallableFunction;
   setIsBreak: CallableFunction;
+  setSearchValue: CallableFunction;
 }) => {
   return (
     <div className="search">
@@ -21,7 +23,8 @@ export const SearchInput = ({
       <div className="search__button">
         <button
           onClick={() => {
-            searchPokemon(inputValue.toLocaleLowerCase());
+            searchPokemon(inputValue);
+            setSearchValue(inputValue);
           }}
           className="button button_success"
         >

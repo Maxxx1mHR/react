@@ -37,3 +37,8 @@ interface ITypes {
     name: string;
   };
 }
+
+export interface IParams {
+  search: string;
+  page: number;
+}
