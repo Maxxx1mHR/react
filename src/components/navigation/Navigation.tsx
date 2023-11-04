@@ -2,12 +2,13 @@ const Navigation = ({
   setOffset,
   currentPage,
   setCurrentPage,
+  pokemonsPerPage,
 }: {
   setOffset: CallableFunction;
   currentPage: number;
   setCurrentPage: CallableFunction;
+  pokemonsPerPage: number;
 }) => {
-  const pokemonsPerPage = 6;
   const countAllPokemons = 648;
   const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
 

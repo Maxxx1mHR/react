@@ -10,6 +10,7 @@ export const SearchInput = ({
   setInputValue: CallableFunction;
   setIsBreak: CallableFunction;
   setSearchValue: CallableFunction;
+  setPokemonPerPage: CallableFunction;
 }) => {
   return (
     <div className="search">

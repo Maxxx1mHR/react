@@ -1,0 +1,10 @@
+.count {
+  display: flex;
+  justify-content: center;
+  color: $color-primary;
+  @include font();
+}
+
+.count__title {
+  margin-right: 2rem;
+}

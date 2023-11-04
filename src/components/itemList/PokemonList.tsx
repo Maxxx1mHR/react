@@ -3,19 +3,34 @@ import { IPokemon } from '../../types/index';
 export const PokemonList = ({
   pokemonList,
   isBreak,
+  getPokemon,
+  setPokemonFullInfo,
+  setAdditionInfo,
 }: {
   pokemonList: IPokemon[];
   isBreak: boolean;
+  getPokemon: CallableFunction;
+  setPokemonFullInfo: CallableFunction;
+  setAdditionInfo: CallableFunction;
 }) => {
   if (isBreak) throw Error('error!');
+
   return (
     <div className="pokemon">
-      <ul className="pokemon__list">
+      <ul
+        className="pokemon__list"
+        onClick={() => {
+          console.log('list');
+        }}
+      >
         {pokemonList.map(({ id, abilities, name, url, types }) => (
           <li
             key={id}
             className="pokemon__item"
-            onClick={() => console.log(name)}
+            onClick={async () => {
+              setAdditionInfo(true);
+              setPokemonFullInfo(await getPokemon(name));
+            }}
           >
             <h2 className="pokemon__name">{name}</h2>
             <div className="pokemon__wrapper">
