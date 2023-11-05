@@ -12,27 +12,31 @@ const PokemonCardAdditional = ({
   isLoading: boolean;
   setSearchParams: CallableFunction;
 }) => {
+  const wrapperClass = searchParams.get('details')
+    ? 'pokemon-additional-info pokemon-additional-info_active'
+    : 'pokemon-additional-info';
+
   return (
-    <div
-      className={
-        searchParams
-          ? 'pokemon-additional-info pokemon-additional-info_active'
-          : 'pokemon-additional-info'
-      }
-    >
-      <div className="pokemon-additional__wrapper">
+    <div className={searchParams.get('details') ? wrapperClass : ''}>
+      <div
+        className={
+          searchParams.get('details') ? 'pokemon-additional__wrapper' : ''
+        }
+      >
         {isLoading ? (
           <PuffLoader color="#ad5905" size={150} className="spinner" />
         ) : (
           <>
-            <span
-              className="pokemon__close-menu"
-              onClick={() =>
-                setSearchParams({ page: searchParams.get('page') })
-              }
-            >
-              Close
-            </span>
+            {searchParams.get('details') ? (
+              <span
+                className="pokemon__close-menu"
+                onClick={() =>
+                  setSearchParams({ page: searchParams.get('page') })
+                }
+              >
+                Close
+              </span>
+            ) : null}
             <li className="pokemon__item">
               <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
               <div className="pokemon__wrapper">
@@ -63,23 +67,27 @@ const PokemonCardAdditional = ({
                     </li>
                   ))}
                 </ul>
-                <ul className="pokemon-stats__list">
-                  <span className="pokemon__info-header">Stats:</span>
-                  {pokemonFullInfo?.stats.map(({ base_stat, stat }, index) => (
-                    <li key={index}>
-                      {index + 1 < pokemonFullInfo?.stats.length
-                        ? stat.name + ': ' + base_stat + ','
-                        : stat.name + ': ' + base_stat}
-                    </li>
-                  ))}
-                </ul>
+                {searchParams.get('details') ? (
+                  <ul className="pokemon-stats__list">
+                    <span className="pokemon__info-header">Stats:</span>
+                    {pokemonFullInfo?.stats.map(
+                      ({ base_stat, stat }, index) => (
+                        <li key={index}>
+                          {index + 1 < pokemonFullInfo?.stats.length
+                            ? stat.name + ': ' + base_stat + ','
+                            : stat.name + ': ' + base_stat}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                ) : null}
               </div>
             </li>
           </>
         )}
       </div>
       <div
-        className="pokemon__overlay"
+        className={searchParams.get('details') ? 'pokemon__overlay' : ''}
         onClick={() => setSearchParams({ page: searchParams.get('page') })}
       ></div>
     </div>

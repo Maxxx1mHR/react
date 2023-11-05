@@ -11,8 +11,9 @@ import Navigation from '../navigation/Navigation';
 import NotFound from '../notFound/NotFound';
 import { Outlet } from 'react-router-dom';
 import ItemPerPage from '../itemPerPage/ItemPerPage';
-import PokemonCard from '../pokemonCard/PokemonCard';
+// import PokemonCard from '../pokemonCard/PokemonCard';
 import BreakApp from '../breakApp/BreakApp';
+import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
 
 const MainPage = ({
   setPokemonFullInfo,
@@ -20,14 +21,16 @@ const MainPage = ({
   setSearchParams,
   isLoading,
   setIsLoading,
+  pokemonFullInfo,
 }: {
   setPokemonFullInfo: CallableFunction;
   searchParams: URLSearchParams;
   setSearchParams: CallableFunction;
   isLoading: boolean;
   setIsLoading: CallableFunction;
+  pokemonFullInfo: IPokemon | undefined;
 }) => {
-  const [singlePokemon, setSinglePokemon] = useState<IPokemon>();
+  // const [singlePokemon, setSinglePokemon] = useState<IPokemon>();
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
 
   const [inputValue, setInputValue] = useState('');
@@ -94,7 +97,8 @@ const MainPage = ({
           setIsLoading(true);
 
           if (pokemon) {
-            setSinglePokemon(pokemon);
+            // setSinglePokemon(pokemon);
+            setPokemonFullInfo(pokemon);
           }
           setIsLoading(false);
         } catch (err) {
@@ -105,7 +109,7 @@ const MainPage = ({
         }
       }
     },
-    [getPokemons, searchParams, setIsLoading]
+    [getPokemons, searchParams, setIsLoading, setPokemonFullInfo]
   );
 
   useEffect(() => {
@@ -142,7 +146,13 @@ const MainPage = ({
 
   const singlePokemonView =
     (!isLoading || !NotFound) && searchParams.get('search') ? (
-      <PokemonCard pokemonFullInfo={singlePokemon} />
+      // <PokemonCard pokemonFullInfo={singlePokemon} />
+      <PokemonCardAdditional
+        pokemonFullInfo={pokemonFullInfo}
+        searchParams={searchParams}
+        isLoading={isLoading}
+        setSearchParams={setSearchParams}
+      />
     ) : null;
 
   const item = searchParams.get('search') ? null : (

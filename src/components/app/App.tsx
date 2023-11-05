@@ -23,6 +23,7 @@ const App = () => {
                 setSearchParams={setSearchParams}
                 isLoading={isLoading}
                 setIsLoading={setIsLoading}
+                pokemonFullInfo={pokemonFullInfo}
               />
             }
           >
