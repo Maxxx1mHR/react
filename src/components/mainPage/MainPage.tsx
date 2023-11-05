@@ -78,10 +78,6 @@ const MainPage = ({
 
   const searchPokemon = useCallback(
     async (inputValue: string | null) => {
-      console.log('23');
-      // if (searchParams.get('details')) {
-      //   setPokemonFullInfo();
-      // }
       setIsNotFound(false);
       if (inputValue === '' && !searchParams.get('search')) {
         return;
@@ -146,7 +142,7 @@ const MainPage = ({
 
   const singlePokemonView =
     (!isLoading || !NotFound) && searchParams.get('search') ? (
-      <PokemonCard pokemonFullInfo={singlePokemon} isLoading={isLoading} />
+      <PokemonCard pokemonFullInfo={singlePokemon} />
     ) : null;
 
   const item = searchParams.get('search') ? null : (

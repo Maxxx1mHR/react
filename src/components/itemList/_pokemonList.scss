@@ -19,6 +19,9 @@
   border-radius: 1rem;
   text-align: center;
   transition: all 0.5s;
+  list-style-type: none;
+  color: $color-primary;
+  @include font();
 
   &::first-letter {
     text-transform: uppercase;
@@ -93,8 +96,6 @@
   position: fixed;
   background-color: $color-background-menu;
   z-index: 1;
-  color: $color-light;
-  @include font();
 }
 
 .pokemon__overlay {
@@ -111,7 +112,7 @@
   position: absolute;
   top: 5rem;
   right: 5rem;
-  color: $color-light;
+  color: $color-primary;
   padding: 2rem;
   @include font();
   transition: all 0.5s;

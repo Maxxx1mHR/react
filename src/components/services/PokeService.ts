@@ -23,7 +23,6 @@ const getPokemonByName = (name: string) => {
 const getPokemon = async (name: string) => {
   try {
     return getPokemonByName(name).then((res) => {
-      console.log(res);
       return {
         id: res.id,
         name: res.name,
