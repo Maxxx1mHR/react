@@ -4,10 +4,10 @@ const PokemonCard = ({
   pokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  searchParams: URLSearchParams;
+  isLoading: boolean;
 }) => {
   return (
-    <div>
+    <>
       <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
       <div className="pokemon__wrapper">
         <img
@@ -38,7 +38,7 @@ const PokemonCard = ({
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 

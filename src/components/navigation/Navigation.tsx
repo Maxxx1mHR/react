@@ -16,8 +16,6 @@ const Navigation = ({
   const countAllPokemons = 648;
   const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
 
-  console.log(searchParams);
-
   const details = searchParams.get('details');
 
   const incrementPage = () => {

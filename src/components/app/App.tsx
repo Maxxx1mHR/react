@@ -18,7 +18,6 @@ const App = () => {
             path="/"
             element={
               <MainPage
-                pokemonFullInfo={pokemonFullInfo}
                 setPokemonFullInfo={setPokemonFullInfo}
                 searchParams={searchParams}
                 setSearchParams={setSearchParams}

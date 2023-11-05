@@ -1,16 +1,15 @@
 import { IPokemon } from '../../types/index';
+import { getPokemon } from '../services/PokeService';
 
 export const PokemonList = ({
   pokemonList,
   isBreak,
-  getPokemon,
   setPokemonFullInfo,
   searchParams,
   setSearchParams,
 }: {
   pokemonList: IPokemon[];
   isBreak: boolean;
-  getPokemon: CallableFunction;
   setPokemonFullInfo: CallableFunction;
   searchParams: URLSearchParams;
   setSearchParams: CallableFunction;

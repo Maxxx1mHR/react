@@ -4,6 +4,7 @@ export const SearchInput = ({
   setInputValue,
   setSearchParams,
   currentPage,
+  setIsLoading,
 }: {
   searchPokemon: CallableFunction;
   inputValue: string;
@@ -11,6 +12,7 @@ export const SearchInput = ({
   setPokemonPerPage: CallableFunction;
   setSearchParams: CallableFunction;
   currentPage: number;
+  setIsLoading: CallableFunction;
 }) => {
   return (
     <div className="search">
@@ -24,6 +26,7 @@ export const SearchInput = ({
       <div className="search__button">
         <button
           onClick={() => {
+            setIsLoading(true);
             searchPokemon(inputValue);
             if (inputValue) {
               setSearchParams({ search: inputValue });

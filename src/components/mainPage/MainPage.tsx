@@ -6,7 +6,7 @@ import { PokemonList } from '../itemList/PokemonList';
 import logo from '../../assets/img/logo.png';
 import { useCallback, useEffect, useState } from 'react';
 import { IPokemon } from '../../types';
-import PokeService from '../services/PokeService';
+import { getAllPokemon, getPokemon } from '../services/PokeService';
 import Navigation from '../navigation/Navigation';
 import NotFound from '../notFound/NotFound';
 import { Outlet } from 'react-router-dom';
@@ -14,17 +14,13 @@ import ItemPerPage from '../itemPerPage/ItemPerPage';
 import PokemonCard from '../pokemonCard/PokemonCard';
 import BreakApp from '../breakApp/BreakApp';
 
-const pokemonService = new PokeService();
-
 const MainPage = ({
-  // pokemonFullInfo,
   setPokemonFullInfo,
   searchParams,
   setSearchParams,
   isLoading,
   setIsLoading,
 }: {
-  pokemonFullInfo: IPokemon | undefined;
   setPokemonFullInfo: CallableFunction;
   searchParams: URLSearchParams;
   setSearchParams: CallableFunction;
@@ -53,34 +49,11 @@ const MainPage = ({
     localStorage.setItem('pokemonQuery', localStorageValue);
   };
 
-  const getPokemon = useCallback(
-    async (name: string) => {
-      setIsLoading(true);
-      try {
-        return pokemonService.getPokemonByName(name).then((res) => {
-          return {
-            id: res.id,
-            name: res.name,
-            url: res.sprites.other.dream_world.front_default,
-            abilities: res.abilities,
-            types: res.types,
-          };
-        });
-      } catch (err) {
-        console.error(err);
-      }
-      setIsLoading(false);
-    },
-    [setIsLoading]
-  );
-
   const getPokemons = useCallback(async () => {
+    setIsLoading(true);
     setLocalStorageSearchData();
     try {
-      const result = await pokemonService.getAllPokemon(
-        offset,
-        pokemonsPerPage
-      );
+      const result = await getAllPokemon(offset, pokemonsPerPage);
       const allPokemons: IPokemon[] = [];
       await Promise.all(
         result.results.map(async (item: IPokemon) => {
@@ -95,7 +68,7 @@ const MainPage = ({
     } catch (err) {
       console.error(err);
     }
-  }, [getPokemon, offset, pokemonsPerPage, setIsLoading]);
+  }, [offset, pokemonsPerPage, setIsLoading]);
 
   const searchPokemon = useCallback(
     async (inputValue: string | null) => {
@@ -111,10 +84,11 @@ const MainPage = ({
         setLocalStorageSearchData(input);
 
         try {
-          const tmp = await getPokemon(inputValue.toLowerCase());
+          const pokemon = await getPokemon(inputValue.toLowerCase());
+          setIsLoading(true);
 
-          if (tmp) {
-            setSinglePokemon(tmp);
+          if (pokemon) {
+            setSinglePokemon(pokemon);
           }
           setIsLoading(false);
         } catch (err) {
@@ -125,7 +99,7 @@ const MainPage = ({
         }
       }
     },
-    [getPokemon, getPokemons, searchParams, setIsLoading]
+    [getPokemons, searchParams, setIsLoading]
   );
 
   useEffect(() => {
@@ -141,16 +115,6 @@ const MainPage = ({
     <PuffLoader color="#ad5905" size={150} className="spinner" />
   ) : null;
 
-  const navigation = searchParams.get('search') ? null : (
-    <Navigation
-      setOffset={setOffset}
-      currentPage={currentPage}
-      setCurrentPage={setCurrentPage}
-      pokemonsPerPage={pokemonsPerPage}
-      searchParams={searchParams}
-      setSearchParams={setSearchParams}
-    />
-  );
   const search = isNotFound ? null : (
     <SearchInput
       searchPokemon={searchPokemon}
@@ -159,15 +123,13 @@ const MainPage = ({
       setPokemonPerPage={setPokemonPerPage}
       setSearchParams={setSearchParams}
       currentPage={currentPage}
+      setIsLoading={setIsLoading}
     />
   );
 
   const singlePokemonView =
     (!isLoading || !NotFound) && searchParams.get('search') ? (
-      <PokemonCard
-        pokemonFullInfo={singlePokemon}
-        searchParams={searchParams}
-      />
+      <PokemonCard pokemonFullInfo={singlePokemon} isLoading={isLoading} />
     ) : null;
 
   const item = searchParams.get('search') ? null : (
@@ -181,14 +143,23 @@ const MainPage = ({
 
   const pokemon =
     (!isLoading || !NotFound) && !searchParams.get('search') ? (
-      <PokemonList
-        pokemonList={pokemonList}
-        isBreak={isBreak}
-        getPokemon={getPokemon}
-        setPokemonFullInfo={setPokemonFullInfo}
-        searchParams={searchParams}
-        setSearchParams={setSearchParams}
-      />
+      <>
+        <PokemonList
+          pokemonList={pokemonList}
+          isBreak={isBreak}
+          setPokemonFullInfo={setPokemonFullInfo}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
+        <Navigation
+          setOffset={setOffset}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pokemonsPerPage={pokemonsPerPage}
+          searchParams={searchParams}
+          setSearchParams={setSearchParams}
+        />
+      </>
     ) : null;
 
   const additionInfo = searchParams.get('details') ? <Outlet /> : null;
@@ -205,11 +176,10 @@ const MainPage = ({
       <div>
         {breakAppView}
         {search}
-        {loading}
         {singlePokemonView}
         {item}
         {pokemon}
-        {navigation}
+        {loading}
       </div>
       {additionInfo}
     </>
