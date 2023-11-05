@@ -1,0 +1,19 @@
+@import './styles/base/normalize';
+@import './styles/base/typography';
+@import './styles/abstracts/spinner';
+@import './styles/abstracts/variables';
+@import './styles/abstracts/mixins';
+@import './styles/base/logo';
+@import './styles//base/button';
+@import './components//mainPage/mainPage';
+@import './components/navigation/navigation';
+@import './components/notFound/notFound';
+@import './components/app/app';
+@import './components/errorBoundary/errorBoundary';
+@import './components/itemList/pokemonList';
+@import './components/search/search';
+@import './components/itemPerPage/itemPerPage';
+
+html {
+  font-size: 10px;
+}
