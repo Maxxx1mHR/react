@@ -11,7 +11,6 @@ import Navigation from '../navigation/Navigation';
 import NotFound from '../notFound/NotFound';
 import { Outlet } from 'react-router-dom';
 import ItemPerPage from '../itemPerPage/ItemPerPage';
-// import PokemonCard from '../pokemonCard/PokemonCard';
 import BreakApp from '../breakApp/BreakApp';
 import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
 
@@ -30,7 +29,6 @@ const MainPage = ({
   setIsLoading: CallableFunction;
   pokemonFullInfo: IPokemon | undefined;
 }) => {
-  // const [singlePokemon, setSinglePokemon] = useState<IPokemon>();
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
 
   const [inputValue, setInputValue] = useState('');
@@ -97,7 +95,6 @@ const MainPage = ({
           setIsLoading(true);
 
           if (pokemon) {
-            // setSinglePokemon(pokemon);
             setPokemonFullInfo(pokemon);
           }
           setIsLoading(false);
@@ -146,7 +143,6 @@ const MainPage = ({
 
   const singlePokemonView =
     (!isLoading || !NotFound) && searchParams.get('search') ? (
-      // <PokemonCard pokemonFullInfo={singlePokemon} />
       <PokemonCardAdditional
         pokemonFullInfo={pokemonFullInfo}
         searchParams={searchParams}
