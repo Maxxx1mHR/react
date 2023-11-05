@@ -79,21 +79,21 @@ const MainPage = ({
 
   const searchPokemon = useCallback(
     async (inputValue: string | null) => {
+      setIsLoading(true);
       setIsNotFound(false);
       if (inputValue === '' && !searchParams.get('search')) {
+        setIsLoading(false);
         return;
       } else if (inputValue === '' && searchParams.get('search')) {
+        setIsLoading(false);
         return getPokemons();
       }
 
       if (inputValue) {
         const input = inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
         setLocalStorageSearchData(input);
-
         try {
           const pokemon = await getPokemon(inputValue.toLowerCase());
-          setIsLoading(true);
-
           if (pokemon) {
             setPokemonFullInfo(pokemon);
           }
@@ -137,7 +137,6 @@ const MainPage = ({
       setPokemonPerPage={setPokemonPerPage}
       setSearchParams={setSearchParams}
       currentPage={currentPage}
-      setIsLoading={setIsLoading}
     />
   );
 
