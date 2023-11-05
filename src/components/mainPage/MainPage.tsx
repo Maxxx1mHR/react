@@ -35,11 +35,9 @@ const MainPage = ({
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
 
   const [inputValue, setInputValue] = useState('');
-  // const [isLoading, setIsLoading] = useState(true);
   const [isBreak, setIsBreak] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
 
-  // const [searchParams, setSearchParams] = useSearchParams();
   const [pokemonsPerPage, setPokemonPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(
     searchParams.get('page') ? Number(searchParams.get('page')) : 1
@@ -117,7 +115,6 @@ const MainPage = ({
 
           if (tmp) {
             setSinglePokemon(tmp);
-            // setPokemonList([tmp]);
           }
           setIsLoading(false);
         } catch (err) {
@@ -205,7 +202,6 @@ const MainPage = ({
       <img src={logo} alt="pokemon logo" className="logo" />
 
       {notFound}
-      {/* <div className={searchParams.get('details') ? 'main-page' : ''}> */}
       <div>
         {breakAppView}
         {search}
@@ -216,7 +212,6 @@ const MainPage = ({
         {navigation}
       </div>
       {additionInfo}
-      {/* </div> */}
     </>
   );
 };

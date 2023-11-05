@@ -5,32 +5,35 @@ const PokemonCardAdditional = ({
   pokemonFullInfo,
   searchParams,
   isLoading,
+  setSearchParams,
 }: {
   pokemonFullInfo: IPokemon | undefined;
   searchParams: URLSearchParams;
   isLoading: boolean;
+  setSearchParams: CallableFunction;
 }) => {
   return (
-    <>
-      <div
-        className={
-          searchParams
-            ? 'pokemon-additional-info pokemon-additional-info_active'
-            : 'pokemon-additional-info'
-        }
-      >
+    <div
+      className={
+        searchParams
+          ? 'pokemon-additional-info pokemon-additional-info_active'
+          : 'pokemon-additional-info'
+      }
+    >
+      <div className="pokemon-additional__wrapper">
         {isLoading ? (
           <PuffLoader color="#ad5905" size={150} className="spinner" />
         ) : (
           <>
+            <span
+              className="pokemon__close-menu"
+              onClick={() =>
+                setSearchParams({ page: searchParams.get('page') })
+              }
+            >
+              Close
+            </span>
             <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
-            <div className="pokemon__wrapper">
-              <img
-                src={pokemonFullInfo?.url}
-                alt={pokemonFullInfo?.name}
-                className="pokemon__img"
-              />
-            </div>
             <div className="pokemon__info">
               <ul className="pokemon-ability__list">
                 <span className="pokemon__info-header">Abilities:</span>
@@ -56,7 +59,11 @@ const PokemonCardAdditional = ({
           </>
         )}
       </div>
-    </>
+      <div
+        className="pokemon__overlay"
+        onClick={() => setSearchParams({ page: searchParams.get('page') })}
+      ></div>
+    </div>
   );
 };
 

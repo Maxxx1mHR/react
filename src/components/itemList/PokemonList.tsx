@@ -22,7 +22,6 @@ export const PokemonList = ({
       <ul
         className="pokemon__list"
         onClick={() => {
-          // setAdditionInfo(false);
           setSearchParams({
             page: searchParams.get('page'),
           });
@@ -33,11 +32,6 @@ export const PokemonList = ({
             key={id}
             className="pokemon__item"
             onClick={async () => {
-              // e.stopPropagation();
-              console.log('clok');
-              // const getp = searchParams.get('page');
-              // console.log();
-              // setAdditionInfo(true);
               setPokemonFullInfo(await getPokemon(name));
               setSearchParams({
                 page: searchParams.get('page') || 1,

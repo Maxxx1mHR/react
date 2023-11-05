@@ -13,7 +13,6 @@ const App = () => {
   return (
     <ErrorBoundary>
       <div className="app">
-        {/* <MainPage></MainPage> */}
         <Routes>
           <Route
             path="/"
@@ -35,6 +34,7 @@ const App = () => {
                   pokemonFullInfo={pokemonFullInfo}
                   searchParams={searchParams}
                   isLoading={isLoading}
+                  setSearchParams={setSearchParams}
                 />
               }
             />
