@@ -4,6 +4,7 @@ export interface IPokemon {
   url: string;
   abilities: IAbility[];
   types: ITypes[];
+  stats: IStats[];
 }
 
 export interface ISearchInputProps {
@@ -41,4 +42,11 @@ interface ITypes {
 export interface IParams {
   search: string;
   page: number;
+}
+
+interface IStats {
+  base_stat: number;
+  stat: {
+    name: string;
+  };
 }

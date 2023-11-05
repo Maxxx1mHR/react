@@ -49,6 +49,12 @@ const MainPage = ({
     localStorage.setItem('pokemonQuery', localStorageValue);
   };
 
+  const getPokemonAdditionalInfo = useCallback(async () => {
+    if (searchParams.get('details')) {
+      setPokemonFullInfo(await getPokemon(String(searchParams.get('details'))));
+    }
+  }, [searchParams, setPokemonFullInfo]);
+
   const getPokemons = useCallback(async () => {
     setIsLoading(true);
     setLocalStorageSearchData();
@@ -72,6 +78,10 @@ const MainPage = ({
 
   const searchPokemon = useCallback(
     async (inputValue: string | null) => {
+      console.log('23');
+      // if (searchParams.get('details')) {
+      //   setPokemonFullInfo();
+      // }
       setIsNotFound(false);
       if (inputValue === '' && !searchParams.get('search')) {
         return;
@@ -103,11 +113,18 @@ const MainPage = ({
   );
 
   useEffect(() => {
+    getPokemonAdditionalInfo();
     getLocalStorageSearchData || searchParams.get('search')
       ? (searchPokemon(getLocalStorageSearchData || searchParams.get('search')),
         setInputValue(getLocalStorageSearchData?.toString() || ''))
       : getPokemons();
-  }, [getLocalStorageSearchData, getPokemons, searchParams, searchPokemon]);
+  }, [
+    getLocalStorageSearchData,
+    getPokemons,
+    getPokemonAdditionalInfo,
+    searchParams,
+    searchPokemon,
+  ]);
 
   const notFound = isNotFound ? <NotFound /> : null;
 

@@ -55,6 +55,16 @@ const PokemonCardAdditional = ({
                   </li>
                 ))}
               </ul>
+              <ul className="pokemon-stats__list">
+                <span className="pokemon__info-header">Stats:</span>
+                {pokemonFullInfo?.stats.map(({ base_stat, stat }, index) => (
+                  <li key={index}>
+                    {index + 1 < pokemonFullInfo?.stats.length
+                      ? stat.name + ': ' + base_stat + ','
+                      : stat.name + ': ' + base_stat}
+                  </li>
+                ))}
+              </ul>
             </div>
           </>
         )}
