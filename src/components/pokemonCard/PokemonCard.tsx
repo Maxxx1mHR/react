@@ -4,7 +4,7 @@ const PokemonCard = ({
   pokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  setSearchParams: CallableFunction;
+  searchParams: URLSearchParams;
 }) => {
   return (
     <div>

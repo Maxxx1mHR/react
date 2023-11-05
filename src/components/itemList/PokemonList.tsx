@@ -5,13 +5,15 @@ export const PokemonList = ({
   isBreak,
   getPokemon,
   setPokemonFullInfo,
-  setAdditionInfo,
+  searchParams,
+  setSearchParams,
 }: {
   pokemonList: IPokemon[];
   isBreak: boolean;
   getPokemon: CallableFunction;
   setPokemonFullInfo: CallableFunction;
-  setAdditionInfo: CallableFunction;
+  searchParams: URLSearchParams;
+  setSearchParams: CallableFunction;
 }) => {
   if (isBreak) throw Error('error!');
 
@@ -20,7 +22,10 @@ export const PokemonList = ({
       <ul
         className="pokemon__list"
         onClick={() => {
-          console.log('list');
+          // setAdditionInfo(false);
+          setSearchParams({
+            page: searchParams.get('page'),
+          });
         }}
       >
         {pokemonList.map(({ id, abilities, name, url, types }) => (
@@ -28,8 +33,16 @@ export const PokemonList = ({
             key={id}
             className="pokemon__item"
             onClick={async () => {
-              setAdditionInfo(true);
+              // e.stopPropagation();
+              console.log('clok');
+              // const getp = searchParams.get('page');
+              // console.log();
+              // setAdditionInfo(true);
               setPokemonFullInfo(await getPokemon(name));
+              setSearchParams({
+                page: searchParams.get('page') || 1,
+                details: name,
+              });
             }}
           >
             <h2 className="pokemon__name">{name}</h2>

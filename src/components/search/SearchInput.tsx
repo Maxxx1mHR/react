@@ -2,15 +2,15 @@ export const SearchInput = ({
   searchPokemon,
   inputValue,
   setInputValue,
-  setIsBreak,
-  setSearchValue,
+  setSearchParams,
+  currentPage,
 }: {
   searchPokemon: CallableFunction;
   inputValue: string;
   setInputValue: CallableFunction;
-  setIsBreak: CallableFunction;
-  setSearchValue: CallableFunction;
   setPokemonPerPage: CallableFunction;
+  setSearchParams: CallableFunction;
+  currentPage: number;
 }) => {
   return (
     <div className="search">
@@ -25,19 +25,15 @@ export const SearchInput = ({
         <button
           onClick={() => {
             searchPokemon(inputValue);
-            setSearchValue(inputValue);
+            if (inputValue) {
+              setSearchParams({ search: inputValue });
+            } else {
+              setSearchParams({ page: currentPage });
+            }
           }}
           className="button button_success"
         >
           Search
-        </button>
-        <button
-          onClick={() => {
-            setIsBreak(true);
-          }}
-          className="button button_danger"
-        >
-          Break app
         </button>
       </div>
     </div>

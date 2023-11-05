@@ -1,13 +1,14 @@
 import MainPage from '../mainPage/MainPage';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
-import PokemonCard from '../pokemonCard/PokemonCard';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
+import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
 
 const App = () => {
   const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <ErrorBoundary>
@@ -20,17 +21,20 @@ const App = () => {
               <MainPage
                 pokemonFullInfo={pokemonFullInfo}
                 setPokemonFullInfo={setPokemonFullInfo}
-                setSearchParams={setSearchParams}
                 searchParams={searchParams}
+                setSearchParams={setSearchParams}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
               />
             }
           >
             <Route
               index
               element={
-                <PokemonCard
+                <PokemonCardAdditional
                   pokemonFullInfo={pokemonFullInfo}
-                  setSearchParams={setSearchParams}
+                  searchParams={searchParams}
+                  isLoading={isLoading}
                 />
               }
             />
