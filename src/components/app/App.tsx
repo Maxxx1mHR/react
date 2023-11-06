@@ -3,7 +3,7 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
-import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
+import PokemonCardAdditional from '../pokemon/pokemonCardAdditional/PokemonCardAdditional';
 
 const App = () => {
   const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();

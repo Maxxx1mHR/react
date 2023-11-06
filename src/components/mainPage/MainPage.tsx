@@ -1,7 +1,7 @@
 import { PuffLoader } from 'react-spinners';
 
 import { SearchInput } from '../search/SearchInput';
-import { PokemonList } from '../itemList/PokemonList';
+import { PokemonList } from '../pokemon/pokemonList/PokemonList';
 
 import logo from '../../assets/img/logo.png';
 import { useCallback, useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import NotFound from '../notFound/NotFound';
 import { Outlet } from 'react-router-dom';
 import ItemPerPage from '../itemPerPage/ItemPerPage';
 import BreakApp from '../breakApp/BreakApp';
-import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
+import PokemonCard from '../pokemon/pokemonCard/PokemonCard';
 
 const MainPage = ({
   setPokemonFullInfo,
@@ -142,11 +142,11 @@ const MainPage = ({
 
   const singlePokemonView =
     (!isLoading || !NotFound) && searchParams.get('search') ? (
-      <PokemonCardAdditional
+      <PokemonCard
         pokemonFullInfo={pokemonFullInfo}
         searchParams={searchParams}
-        isLoading={isLoading}
         setSearchParams={setSearchParams}
+        setPokemonFullInfo={setPokemonFullInfo}
       />
     ) : null;
 
