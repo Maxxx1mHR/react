@@ -4,6 +4,7 @@ import { Route, Routes, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
 import PokemonCardAdditional from '../pokemon/pokemonCardAdditional/PokemonCardAdditional';
+import Page404 from '../notFound/404';
 
 const App = () => {
   const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
@@ -39,6 +40,7 @@ const App = () => {
               }
             />
           </Route>
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </div>
     </ErrorBoundary>
