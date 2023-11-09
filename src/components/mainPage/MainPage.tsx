@@ -55,12 +55,15 @@ export const MainPage = () => {
         })
       );
       setPokemonList?.(allPokemons);
+      if (!allPokemons.length) {
+        setIsNotFound?.(true);
+      }
 
       setIsLoading?.(false);
     } catch (err) {
       console.error(err);
     }
-  }, [offset, pokemonsPerPage, setIsLoading, setPokemonList]);
+  }, [offset, pokemonsPerPage, setIsLoading, setIsNotFound, setPokemonList]);
 
   const searchPokemon = useCallback(
     async (inputValue: string | null | undefined) => {

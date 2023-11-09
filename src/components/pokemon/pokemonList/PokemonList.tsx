@@ -17,6 +17,7 @@ export const PokemonList = () => {
 
   return (
     <div className="pokemon">
+      <h1>Testing vite</h1>
       <ul className="pokemon__list">
         {pokemonList?.map((pokemon) => (
           <li
