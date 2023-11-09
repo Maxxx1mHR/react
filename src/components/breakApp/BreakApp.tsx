@@ -1,8 +1,13 @@
-const BreakApp = ({ setIsBreak }: { setIsBreak: CallableFunction }) => {
+import { useContext } from 'react';
+import { PokemonContext } from '../context/PokemonContextProvider';
+
+const BreakApp = () => {
+  const { setIsBreak } = useContext(PokemonContext) || {};
+
   return (
     <button
       onClick={() => {
-        setIsBreak(true);
+        setIsBreak?.(true);
       }}
       className="button button_danger"
     >

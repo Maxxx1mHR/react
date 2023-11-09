@@ -1,16 +1,11 @@
-import MainPage from '../mainPage/MainPage';
+import { MainPage } from '../mainPage/MainPage';
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
-import { Route, Routes, useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
-import { IPokemon } from '../../types';
+import { Route, Routes } from 'react-router-dom';
 import PokemonCardAdditional from '../pokemon/pokemonCardAdditional/PokemonCardAdditional';
 import Page404 from '../notFound/404';
+import { PokemonContextProvider } from '../context/PokemonContextProvider';
 
 const App = () => {
-  const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
     <ErrorBoundary>
       <div className="app">
@@ -18,27 +13,12 @@ const App = () => {
           <Route
             path="/"
             element={
-              <MainPage
-                setPokemonFullInfo={setPokemonFullInfo}
-                searchParams={searchParams}
-                setSearchParams={setSearchParams}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                pokemonFullInfo={pokemonFullInfo}
-              />
+              <PokemonContextProvider>
+                <MainPage />
+              </PokemonContextProvider>
             }
           >
-            <Route
-              index
-              element={
-                <PokemonCardAdditional
-                  pokemonFullInfo={pokemonFullInfo}
-                  searchParams={searchParams}
-                  isLoading={isLoading}
-                  setSearchParams={setSearchParams}
-                />
-              }
-            />
+            <Route index element={<PokemonCardAdditional />} />
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>

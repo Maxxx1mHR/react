@@ -1,29 +1,24 @@
 import { PuffLoader } from 'react-spinners';
-import { IPokemon } from '../../../types';
 import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
 
-const PokemonCardAdditional = ({
-  pokemonFullInfo,
-  searchParams,
-  isLoading,
-  setSearchParams,
-}: {
-  pokemonFullInfo: IPokemon | undefined;
-  searchParams: URLSearchParams;
-  isLoading: boolean;
-  setSearchParams: CallableFunction;
-}) => {
-  const wrapperClass = searchParams.get('details')
+import { useContext } from 'react';
+import { PokemonContext } from '../../context/PokemonContextProvider';
+
+const PokemonCardAdditional = () => {
+  const { pokemonFullInfo, searchParams, setSearchParams, isLoading } =
+    useContext(PokemonContext) || {};
+
+  const wrapperClass = searchParams?.get('details')
     ? 'pokemon-additional-info pokemon-additional-info_active'
     : 'pokemon-additional-info';
 
   const setUrlParams = () => {
-    if (searchParams.get('search')) {
-      setSearchParams({
+    if (searchParams?.get('search')) {
+      setSearchParams?.({
         search: searchParams.get('search'),
       });
-    } else if (searchParams.get('page')) {
-      setSearchParams({ page: searchParams.get('page') });
+    } else if (searchParams?.get('page')) {
+      setSearchParams?.({ page: searchParams?.get('page') });
     }
   };
 

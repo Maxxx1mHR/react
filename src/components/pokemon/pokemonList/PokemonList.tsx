@@ -1,33 +1,31 @@
-import { IPokemon } from '../../../types/index';
+import { useContext } from 'react';
+
+import { PokemonContext } from '../../context/PokemonContextProvider';
 import { getPokemon } from '../../services/PokeService';
 import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
 
-export const PokemonList = ({
-  pokemonList,
-  isBreak,
-  setPokemonFullInfo,
-  searchParams,
-  setSearchParams,
-}: {
-  pokemonList: IPokemon[];
-  isBreak: boolean;
-  setPokemonFullInfo: CallableFunction;
-  searchParams: URLSearchParams;
-  setSearchParams: CallableFunction;
-}) => {
+export const PokemonList = () => {
+  const {
+    setPokemonFullInfo,
+    searchParams,
+    setSearchParams,
+    pokemonList,
+    isBreak,
+  } = useContext(PokemonContext) || {};
+
   if (isBreak) throw Error('error!');
 
   return (
     <div className="pokemon">
       <ul className="pokemon__list">
-        {pokemonList.map((pokemon) => (
+        {pokemonList?.map((pokemon) => (
           <li
             key={pokemon.id}
             className="pokemon__item"
             onClick={async () => {
-              setPokemonFullInfo(await getPokemon(pokemon.name));
-              setSearchParams({
-                page: searchParams.get('page') || 1,
+              setPokemonFullInfo?.(await getPokemon(pokemon.name));
+              setSearchParams?.({
+                page: searchParams?.get('page') || 1,
                 details: pokemon.name,
               });
             }}

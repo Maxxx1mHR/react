@@ -1,37 +1,35 @@
-const Navigation = ({
-  setOffset,
-  currentPage,
-  setCurrentPage,
-  pokemonsPerPage,
-  searchParams,
-  setSearchParams,
-}: {
-  setOffset: CallableFunction;
-  currentPage: number;
-  setCurrentPage: CallableFunction;
-  pokemonsPerPage: number;
-  searchParams: URLSearchParams;
-  setSearchParams: CallableFunction;
-}) => {
-  const countAllPokemons = 648;
-  const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
+import { useContext } from 'react';
+import { PokemonContext } from '../context/PokemonContextProvider';
 
-  const details = searchParams.get('details');
+const Navigation = () => {
+  const {
+    searchParams,
+    setSearchParams,
+    pokemonsPerPage,
+    currentPage,
+    setCurrentPage,
+    setOffset,
+  } = useContext(PokemonContext) || {};
+
+  const countAllPokemons = 648;
+  const countsPage = Math.ceil(countAllPokemons / (pokemonsPerPage || 4));
+
+  const details = searchParams?.get('details');
 
   const incrementPage = () => {
     if (currentPage === countsPage) {
       return;
     }
-    setOffset((offset: number) => offset + pokemonsPerPage);
-    setCurrentPage(() => currentPage + 1);
+    setOffset?.((offset: number) => offset + (pokemonsPerPage || 4));
+    setCurrentPage?.(() => (currentPage || 0) + 1);
     if (details) {
-      setSearchParams({
-        page: currentPage + 1,
+      setSearchParams?.({
+        page: (currentPage || 0) + 1,
         details: details,
       });
     } else {
-      setSearchParams({
-        page: currentPage + 1,
+      setSearchParams?.({
+        page: (currentPage || 0) + 1,
       });
     }
   };
@@ -40,45 +38,45 @@ const Navigation = ({
     if (currentPage === 1) {
       return;
     }
-    setOffset((offset: number) => offset - pokemonsPerPage);
-    setCurrentPage(() => currentPage - 1);
+    setOffset?.((offset: number) => offset - (pokemonsPerPage || 4));
+    setCurrentPage?.(() => (currentPage || 0) - 1);
     if (details) {
-      setSearchParams({
-        page: currentPage - 1,
+      setSearchParams?.({
+        page: (currentPage || 0) - 1,
         details: details,
       });
     } else {
-      setSearchParams({
-        page: currentPage - 1,
+      setSearchParams?.({
+        page: (currentPage || 0) - 1,
       });
     }
   };
 
   const firstPage = () => {
-    setOffset(0);
-    setCurrentPage(1);
+    setOffset?.(0);
+    setCurrentPage?.(1);
     if (details) {
-      setSearchParams({
+      setSearchParams?.({
         page: 1,
         details: details,
       });
     } else {
-      setSearchParams({
+      setSearchParams?.({
         page: 1,
       });
     }
   };
 
   const lastPage = () => {
-    setOffset(countAllPokemons - pokemonsPerPage);
-    setCurrentPage(countsPage);
+    setOffset?.(countAllPokemons - (pokemonsPerPage || 4));
+    setCurrentPage?.(countsPage);
     if (details) {
-      setSearchParams({
+      setSearchParams?.({
         page: countsPage,
         details: details,
       });
     } else {
-      setSearchParams({
+      setSearchParams?.({
         page: countsPage,
       });
     }
