@@ -10,6 +10,7 @@ const PokemonCard = () => {
     <div className="pokemon">
       <ul className="pokemon__list">
         <li
+          data-testid="pokemonTest"
           className="pokemon__item"
           onClick={async () => {
             setPokemonFullInfo?.(
