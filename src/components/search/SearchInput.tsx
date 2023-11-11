@@ -7,17 +7,13 @@ export const SearchInput = ({
 }: {
   searchPokemon: CallableFunction;
 }) => {
-  const {
-    setSearchParams,
-    inputValue,
-    setInputValue,
-
-    currentPage,
-  } = useContext(PokemonContext) || {};
+  const { setSearchParams, inputValue, setInputValue, currentPage } =
+    useContext(PokemonContext) || {};
 
   return (
     <div className="search">
       <input
+        data-testid="pokemon-search-input"
         value={inputValue}
         onChange={(e) => {
           setInputValue?.(e.target.value);
@@ -26,6 +22,7 @@ export const SearchInput = ({
       />
       <div className="search__button">
         <button
+          data-testid="pokemon-search-button"
           onClick={() => {
             searchPokemon(inputValue);
             if (inputValue) {
