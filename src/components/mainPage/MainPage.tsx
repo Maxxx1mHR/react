@@ -54,6 +54,7 @@ export const MainPage = () => {
           }
         })
       );
+      // allPokemons = [];
       setPokemonList?.(allPokemons);
       if (!allPokemons.length) {
         setIsNotFound?.(true);

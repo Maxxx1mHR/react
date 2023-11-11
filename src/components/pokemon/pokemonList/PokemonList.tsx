@@ -17,10 +17,11 @@ export const PokemonList = () => {
 
   return (
     <div className="pokemon">
-      <h1>Testing vite</h1>
+      <h1 className="test">Test</h1>
       <ul className="pokemon__list">
         {pokemonList?.map((pokemon) => (
           <li
+            data-testid="card-list"
             key={pokemon.id}
             className="pokemon__item"
             onClick={async () => {
