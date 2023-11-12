@@ -8,7 +8,7 @@ const PokemonCard = ({
   setPokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  setPokemonFullInfo: (pokemonFullInfo: IPokemon | undefined) => void;
+  setPokemonFullInfo: CallableFunction;
 }) => {
   const { searchParams, setSearchParams } = useContext(PokemonContext) || {};
 

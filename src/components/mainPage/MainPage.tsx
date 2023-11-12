@@ -18,7 +18,7 @@ export const MainPage = ({
   setPokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  setPokemonFullInfo: (pokemonFullInfo: IPokemon | undefined) => void;
+  setPokemonFullInfo: CallableFunction;
 }) => {
   const {
     searchParams,
