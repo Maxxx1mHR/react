@@ -103,6 +103,7 @@ export const MainPage = ({
   );
 
   useEffect(() => {
+    console.log(window.location.search);
     getPokemons();
   }, [getPokemons]);
 

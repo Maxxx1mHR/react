@@ -3,33 +3,28 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../app/App';
 import { BrowserRouter } from 'react-router-dom';
 
-describe('Tests for the Search component:', () => {
-  it('Verify that the component renders the specified number of cards', async () => {
+describe('Tests for the Pagination component:', () => {
+  it('Make sure the component updates URL query parameter when page changes', async () => {
     render(
       <BrowserRouter>
         <App />
       </BrowserRouter>
     );
+    expect(window.location.search).toBeNull;
     expect(await screen.findByTestId('navigation')).toBeInTheDocument();
-    expect(await screen.findByTestId('navigation')).toHaveTextContent('1');
-    const nextButton = await screen.findByTestId('next-page');
-    fireEvent.click(nextButton);
-
-    expect(await screen.findByTestId('navigation')).toBeInTheDocument();
-    expect(await screen.findByTestId('navigation')).toHaveTextContent('2');
-    const prevButton = await screen.findByTestId('prev-page');
-    fireEvent.click(prevButton);
-
-    expect(await screen.findByTestId('navigation')).toBeInTheDocument();
-    expect(await screen.findByTestId('navigation')).toHaveTextContent('1');
-    const lastButton = await screen.findByTestId('last-page');
-    fireEvent.click(lastButton);
-    expect(await screen.findByTestId('navigation')).toBeInTheDocument();
-    expect(await screen.findByTestId('navigation')).toHaveTextContent('162');
-
-    const firstButton = await screen.findByTestId('first-page');
-    fireEvent.click(firstButton);
-    expect(await screen.findByTestId('navigation')).toBeInTheDocument();
-    expect(await screen.findByTestId('navigation')).toHaveTextContent('1');
+    fireEvent.click(await screen.findByTestId('next-page'));
+    expect(window.location.search).toBe('?page=2');
+    fireEvent.click(await screen.findByTestId('next-page'));
+    expect(window.location.search).toBe('?page=3');
+    fireEvent.click(await screen.findByTestId('next-page'));
+    expect(window.location.search).toBe('?page=4');
+    fireEvent.click(await screen.findByTestId('prev-page'));
+    expect(window.location.search).toBe('?page=3');
+    fireEvent.click(await screen.findByTestId('last-page'));
+    expect(window.location.search).toBe('?page=162');
+    fireEvent.click(await screen.findByTestId('prev-page'));
+    expect(window.location.search).toBe('?page=161');
+    fireEvent.click(await screen.findByTestId('first-page'));
+    expect(window.location.search).toBe('?page=1');
   });
 });
