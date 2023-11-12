@@ -83,18 +83,34 @@ const Navigation = () => {
   };
 
   return (
-    <div className="navigation">
+    <div data-testid="navigation" className="navigation">
       <div className="navigation__buttons">
-        <button className="button" onClick={() => firstPage()}>
+        <button
+          data-testid="first-page"
+          className="button"
+          onClick={() => firstPage()}
+        >
           First
         </button>
-        <button className="button" onClick={() => decrementPage()}>
+        <button
+          data-testid="prev-page"
+          className="button"
+          onClick={() => decrementPage()}
+        >
           Prev
         </button>
-        <button className="button" onClick={() => incrementPage()}>
+        <button
+          data-testid="next-page"
+          className="button"
+          onClick={() => incrementPage()}
+        >
           Next
         </button>
-        <button className="button" onClick={() => lastPage()}>
+        <button
+          data-testid="last-page"
+          className="button"
+          onClick={() => lastPage()}
+        >
           Last
         </button>
       </div>

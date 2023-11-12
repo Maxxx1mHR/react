@@ -14,6 +14,7 @@ describe('Tests for the Card List component:', () => {
     );
     const pokemonList = await screen.findAllByTestId('card-list');
     expect(pokemonList).toHaveLength(4);
+    screen.debug();
   });
 
   it('Check that an appropriate message is displayed if no cards are present', async () => {

@@ -5,6 +5,7 @@ const PokemonBaseInfo = ({
 }: {
   pokemonFullInfo: IPokemon | undefined;
 }) => {
+  console.log(pokemonFullInfo);
   return (
     <>
       <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>

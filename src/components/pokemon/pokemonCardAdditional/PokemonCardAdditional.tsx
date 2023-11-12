@@ -3,9 +3,14 @@ import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
 
 import { useContext } from 'react';
 import { PokemonContext } from '../../context/PokemonContextProvider';
+import { IPokemon } from '../../../types';
 
-const PokemonCardAdditional = () => {
-  const { pokemonFullInfo, searchParams, setSearchParams, isLoading } =
+const PokemonCardAdditional = ({
+  pokemonFullInfo,
+}: {
+  pokemonFullInfo: IPokemon | undefined;
+}) => {
+  const { searchParams, setSearchParams, isLoading } =
     useContext(PokemonContext) || {};
 
   const wrapperClass = searchParams?.get('details')

@@ -4,9 +4,13 @@ import { PokemonContext } from '../../context/PokemonContextProvider';
 import { getPokemon } from '../../services/PokeService';
 import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
 
-export const PokemonList = () => {
+export const PokemonList = ({
+  setPokemonFullInfo,
+}: {
+  setPokemonFullInfo: CallableFunction;
+}) => {
   const {
-    setPokemonFullInfo,
+    // setPokemonFullInfo,
     searchParams,
     setSearchParams,
     pokemonList,
@@ -17,7 +21,6 @@ export const PokemonList = () => {
 
   return (
     <div className="pokemon">
-      <h1 className="test">Test</h1>
       <ul className="pokemon__list">
         {pokemonList?.map((pokemon) => (
           <li

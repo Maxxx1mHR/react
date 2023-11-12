@@ -13,9 +13,15 @@ import BreakApp from '../breakApp/BreakApp';
 import PokemonCard from '../pokemon/pokemonCard/PokemonCard';
 import { PokemonContext } from '../context/PokemonContextProvider';
 
-export const MainPage = () => {
+export const MainPage = ({
+  pokemonFullInfo,
+  setPokemonFullInfo,
+}: {
+  pokemonFullInfo: IPokemon | undefined;
+  setPokemonFullInfo: CallableFunction;
+}) => {
   const {
-    setPokemonFullInfo,
+    // setPokemonFullInfo,
     searchParams,
     isLoading,
     setIsLoading,
@@ -125,7 +131,10 @@ export const MainPage = () => {
 
   const singlePokemonView =
     !isLoading && !isNotFound && searchParams?.get('search') ? (
-      <PokemonCard />
+      <PokemonCard
+        pokemonFullInfo={pokemonFullInfo}
+        setPokemonFullInfo={setPokemonFullInfo}
+      />
     ) : null;
 
   const item = searchParams?.get('search') ? null : <ItemPerPage />;
@@ -133,7 +142,7 @@ export const MainPage = () => {
   const pokemon =
     !isLoading && !isNotFound && !searchParams?.get('search') ? (
       <>
-        <PokemonList />
+        <PokemonList setPokemonFullInfo={setPokemonFullInfo} />
         <Navigation />
       </>
     ) : null;

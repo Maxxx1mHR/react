@@ -2,8 +2,8 @@ import { ReactElement, createContext, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IPokemon } from '../../types';
 interface IAppContext {
-  pokemonFullInfo: IPokemon | undefined;
-  setPokemonFullInfo: CallableFunction;
+  // pokemonFullInfo: IPokemon | undefined;
+  // setPokemonFullInfo: CallableFunction;
   searchParams: URLSearchParams;
   setSearchParams: CallableFunction;
   isLoading: boolean;
@@ -25,7 +25,7 @@ interface IAppContext {
 }
 const PokemonContext = createContext<IAppContext | null>(null);
 const PokemonContextProvider = ({ children }: { children: ReactElement }) => {
-  const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
+  // const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
   const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
@@ -43,8 +43,8 @@ const PokemonContextProvider = ({ children }: { children: ReactElement }) => {
   );
 
   const value = {
-    pokemonFullInfo,
-    setPokemonFullInfo,
+    // pokemonFullInfo,
+    // setPokemonFullInfo,
     searchParams,
     setSearchParams,
     isLoading,
