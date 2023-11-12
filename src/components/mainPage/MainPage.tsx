@@ -1,49 +1,36 @@
 import { PuffLoader } from 'react-spinners';
-
-import { SearchInput } from '../search/SearchInput';
-import { PokemonList } from '../itemList/PokemonList';
-
+import { SearchInput } from '../Search/SearchInput';
+import { PokemonList } from '../Pokemons/PokemonList/PokemonList';
 import logo from '../../assets/img/logo.png';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useContext } from 'react';
 import { IPokemon } from '../../types';
-import { getAllPokemon, getPokemon } from '../services/PokeService';
-import Navigation from '../navigation/Navigation';
-import NotFound from '../notFound/NotFound';
+import { getAllPokemon, getPokemon } from '../Services/PokeService';
+import Navigation from '../Navigation/Navigation';
 import { Outlet } from 'react-router-dom';
-import ItemPerPage from '../itemPerPage/ItemPerPage';
-import BreakApp from '../breakApp/BreakApp';
-import PokemonCardAdditional from '../pokemonCard/PokemonCardAdditional';
+import ItemPerPage from '../ItemPerPage/ItemPerPage';
+import BreakApp from '../BreakApp/BreakApp';
+import PokemonCard from '../Pokemons/PokemonCard/PokemonCard';
+import { PokemonContext } from '../Context/PokemonContextProvider';
+import NotFoundMessage from '../NotFound/NotFoundMessage';
 
-const MainPage = ({
-  setPokemonFullInfo,
-  searchParams,
-  setSearchParams,
-  isLoading,
-  setIsLoading,
+export const MainPage = ({
   pokemonFullInfo,
+  setPokemonFullInfo,
 }: {
-  setPokemonFullInfo: CallableFunction;
-  searchParams: URLSearchParams;
-  setSearchParams: CallableFunction;
-  isLoading: boolean;
-  setIsLoading: CallableFunction;
   pokemonFullInfo: IPokemon | undefined;
+  setPokemonFullInfo: CallableFunction;
 }) => {
-  const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
-
-  const [inputValue, setInputValue] = useState('');
-  const [isBreak, setIsBreak] = useState(false);
-  const [isNotFound, setIsNotFound] = useState(false);
-
-  const [pokemonsPerPage, setPokemonPerPage] = useState(4);
-  const [currentPage, setCurrentPage] = useState(
-    searchParams.get('page') ? Number(searchParams.get('page')) : 1
-  );
-  const [offset, setOffset] = useState(
-    searchParams.get('page')
-      ? (Number(searchParams.get('page')) - 1) * pokemonsPerPage
-      : 0
-  );
+  const {
+    searchParams,
+    isLoading,
+    setIsLoading,
+    setPokemonList,
+    setInputValue,
+    isNotFound,
+    setIsNotFound,
+    pokemonsPerPage,
+    offset,
+  } = useContext(PokemonContext) || {};
 
   const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
   const setLocalStorageSearchData = (localStorageValue: string = '') => {
@@ -51,16 +38,18 @@ const MainPage = ({
   };
 
   const getPokemonAdditionalInfo = useCallback(async () => {
-    if (searchParams.get('details')) {
-      setPokemonFullInfo(await getPokemon(String(searchParams.get('details'))));
+    if (searchParams?.get('details')) {
+      setPokemonFullInfo?.(
+        await getPokemon(String(searchParams?.get('details')))
+      );
     }
   }, [searchParams, setPokemonFullInfo]);
 
   const getPokemons = useCallback(async () => {
-    setIsLoading(true);
+    setIsLoading?.(true);
     setLocalStorageSearchData();
     try {
-      const result = await getAllPokemon(offset, pokemonsPerPage);
+      const result = await getAllPokemon(offset || 0, pokemonsPerPage || 4);
       const allPokemons: IPokemon[] = [];
       await Promise.all(
         result.results.map(async (item: IPokemon) => {
@@ -70,22 +59,26 @@ const MainPage = ({
           }
         })
       );
-      setPokemonList(allPokemons);
-      setIsLoading(false);
+      setPokemonList?.(allPokemons);
+      if (!allPokemons.length) {
+        setIsNotFound?.(true);
+      }
+
+      setIsLoading?.(false);
     } catch (err) {
       console.error(err);
     }
-  }, [offset, pokemonsPerPage, setIsLoading]);
+  }, [offset, pokemonsPerPage, setIsLoading, setIsNotFound, setPokemonList]);
 
   const searchPokemon = useCallback(
-    async (inputValue: string | null) => {
-      setIsLoading(true);
-      setIsNotFound(false);
-      if (inputValue === '' && !searchParams.get('search')) {
-        setIsLoading(false);
+    async (inputValue: string | null | undefined) => {
+      setIsLoading?.(true);
+      setIsNotFound?.(false);
+      if (inputValue === '' && !searchParams?.get('search')) {
+        setIsLoading?.(false);
         return;
-      } else if (inputValue === '' && searchParams.get('search')) {
-        setIsLoading(false);
+      } else if (inputValue === '' && searchParams?.get('search')) {
+        setIsLoading?.(false);
         return getPokemons();
       }
 
@@ -95,96 +88,71 @@ const MainPage = ({
         try {
           const pokemon = await getPokemon(inputValue.toLowerCase());
           if (pokemon) {
-            setPokemonFullInfo(pokemon);
+            setPokemonFullInfo?.(pokemon);
           }
-          setIsLoading(false);
+          setIsLoading?.(false);
         } catch (err) {
-          setIsLoading(false);
-          setIsNotFound(true);
+          setIsLoading?.(false);
+          setIsNotFound?.(true);
           setLocalStorageSearchData();
           console.error(err);
         }
       }
     },
-    [getPokemons, searchParams, setIsLoading, setPokemonFullInfo]
+    [getPokemons, searchParams, setIsLoading, setIsNotFound, setPokemonFullInfo]
   );
 
   useEffect(() => {
+    getPokemons();
+  }, [getPokemons]);
+
+  useEffect(() => {
     getPokemonAdditionalInfo();
-    getLocalStorageSearchData || searchParams.get('search')
-      ? (searchPokemon(getLocalStorageSearchData || searchParams.get('search')),
-        setInputValue(getLocalStorageSearchData?.toString() || ''))
+    getLocalStorageSearchData || searchParams?.get('search')
+      ? (searchPokemon(
+          getLocalStorageSearchData || searchParams?.get('search')
+        ),
+        setInputValue?.(getLocalStorageSearchData?.toString() || ''))
       : getPokemons();
-  }, [
-    getLocalStorageSearchData,
-    getPokemons,
-    getPokemonAdditionalInfo,
-    searchParams,
-    searchPokemon,
-  ]);
+  }, []);
 
-  const notFound = isNotFound ? <NotFound /> : null;
+  const notFound = Boolean(isNotFound) && <NotFoundMessage />;
 
-  const loading = isLoading ? (
-    <PuffLoader color="#ad5905" size={150} className="spinner" />
-  ) : null;
-
-  const search = isNotFound ? null : (
-    <SearchInput
-      searchPokemon={searchPokemon}
-      inputValue={inputValue}
-      setInputValue={setInputValue}
-      setPokemonPerPage={setPokemonPerPage}
-      setSearchParams={setSearchParams}
-      currentPage={currentPage}
+  const loader = Boolean(isLoading) && (
+    <PuffLoader
+      color="#ad5905"
+      size={150}
+      data-testid="spinner"
+      className="spinner"
     />
   );
 
-  const singlePokemonView =
-    (!isLoading || !NotFound) && searchParams.get('search') ? (
-      <PokemonCardAdditional
-        pokemonFullInfo={pokemonFullInfo}
-        searchParams={searchParams}
-        isLoading={isLoading}
-        setSearchParams={setSearchParams}
-      />
-    ) : null;
-
-  const item = searchParams.get('search') ? null : (
-    <ItemPerPage
-      setPokemonPerPage={setPokemonPerPage}
-      setSearchParams={setSearchParams}
-      setCurrentPage={setCurrentPage}
-      setOffset={setOffset}
+  const searchInput = Boolean(!isNotFound) && (
+    <SearchInput searchPokemon={searchPokemon} />
+  );
+  const singlePokemonView = Boolean(
+    !isLoading && !isNotFound && searchParams?.get('search')
+  ) && (
+    <PokemonCard
+      pokemonFullInfo={pokemonFullInfo}
+      setPokemonFullInfo={setPokemonFullInfo}
     />
   );
+  const item = Boolean(!searchParams?.get('search')) && <ItemPerPage />;
 
-  const pokemon =
-    (!isLoading || !NotFound) && !searchParams.get('search') ? (
-      <>
-        <PokemonList
-          pokemonList={pokemonList}
-          isBreak={isBreak}
-          setPokemonFullInfo={setPokemonFullInfo}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-        />
-        <Navigation
-          setOffset={setOffset}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          pokemonsPerPage={pokemonsPerPage}
-          searchParams={searchParams}
-          setSearchParams={setSearchParams}
-        />
-      </>
-    ) : null;
+  const pokemon = Boolean(
+    !isLoading && !isNotFound && !searchParams?.get('search')
+  ) && (
+    <>
+      <PokemonList setPokemonFullInfo={setPokemonFullInfo} />
+      <Navigation />
+    </>
+  );
 
-  const additionInfo = searchParams.get('details') ? <Outlet /> : null;
-  const breakAppView =
-    isNotFound || searchParams.get('search') ? null : (
-      <BreakApp setIsBreak={setIsBreak} />
-    );
+  const additionInfo = Boolean(searchParams?.get('details')) && <Outlet />;
+  const breakAppView = Boolean(!isNotFound || searchParams?.get('search')) && (
+    <BreakApp />
+  );
 
   return (
     <>
@@ -193,15 +161,13 @@ const MainPage = ({
       {notFound}
       <div>
         {breakAppView}
-        {search}
+        {searchInput}
         {singlePokemonView}
         {item}
         {pokemon}
-        {loading}
+        {loader}
       </div>
       {additionInfo}
     </>
   );
 };
-
-export default MainPage;

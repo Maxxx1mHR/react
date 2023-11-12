@@ -1,102 +1,120 @@
-const Navigation = ({
-  setOffset,
-  currentPage,
-  setCurrentPage,
-  pokemonsPerPage,
-  searchParams,
-  setSearchParams,
-}: {
-  setOffset: CallableFunction;
-  currentPage: number;
-  setCurrentPage: CallableFunction;
-  pokemonsPerPage: number;
-  searchParams: URLSearchParams;
-  setSearchParams: CallableFunction;
-}) => {
-  const countAllPokemons = 648;
-  const countsPage = Math.ceil(countAllPokemons / pokemonsPerPage);
+import { useCallback, useContext } from 'react';
+import { PokemonContext } from '../Context/PokemonContextProvider';
 
-  const details = searchParams.get('details');
+const POKEMON_PER_PAGE = 4;
+const COUNT_ALL_POKEMONS = 648;
 
-  const incrementPage = () => {
+const Navigation = () => {
+  const {
+    searchParams,
+    setSearchParams,
+    pokemonsPerPage,
+    currentPage,
+    setCurrentPage,
+    setOffset,
+  } = useContext(PokemonContext) || {};
+
+  const countsPage = Math.ceil(
+    COUNT_ALL_POKEMONS / (pokemonsPerPage || POKEMON_PER_PAGE)
+  );
+
+  const details = searchParams?.get('details');
+
+  const incrementPage = useCallback(() => {
     if (currentPage === countsPage) {
       return;
     }
-    setOffset((offset: number) => offset + pokemonsPerPage);
-    setCurrentPage(() => currentPage + 1);
+    setOffset?.(
+      (offset: number) => offset + (pokemonsPerPage || POKEMON_PER_PAGE)
+    );
+    setCurrentPage?.((currentPage: number) => (currentPage || 0) + 1);
     if (details) {
-      setSearchParams({
-        page: currentPage + 1,
+      setSearchParams?.({
+        page: (currentPage || 0) + 1,
         details: details,
       });
     } else {
-      setSearchParams({
-        page: currentPage + 1,
+      setSearchParams?.({
+        page: (currentPage || 0) + 1,
       });
     }
-  };
+  }, []);
 
-  const decrementPage = () => {
+  const decrementPage = useCallback(() => {
     if (currentPage === 1) {
       return;
     }
-    setOffset((offset: number) => offset - pokemonsPerPage);
-    setCurrentPage(() => currentPage - 1);
+    setOffset?.(
+      (offset: number) => offset - (pokemonsPerPage || POKEMON_PER_PAGE)
+    );
+    setCurrentPage?.((currentPage: number) => (currentPage || 0) - 1);
     if (details) {
-      setSearchParams({
-        page: currentPage - 1,
+      setSearchParams?.({
+        page: (currentPage || 0) - 1,
         details: details,
       });
     } else {
-      setSearchParams({
-        page: currentPage - 1,
+      setSearchParams?.({
+        page: (currentPage || 0) - 1,
       });
     }
-  };
+  }, []);
 
-  const firstPage = () => {
-    setOffset(0);
-    setCurrentPage(1);
+  const toFirstPage = useCallback(() => {
+    setOffset?.(0);
+    setCurrentPage?.(1);
     if (details) {
-      setSearchParams({
+      setSearchParams?.({
         page: 1,
         details: details,
       });
     } else {
-      setSearchParams({
+      setSearchParams?.({
         page: 1,
       });
     }
-  };
+  }, []);
 
-  const lastPage = () => {
-    setOffset(countAllPokemons - pokemonsPerPage);
-    setCurrentPage(countsPage);
+  const toLastPage = useCallback(() => {
+    setOffset?.(COUNT_ALL_POKEMONS - (pokemonsPerPage || POKEMON_PER_PAGE));
+    setCurrentPage?.(countsPage);
     if (details) {
-      setSearchParams({
+      setSearchParams?.({
         page: countsPage,
         details: details,
       });
     } else {
-      setSearchParams({
+      setSearchParams?.({
         page: countsPage,
       });
     }
-  };
+  }, []);
 
   return (
-    <div className="navigation">
+    <div data-testid="navigation" className="navigation">
       <div className="navigation__buttons">
-        <button className="button" onClick={() => firstPage()}>
+        <button
+          data-testid="first-page"
+          className="button"
+          onClick={toFirstPage}
+        >
           First
         </button>
-        <button className="button" onClick={() => decrementPage()}>
+        <button
+          data-testid="prev-page"
+          className="button"
+          onClick={decrementPage}
+        >
           Prev
         </button>
-        <button className="button" onClick={() => incrementPage()}>
+        <button
+          data-testid="next-page"
+          className="button"
+          onClick={incrementPage}
+        >
           Next
         </button>
-        <button className="button" onClick={() => lastPage()}>
+        <button data-testid="last-page" className="button" onClick={toLastPage}>
           Last
         </button>
       </div>

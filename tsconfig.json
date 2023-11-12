@@ -15,8 +15,9 @@
     "jsx": "react-jsx",
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "types": ["vitest/globals"]
   },
-  "include": [".eslint.cjs", "src"],
+  "include": ["vite.config.ts", ".eslint.cjs", "src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
