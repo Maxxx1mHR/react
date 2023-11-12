@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import PokemonCard from './PokemonCard';
 import { IPokemon } from '../../../types';
 import PokemonCardAdditional from '../pokemonCardAdditional/PokemonCardAdditional';
+import { getPokemon } from '../../services/PokeService';
 
 describe('Tests for the Search component:', () => {
   const pokemonObj: IPokemon = {
@@ -70,5 +71,29 @@ describe('Tests for the Search component:', () => {
         ></PokemonCardAdditional>
       </BrowserRouter>
     );
+  });
+
+  vi.mock('../../services/PokeService', () => {
+    const pokemon = {
+      id: 1,
+      name: 'bulbasaur',
+    };
+
+    const getPokemon = vi.fn();
+    getPokemon.mockResolvedValue(pokemon);
+    return {
+      getPokemon,
+    };
+  });
+
+  it('Check that clicking triggers an additional API call to fetch detailed information', () => {
+    render(
+      <BrowserRouter>
+        <PokemonCardAdditional
+          pokemonFullInfo={pokemonObj}
+        ></PokemonCardAdditional>
+      </BrowserRouter>
+    );
+    expect(getPokemon).toHaveBeenCalledTimes(1);
   });
 });

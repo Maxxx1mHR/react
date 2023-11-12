@@ -21,7 +21,6 @@ export const MainPage = ({
   setPokemonFullInfo: CallableFunction;
 }) => {
   const {
-    // setPokemonFullInfo,
     searchParams,
     isLoading,
     setIsLoading,
@@ -60,7 +59,6 @@ export const MainPage = ({
           }
         })
       );
-      // allPokemons = [];
       setPokemonList?.(allPokemons);
       if (!allPokemons.length) {
         setIsNotFound?.(true);
@@ -116,13 +114,17 @@ export const MainPage = ({
         ),
         setInputValue?.(getLocalStorageSearchData?.toString() || ''))
       : getPokemons();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const notFound = isNotFound ? <NotFound /> : null;
 
   const loading = isLoading ? (
-    <PuffLoader color="#ad5905" size={150} className="spinner" />
+    <PuffLoader
+      color="#ad5905"
+      size={150}
+      data-testid="spinner"
+      className="spinner"
+    />
   ) : null;
 
   const search = isNotFound ? null : (

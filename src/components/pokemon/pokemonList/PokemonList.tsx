@@ -9,13 +9,8 @@ export const PokemonList = ({
 }: {
   setPokemonFullInfo: CallableFunction;
 }) => {
-  const {
-    // setPokemonFullInfo,
-    searchParams,
-    setSearchParams,
-    pokemonList,
-    isBreak,
-  } = useContext(PokemonContext) || {};
+  const { searchParams, setSearchParams, pokemonList, isBreak } =
+    useContext(PokemonContext) || {};
 
   if (isBreak) throw Error('error!');
 

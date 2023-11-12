@@ -11,7 +11,7 @@
     "format:fix": "npx prettier . --write",
     "prepare": "husky install",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage.enabled --coverage.all",
+    "test:coverage": "vitest run --coverage.enabled --coverage",
     "test:ui": "vitest --ui"
   },
   "dependencies": {

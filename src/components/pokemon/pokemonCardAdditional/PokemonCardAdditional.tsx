@@ -29,12 +29,16 @@ const PokemonCardAdditional = ({
 
   return (
     <div className={wrapperClass}>
-      <div className={'pokemon-additional__wrapper'}>
+      <div
+        data-testid="pokemon__additional"
+        className={'pokemon-additional__wrapper'}
+      >
         {isLoading ? (
           <PuffLoader color="#ad5905" size={150} className="spinner" />
         ) : (
           <>
             <span
+              data-testid="close__button"
               className="pokemon__close-menu"
               onClick={() => setUrlParams()}
             >
@@ -45,7 +49,9 @@ const PokemonCardAdditional = ({
               <div className="pokemon__info">
                 <PokemonBaseInfo pokemonFullInfo={pokemonFullInfo} />
                 <ul className="pokemon-stats__list">
-                  <span className="pokemon__info-header">Stats:</span>
+                  <span data-testid="stats" className="pokemon__info-header">
+                    Stats:
+                  </span>
                   {pokemonFullInfo?.stats.map(({ base_stat, stat }, index) => (
                     <li key={index}>
                       {index + 1 < pokemonFullInfo?.stats.length

@@ -2,8 +2,6 @@ import { describe, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import App from '../app/App';
 import { BrowserRouter } from 'react-router-dom';
-// import Navigation from './Navigation';
-// import { server } from '../../../mocks/server';
 
 describe('Tests for the Search component:', () => {
   it('Verify that the component renders the specified number of cards', async () => {
