@@ -1,5 +1,8 @@
-import { useContext } from 'react';
-import { PokemonContext } from '../context/PokemonContextProvider';
+import { useCallback, useContext } from 'react';
+import { PokemonContext } from '../Context/PokemonContextProvider';
+
+const POKEMON_PER_PAGE = 4;
+const COUNT_ALL_POKEMONS = 648;
 
 const Navigation = () => {
   const {
@@ -11,17 +14,20 @@ const Navigation = () => {
     setOffset,
   } = useContext(PokemonContext) || {};
 
-  const countAllPokemons = 648;
-  const countsPage = Math.ceil(countAllPokemons / (pokemonsPerPage || 4));
+  const countsPage = Math.ceil(
+    COUNT_ALL_POKEMONS / (pokemonsPerPage || POKEMON_PER_PAGE)
+  );
 
   const details = searchParams?.get('details');
 
-  const incrementPage = () => {
+  const incrementPage = useCallback(() => {
     if (currentPage === countsPage) {
       return;
     }
-    setOffset?.((offset: number) => offset + (pokemonsPerPage || 4));
-    setCurrentPage?.(() => (currentPage || 0) + 1);
+    setOffset?.(
+      (offset: number) => offset + (pokemonsPerPage || POKEMON_PER_PAGE)
+    );
+    setCurrentPage?.((currentPage: number) => (currentPage || 0) + 1);
     if (details) {
       setSearchParams?.({
         page: (currentPage || 0) + 1,
@@ -32,14 +38,16 @@ const Navigation = () => {
         page: (currentPage || 0) + 1,
       });
     }
-  };
+  }, []);
 
-  const decrementPage = () => {
+  const decrementPage = useCallback(() => {
     if (currentPage === 1) {
       return;
     }
-    setOffset?.((offset: number) => offset - (pokemonsPerPage || 4));
-    setCurrentPage?.(() => (currentPage || 0) - 1);
+    setOffset?.(
+      (offset: number) => offset - (pokemonsPerPage || POKEMON_PER_PAGE)
+    );
+    setCurrentPage?.((currentPage: number) => (currentPage || 0) - 1);
     if (details) {
       setSearchParams?.({
         page: (currentPage || 0) - 1,
@@ -50,9 +58,9 @@ const Navigation = () => {
         page: (currentPage || 0) - 1,
       });
     }
-  };
+  }, []);
 
-  const firstPage = () => {
+  const toFirstPage = useCallback(() => {
     setOffset?.(0);
     setCurrentPage?.(1);
     if (details) {
@@ -65,10 +73,10 @@ const Navigation = () => {
         page: 1,
       });
     }
-  };
+  }, []);
 
-  const lastPage = () => {
-    setOffset?.(countAllPokemons - (pokemonsPerPage || 4));
+  const toLastPage = useCallback(() => {
+    setOffset?.(COUNT_ALL_POKEMONS - (pokemonsPerPage || POKEMON_PER_PAGE));
     setCurrentPage?.(countsPage);
     if (details) {
       setSearchParams?.({
@@ -80,7 +88,7 @@ const Navigation = () => {
         page: countsPage,
       });
     }
-  };
+  }, []);
 
   return (
     <div data-testid="navigation" className="navigation">
@@ -88,29 +96,25 @@ const Navigation = () => {
         <button
           data-testid="first-page"
           className="button"
-          onClick={() => firstPage()}
+          onClick={toFirstPage}
         >
           First
         </button>
         <button
           data-testid="prev-page"
           className="button"
-          onClick={() => decrementPage()}
+          onClick={decrementPage}
         >
           Prev
         </button>
         <button
           data-testid="next-page"
           className="button"
-          onClick={() => incrementPage()}
+          onClick={incrementPage}
         >
           Next
         </button>
-        <button
-          data-testid="last-page"
-          className="button"
-          onClick={() => lastPage()}
-        >
+        <button data-testid="last-page" className="button" onClick={toLastPage}>
           Last
         </button>
       </div>

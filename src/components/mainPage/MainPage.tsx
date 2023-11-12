@@ -1,24 +1,24 @@
 import { PuffLoader } from 'react-spinners';
-import { SearchInput } from '../search/SearchInput';
-import { PokemonList } from '../pokemon/pokemonList/PokemonList';
+import { SearchInput } from '../Search/SearchInput';
+import { PokemonList } from '../Pokemons/PokemonList/PokemonList';
 import logo from '../../assets/img/logo.png';
 import { useCallback, useEffect, useContext } from 'react';
 import { IPokemon } from '../../types';
-import { getAllPokemon, getPokemon } from '../services/PokeService';
-import Navigation from '../navigation/Navigation';
-import NotFound from '../notFound/NotFound';
+import { getAllPokemon, getPokemon } from '../Services/PokeService';
+import Navigation from '../Navigation/Navigation';
 import { Outlet } from 'react-router-dom';
-import ItemPerPage from '../itemPerPage/ItemPerPage';
-import BreakApp from '../breakApp/BreakApp';
-import PokemonCard from '../pokemon/pokemonCard/PokemonCard';
-import { PokemonContext } from '../context/PokemonContextProvider';
+import ItemPerPage from '../ItemPerPage/ItemPerPage';
+import BreakApp from '../BreakApp/BreakApp';
+import PokemonCard from '../Pokemons/PokemonCard/PokemonCard';
+import { PokemonContext } from '../Context/PokemonContextProvider';
+import NotFoundMessage from '../NotFound/NotFoundMessage';
 
 export const MainPage = ({
   pokemonFullInfo,
   setPokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  setPokemonFullInfo: CallableFunction;
+  setPokemonFullInfo: (pokemonFullInfo: IPokemon | undefined) => void;
 }) => {
   const {
     searchParams,
@@ -103,7 +103,6 @@ export const MainPage = ({
   );
 
   useEffect(() => {
-    console.log(window.location.search);
     getPokemons();
   }, [getPokemons]);
 
@@ -117,42 +116,43 @@ export const MainPage = ({
       : getPokemons();
   }, []);
 
-  const notFound = isNotFound ? <NotFound /> : null;
+  const notFound = Boolean(isNotFound) && <NotFoundMessage />;
 
-  const loading = isLoading ? (
+  const loader = Boolean(isLoading) && (
     <PuffLoader
       color="#ad5905"
       size={150}
       data-testid="spinner"
       className="spinner"
     />
-  ) : null;
-
-  const search = isNotFound ? null : (
-    <SearchInput searchPokemon={searchPokemon} />
   );
 
-  const singlePokemonView =
-    !isLoading && !isNotFound && searchParams?.get('search') ? (
-      <PokemonCard
-        pokemonFullInfo={pokemonFullInfo}
-        setPokemonFullInfo={setPokemonFullInfo}
-      />
-    ) : null;
+  const searchInput = Boolean(!isNotFound) && (
+    <SearchInput searchPokemon={searchPokemon} />
+  );
+  const singlePokemonView = Boolean(
+    !isLoading && !isNotFound && searchParams?.get('search')
+  ) && (
+    <PokemonCard
+      pokemonFullInfo={pokemonFullInfo}
+      setPokemonFullInfo={setPokemonFullInfo}
+    />
+  );
+  const item = Boolean(!searchParams?.get('search')) && <ItemPerPage />;
 
-  const item = searchParams?.get('search') ? null : <ItemPerPage />;
+  const pokemon = Boolean(
+    !isLoading && !isNotFound && !searchParams?.get('search')
+  ) && (
+    <>
+      <PokemonList setPokemonFullInfo={setPokemonFullInfo} />
+      <Navigation />
+    </>
+  );
 
-  const pokemon =
-    !isLoading && !isNotFound && !searchParams?.get('search') ? (
-      <>
-        <PokemonList setPokemonFullInfo={setPokemonFullInfo} />
-        <Navigation />
-      </>
-    ) : null;
-
-  const additionInfo = searchParams?.get('details') ? <Outlet /> : null;
-  const breakAppView =
-    isNotFound || searchParams?.get('search') ? null : <BreakApp />;
+  const additionInfo = Boolean(searchParams?.get('details')) && <Outlet />;
+  const breakAppView = Boolean(!isNotFound || searchParams?.get('search')) && (
+    <BreakApp />
+  );
 
   return (
     <>
@@ -161,11 +161,11 @@ export const MainPage = ({
       {notFound}
       <div>
         {breakAppView}
-        {search}
+        {searchInput}
         {singlePokemonView}
         {item}
         {pokemon}
-        {loading}
+        {loader}
       </div>
       {additionInfo}
     </>

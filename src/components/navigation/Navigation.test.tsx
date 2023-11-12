@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import App from '../app/App';
+import App from '../App/App';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('Tests for the Pagination component:', () => {

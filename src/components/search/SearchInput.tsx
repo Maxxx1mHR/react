@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { PokemonContext } from '../context/PokemonContextProvider';
+import { PokemonContext } from '../Context/PokemonContextProvider';
 
 export const SearchInput = ({
   searchPokemon,

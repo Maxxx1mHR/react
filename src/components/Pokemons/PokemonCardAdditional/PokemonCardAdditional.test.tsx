@@ -2,8 +2,8 @@ import { describe, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { IPokemon } from '../../../types';
-import PokemonCardAdditional from '../pokemonCardAdditional/PokemonCardAdditional';
-import App from '../../app/App';
+import PokemonCardAdditional from './PokemonCardAdditional';
+import App from '../../App/App';
 
 describe('Tests for the Detailed Card component:', () => {
   const pokemonObj: IPokemon = {

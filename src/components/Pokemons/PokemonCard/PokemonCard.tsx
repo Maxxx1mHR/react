@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { getPokemon } from '../../services/PokeService';
-import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
-import { PokemonContext } from '../../context/PokemonContextProvider';
+import { getPokemon } from '../../Services/PokeService';
+import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
+import { PokemonContext } from '../../Context/PokemonContextProvider';
 import { IPokemon } from '../../../types';
 const PokemonCard = ({
   pokemonFullInfo,
   setPokemonFullInfo,
 }: {
   pokemonFullInfo: IPokemon | undefined;
-  setPokemonFullInfo: CallableFunction;
+  setPokemonFullInfo: (pokemonFullInfo: IPokemon | undefined) => void;
 }) => {
   const { searchParams, setSearchParams } = useContext(PokemonContext) || {};
 

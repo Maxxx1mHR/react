@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 
-import { PokemonContext } from '../../context/PokemonContextProvider';
-import { getPokemon } from '../../services/PokeService';
-import PokemonBaseInfo from '../pokemonBaseInfo/PokemonBaseInfo';
+import { PokemonContext } from '../../Context/PokemonContextProvider';
+import { getPokemon } from '../../Services/PokeService';
+import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
 
 export const PokemonList = ({
   setPokemonFullInfo,
@@ -12,7 +12,9 @@ export const PokemonList = ({
   const { searchParams, setSearchParams, pokemonList, isBreak } =
     useContext(PokemonContext) || {};
 
-  if (isBreak) throw Error('error!');
+  if (isBreak) {
+    throw Error('error!');
+  }
 
   return (
     <div className="pokemon">
@@ -23,7 +25,11 @@ export const PokemonList = ({
             key={pokemon.id}
             className="pokemon__item"
             onClick={async () => {
-              setPokemonFullInfo?.(await getPokemon(pokemon.name));
+              try {
+                setPokemonFullInfo?.(await getPokemon(pokemon.name));
+              } catch (err) {
+                console.error(err);
+              }
               setSearchParams?.({
                 page: searchParams?.get('page') || 1,
                 details: pokemon.name,
