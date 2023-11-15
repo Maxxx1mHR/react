@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
-import App from '../App/App';
+import App from '../App_/App';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('Tests for the Search component:', () => {

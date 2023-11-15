@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { getPokemon } from '../../Services/PokeService';
+import { getPokemon } from '../../Services_/PokeService';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
-import { PokemonContext } from '../../Context/PokemonContextProvider';
+import { PokemonContext } from '../../Context_/PokemonContextProvider';
 import { IPokemon } from '../../../types';
 const PokemonCard = ({
   pokemonFullInfo,

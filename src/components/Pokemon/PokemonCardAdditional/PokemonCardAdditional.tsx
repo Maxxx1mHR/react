@@ -2,7 +2,7 @@ import { PuffLoader } from 'react-spinners';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
 
 import { useContext } from 'react';
-import { PokemonContext } from '../../Context/PokemonContextProvider';
+import { PokemonContext } from '../../Context_/PokemonContextProvider';
 import { IPokemon } from '../../../types';
 
 const PokemonCardAdditional = ({

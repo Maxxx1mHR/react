@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './components/App/App';
+import App from './components/App_/App';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
-import { PokemonContextProvider } from './components/Context/PokemonContextProvider';
+import { PokemonContextProvider } from './components/Context_/PokemonContextProvider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>

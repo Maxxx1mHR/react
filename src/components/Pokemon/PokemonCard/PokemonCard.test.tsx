@@ -2,9 +2,9 @@ import { describe, it } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { IPokemon } from '../../../types';
-import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
-import { getPokemon } from '../../Services/PokeService';
 import PokemonCard from './PokemonCard';
+import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
+import { getPokemon } from '../../Services_/PokeService';
 
 describe('Tests for the Search component:', () => {
   const pokemonObj: IPokemon = {
@@ -73,7 +73,7 @@ describe('Tests for the Search component:', () => {
     );
   });
 
-  vi.mock('../../services/PokeService', () => {
+  vi.mock('../../Services_/PokeService', () => {
     const pokemon = {
       id: 1,
       name: 'bulbasaur',

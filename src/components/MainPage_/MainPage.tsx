@@ -1,17 +1,17 @@
 import { PuffLoader } from 'react-spinners';
-import { SearchInput } from '../Search/SearchInput';
-import { PokemonList } from '../Pokemons/PokemonList/PokemonList';
+import { SearchInput } from '../Search_/SearchInput';
+import { PokemonList } from '../Pokemon/PokemonList/PokemonList';
 import logo from '../../assets/img/logo.png';
 import { useCallback, useEffect, useContext } from 'react';
 import { IPokemon } from '../../types';
-import { getAllPokemon, getPokemon } from '../Services/PokeService';
-import Navigation from '../Navigation/Navigation';
+import { getAllPokemon, getPokemon } from '../Services_/PokeService';
+import Navigation from '../Navigation_/Navigation';
 import { Outlet } from 'react-router-dom';
-import ItemPerPage from '../ItemPerPage/ItemPerPage';
-import BreakApp from '../BreakApp/BreakApp';
-import PokemonCard from '../Pokemons/PokemonCard/PokemonCard';
-import { PokemonContext } from '../Context/PokemonContextProvider';
-import NotFoundMessage from '../NotFound/NotFoundMessage';
+import ItemPerPage from '../ItemPerPage_/ItemPerPage';
+import BreakApp from '../BreakApp_/BreakApp';
+import PokemonCard from '../Pokemon/PokemonCard/PokemonCard';
+import { PokemonContext } from '../Context_/PokemonContextProvider';
+import NotFoundMessage from '../NotFound_/NotFoundMessage';
 
 export const MainPage = ({
   pokemonFullInfo,

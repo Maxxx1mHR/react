@@ -1,11 +1,11 @@
-import { MainPage } from '../MainPage/MainPage';
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import { MainPage } from '../MainPage_/MainPage';
+import ErrorBoundary from '../ErrorBoundary_/ErrorBoundary';
 import { Route, Routes } from 'react-router-dom';
-import PokemonCardAdditional from '../Pokemons/PokemonCardAdditional/PokemonCardAdditional';
-import Page404 from '../NotFound/404';
-import { PokemonContextProvider } from '../Context/PokemonContextProvider';
+import Page404 from '../NotFound_/404';
+import { PokemonContextProvider } from '../Context_/PokemonContextProvider';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
+import PokemonCardAdditional from '../Pokemon/PokemonCardAdditional/PokemonCardAdditional';
 
 const App = () => {
   const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
