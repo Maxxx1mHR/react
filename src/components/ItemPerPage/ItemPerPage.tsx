@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import { PokemonContext } from '../Context_/PokemonContextProvider';
+import { PokemonContext } from '../Context/PokemonContextProvider';
 
 const ItemPerPage = () => {
   const { setSearchParams, setPokemonPerPage, setCurrentPage, setOffset } =

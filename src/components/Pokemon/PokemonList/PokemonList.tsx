@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { PokemonContext } from '../../Context_/PokemonContextProvider';
-import { getPokemon } from '../../Services_/PokeService';
+import { PokemonContext } from '../../Context/PokemonContextProvider';
+import { getPokemon } from '../../Services/PokeService';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
 
 export const PokemonList = ({

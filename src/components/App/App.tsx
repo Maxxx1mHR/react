@@ -1,8 +1,8 @@
-import { MainPage } from '../MainPage_/MainPage';
-import ErrorBoundary from '../ErrorBoundary_/ErrorBoundary';
+import { MainPage } from '../MainPage/MainPage';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { Route, Routes } from 'react-router-dom';
-import Page404 from '../NotFound_/404';
-import { PokemonContextProvider } from '../Context_/PokemonContextProvider';
+import Page404 from '../NotFound/404';
+import { PokemonContextProvider } from '../Context/PokemonContextProvider';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
 import PokemonCardAdditional from '../Pokemon/PokemonCardAdditional/PokemonCardAdditional';

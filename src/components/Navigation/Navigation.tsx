@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { PokemonContext } from '../Context_/PokemonContextProvider';
+import { PokemonContext } from '../Context/PokemonContextProvider';
 
 const POKEMON_PER_PAGE = 4;
 const COUNT_ALL_POKEMONS = 648;

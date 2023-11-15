@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { IPokemon } from '../../../types';
 import PokemonCard from './PokemonCard';
 import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
-import { getPokemon } from '../../Services_/PokeService';
+import { getPokemon } from '../../Services/PokeService';
 
 describe('Tests for the Search component:', () => {
   const pokemonObj: IPokemon = {
@@ -73,7 +73,7 @@ describe('Tests for the Search component:', () => {
     );
   });
 
-  vi.mock('../../Services_/PokeService', () => {
+  vi.mock('../../Services/PokeService', () => {
     const pokemon = {
       id: 1,
       name: 'bulbasaur',

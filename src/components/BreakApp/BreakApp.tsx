@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { PokemonContext } from '../Context_/PokemonContextProvider';
+import { PokemonContext } from '../Context/PokemonContextProvider';
 
 const BreakApp = () => {
   const { setIsBreak } = useContext(PokemonContext) || {};
