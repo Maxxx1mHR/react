@@ -4,9 +4,9 @@ import { PokemonContext } from '../Context/PokemonContextProvider';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
-import { setInputValue } from '../../state/pokemon/inputSlice';
-import { pokemonsApi } from '../../state/pokemon/pokemonsApi';
-import { setPokemon } from '../../state/pokemon/pokemonSlice';
+import { setInputValue } from '../../state/slices/inputSlice';
+import { pokemonsApi } from '../../state/slices/pokemonsApi';
+import { setPokemon } from '../../state/slices/pokemonSlice';
 
 export const SearchInput = () => {
   // const { setSearchParams, inputValue, setInputValue, currentPage } =
@@ -29,7 +29,6 @@ export const SearchInput = () => {
         onChange={(e) => {
           setInput(e.target.value);
           // dispatch(setInputValue(e.target.value));
-
           // setInputValue?.(e.target.value);
         }}
         className="search__input"
@@ -38,10 +37,8 @@ export const SearchInput = () => {
         <button
           data-testid="pokemon-search-button"
           onClick={() => {
-            console.log('123');
             // searchPokemon(inputValue);
             dispatch(setInputValue(input));
-            console.log('in', input);
             localStorage.setItem('pokemonQuery', input);
             // setLocalStorageSearchData(input);
             // if (pokemon) {

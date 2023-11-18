@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { getPokemon } from '../../Services/PokeService';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
 import { IPokemon } from '../../../types';
-import { pokemonsApi } from '../../../state/pokemon/pokemonsApi';
+import { pokemonsApi } from '../../../state/slices/pokemonsApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../state/store';
 const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>

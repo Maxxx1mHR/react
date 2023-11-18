@@ -14,11 +14,11 @@ import PokemonCard from '../Pokemon/PokemonCard/PokemonCard';
 import NotFoundMessage from '../NotFound/NotFoundMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
-import { setPokemonList } from '../../state/pokemon/pokemonSlice';
+import { setPokemonList } from '../../state/slices/pokemonSlice';
 import {
   pokemonsApi,
   useGetPokemonQuery,
-} from '../../state/pokemon/pokemonsApi';
+} from '../../state/slices/pokemonsApi';
 
 export const MainPage = () =>
   //   {
@@ -43,9 +43,13 @@ export const MainPage = () =>
 
     // const { inputValue } = useContext(PokemonContext) || {};
 
+    const { limit, offset } = useSelector(
+      (state: RootState) => state.pagination
+    );
+
     const { data: pokemons } = pokemonsApi.useGetPokemonsQuery({
-      limit: 4,
-      offset: 0,
+      limit,
+      offset,
     });
 
     // console.log(pokemonsNameResponse);
@@ -69,11 +73,11 @@ export const MainPage = () =>
     const [isLoading, setIsLoading] = useState(false);
     const [isNotFound, setIsNotFound] = useState(false);
     const [pokemonsPerPage, setPokemonPerPage] = useState(4);
-    const [offset, setOffset] = useState(
-      searchParams.get('page')
-        ? (Number(searchParams.get('page')) - 1) * pokemonsPerPage
-        : 0
-    );
+    // const [offset, setOffset] = useState(
+    //   searchParams.get('page')
+    //     ? (Number(searchParams.get('page')) - 1) * pokemonsPerPage
+    //     : 0
+    // );
     // const [pokemonList, setPokemonList] = useState<IPokemon[]>([]);
     // const [inputValue, setInputValue] = useState('');
     // const [isBreak, setIsBreak] = useState(false);

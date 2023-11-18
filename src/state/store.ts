@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import pokemonListReducer from './pokemon/pokemonSlice';
-import inputSliceReducer from './pokemon/inputSlice';
-import { pokemonsApi } from './pokemon/pokemonsApi';
+import pokemonListReducer from './slices/pokemonSlice';
+import inputReducer from './slices/inputSlice';
+import paginationReducer from './slices/pageSlice';
+import { pokemonsApi } from './slices/pokemonsApi';
 
 export const store = configureStore({
   reducer: {
-    inputValue: inputSliceReducer,
+    inputValue: inputReducer,
     pokemon: pokemonListReducer,
     pokemonList: pokemonListReducer,
+    pagination: paginationReducer,
     [pokemonsApi.reducerPath]: pokemonsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
