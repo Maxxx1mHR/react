@@ -1,7 +1,14 @@
 export interface IPokemon {
   id: number;
   name: string;
-  url: string;
+  // url: string;
+  sprites: {
+    other: {
+      dream_world: {
+        front_default: string;
+      };
+    };
+  };
   abilities: IAbility[];
   types: ITypes[];
   stats: IStats[];

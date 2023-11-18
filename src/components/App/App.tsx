@@ -2,13 +2,11 @@ import { MainPage } from '../MainPage/MainPage';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import { Route, Routes } from 'react-router-dom';
 import Page404 from '../NotFound/404';
-import { PokemonContextProvider } from '../Context/PokemonContextProvider';
 import { useState } from 'react';
 import { IPokemon } from '../../types';
-import PokemonCardAdditional from '../Pokemon/PokemonCardAdditional/PokemonCardAdditional';
 
 const App = () => {
-  const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
+  // const [pokemonFullInfo, setPokemonFullInfo] = useState<IPokemon>();
 
   return (
     <ErrorBoundary>
@@ -17,19 +15,17 @@ const App = () => {
           <Route
             path="/"
             element={
-              <PokemonContextProvider>
-                <MainPage
-                  pokemonFullInfo={pokemonFullInfo}
-                  setPokemonFullInfo={setPokemonFullInfo}
-                />
-              </PokemonContextProvider>
+              <MainPage
+              // pokemonFullInfo={pokemonFullInfo}
+              // setPokemonFullInfo={setPokemonFullInfo}
+              />
             }
           >
             <Route
               index
-              element={
-                <PokemonCardAdditional pokemonFullInfo={pokemonFullInfo} />
-              }
+              // element={
+              // <PokemonCardAdditional pokemonFullInfo={pokemonFullInfo} />
+              // }
             />
           </Route>
           <Route path="*" element={<Page404 />} />

@@ -5,12 +5,13 @@ const PokemonBaseInfo = ({
 }: {
   pokemonFullInfo: IPokemon | undefined;
 }) => {
+  console.log('bbb', pokemonFullInfo);
   return (
     <>
       <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
       <div className="pokemon__wrapper">
         <img
-          src={pokemonFullInfo?.url}
+          src={pokemonFullInfo?.sprites.other.dream_world.front_default}
           alt={pokemonFullInfo?.name}
           className="pokemon__img"
         />

@@ -22,15 +22,18 @@ const getPokemonByName = (name: string) => {
 
 const getPokemon = async (name: string) => {
   try {
+    // return getPokemonByName(name).then((res) => {
+    //   return {
+    //     id: res.id,
+    //     name: res.name,
+    //     url: res.sprites.other.dream_world.front_default,
+    //     abilities: res.abilities,
+    //     types: res.types,
+    //     stats: res.stats,
+    //   };
+    // });
     return getPokemonByName(name).then((res) => {
-      return {
-        id: res.id,
-        name: res.name,
-        url: res.sprites.other.dream_world.front_default,
-        abilities: res.abilities,
-        types: res.types,
-        stats: res.stats,
-      };
+      return res;
     });
   } catch (err) {
     console.error(err);
