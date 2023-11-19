@@ -9,7 +9,6 @@
   column-gap: 2rem;
   list-style: none;
   color: $color-primary;
-  cursor: pointer;
   @include font();
 }
 
@@ -21,6 +20,7 @@
   transition: all 0.5s;
   list-style-type: none;
   color: $color-primary;
+  cursor: pointer;
   @include font();
 
   &::first-letter {

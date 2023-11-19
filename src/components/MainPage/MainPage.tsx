@@ -63,6 +63,8 @@ export const MainPage = () =>
 
     const pokemon = useSelector((state: RootState) => state.pokemon.pokemon);
 
+    const { currentPage } = useSelector((state: RootState) => state.pagination);
+
     // console.log('Main');
     // if (mainLoader) {
     //   dispatch(setMainLoading(false));
@@ -94,8 +96,12 @@ export const MainPage = () =>
     const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
-      setSearchParams();
-    }, []);
+      if (!searchParams.get('search') && !searchParams.get('details')) {
+        setSearchParams({
+          page: String(currentPage),
+        });
+      }
+    }, [currentPage, searchParams, setSearchParams]);
     // const [isLoading, setIsLoading] = useState(false);
     // const [isNotFound, setIsNotFound] = useState(false);
     // const [pokemonsPerPage, setPokemonPerPage] = useState(4);
@@ -207,7 +213,7 @@ export const MainPage = () =>
     // console.log(inputValue);
     // }, []);
 
-    // const notFound = Boolean(isNotFound) && <NotFoundMessage />;
+    const notFound = Boolean(isNotFound) && <NotFoundMessage />;
 
     const loader = Boolean(mainLoader && !searchParams?.get('search')) && (
       <PuffLoader
@@ -232,7 +238,9 @@ export const MainPage = () =>
         // setPokemonFullInfo={setPokemonFullInfo}
       />
     );
-    const item = Boolean(!searchParams?.get('search')) && <ItemPerPage />;
+    const item = Boolean(!isNotFound && !searchParams?.get('search')) && (
+      <ItemPerPage />
+    );
 
     // const pokemon = Boolean(
     //   !isLoading && !isNotFound && !searchParams?.get('search')
@@ -273,18 +281,18 @@ export const MainPage = () =>
     // searchParams={searchParams}
 
     const additionInfo = Boolean(searchParams?.get('details')) && <Outlet />;
-    // const breakAppView = Boolean(!isNotFound || searchParams?.get('search')) && (
-    //   <BreakApp />
-    // );
+    const breakAppView = Boolean(
+      !isNotFound || searchParams?.get('search')
+    ) && <BreakApp />;
 
     return (
       <>
         <img src={logo} alt="pokemon logo" className="logo" />
 
-        {/* {notFound} */}
+        {notFound}
 
         <div>
-          {/* {breakAppView} */}
+          {breakAppView}
           {searchInput}
           {singlePokemonView}
           {item}

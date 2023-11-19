@@ -1,14 +1,17 @@
-// import { useContext } from 'react';
-// import { PokemonContext } from '../Context/PokemonContextProvider';
+import { useDispatch } from 'react-redux';
+import { setBreak } from '../../state/slices/loaderSlice';
 
-// const BreakApp = () => {
-//   const { setIsBreak } = useContext(PokemonContext) || {};
+const BreakApp = () => {
+  const dispatch = useDispatch();
 
-//   return (
-//     <button onClick={() => setIsBreak?.(true)} className="button button_danger">
-//       Break app
-//     </button>
-//   );
-// };
+  return (
+    <button
+      className="button button_danger"
+      onClick={() => dispatch(setBreak(true))}
+    >
+      Break app
+    </button>
+  );
+};
 
-// export default BreakApp;
+export default BreakApp;

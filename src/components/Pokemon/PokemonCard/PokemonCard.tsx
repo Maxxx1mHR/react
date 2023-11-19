@@ -10,6 +10,7 @@ import { setPokemonName } from '../../../state/slices/pokemonSlice';
 import {
   setDetailsLoading,
   setMainLoading,
+  setNotFound,
   setSearchLoading,
 } from '../../../state/slices/loaderSlice';
 import { PuffLoader } from 'react-spinners';
@@ -22,6 +23,10 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>
   //   setPokemonFullInfo: CallableFunction;
   // }
   {
+    const { isBreak } = useSelector((state: RootState) => state.loader);
+    if (isBreak) {
+      throw Error('error!');
+    }
     // const { searchParams, setSearchParams } = useContext(PokemonContext) || {};
 
     const dispatch = useDispatch();
@@ -36,7 +41,11 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>
       (state: RootState) => state.inputValue.inputValue
     );
 
-    const { data: pokemon, isSuccess } = pokemonsApi.useGetPokemonQuery(
+    const {
+      data: pokemon,
+      isSuccess,
+      error,
+    } = pokemonsApi.useGetPokemonQuery(
       pokemonName || inputValue || String(getLocalStorageSearchData)
     );
 
@@ -48,7 +57,11 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>
         dispatch(setMainLoading(false));
         // dispatch(setSearchLoading(false));
       }
-    }, [dispatch, isSuccess]);
+      if (error) {
+        console.log('er');
+        dispatch(setNotFound(true));
+      }
+    }, [dispatch, error, isSuccess]);
 
     const { mainLoader } = useSelector((state: RootState) => state.loader);
 
