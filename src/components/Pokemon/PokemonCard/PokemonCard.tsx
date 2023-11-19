@@ -1,10 +1,18 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { getPokemon } from '../../Services/PokeService';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
 import { IPokemon } from '../../../types';
 import { pokemonsApi } from '../../../state/slices/pokemonsApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../state/store';
+import { useSearchParams } from 'react-router-dom';
+import { setPokemonName } from '../../../state/slices/pokemonSlice';
+import {
+  setDetailsLoading,
+  setMainLoading,
+  setSearchLoading,
+} from '../../../state/slices/loaderSlice';
+import { PuffLoader } from 'react-spinners';
 const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>
   //   {
   //   pokemonFullInfo,
@@ -16,39 +24,70 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) =>
   {
     // const { searchParams, setSearchParams } = useContext(PokemonContext) || {};
 
-    console.log('GELLO');
+    const dispatch = useDispatch();
+
+    // dispatch(setMainLoading(true));
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
 
     const inputValue = useSelector(
       (state: RootState) => state.inputValue.inputValue
     );
-    console.log('input', inputValue);
 
-    const { data: pokemon } = pokemonsApi.useGetPokemonQuery(
+    const { data: pokemon, isSuccess } = pokemonsApi.useGetPokemonQuery(
       pokemonName || inputValue || String(getLocalStorageSearchData)
     );
 
     // const pokemon = useSelector((state: RootState) => state.pokemon.pokemon);
 
-    console.log('mmmm', pokemon);
+    useEffect(() => {
+      if (isSuccess) {
+        console.log('test');
+        dispatch(setMainLoading(false));
+        // dispatch(setSearchLoading(false));
+      }
+    }, [dispatch, isSuccess]);
+
+    const { mainLoader } = useSelector((state: RootState) => state.loader);
 
     return (
-      <li
-        data-testid="pokemonTest"
-        className="pokemon__item"
-        onClick={async () => {
-          console.log('test');
-          // setPokemonFullInfo?.(
-          //   await getPokemon(String(pokemonFullInfo?.name))
-          // );
-          // setSearchParams?.({
-          //   search: searchParams?.get('search'),
-          //   details: pokemonFullInfo?.name,
-          // });
-        }}
-      >
-        <PokemonBaseInfo pokemonFullInfo={pokemon} />
-      </li>
+      <>
+        {mainLoader ? (
+          <PuffLoader
+            color="#ad5905"
+            size={150}
+            data-testid="spinner"
+            className="spinner"
+          />
+        ) : (
+          <li
+            data-testid="pokemonTest"
+            className="pokemon__item"
+            onClick={async () => {
+              if (pokemon) {
+                dispatch(setPokemonName(pokemon.name));
+                // dispatch(setSearchLoading(true));
+                dispatch(setDetailsLoading(true));
+              }
+              if (searchParams.get('search')) {
+                setSearchParams?.({
+                  search: String(searchParams?.get('search')),
+                  details: String(pokemon?.name),
+                });
+              } else {
+                setSearchParams?.({
+                  page: String(searchParams.get('page') || 1),
+                  details: pokemonName,
+                });
+              }
+            }}
+          >
+            <PokemonBaseInfo pokemonFullInfo={pokemon} />
+          </li>
+        )}
+      </>
     );
   };
 

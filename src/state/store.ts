@@ -3,6 +3,7 @@ import pokemonListReducer from './slices/pokemonSlice';
 import inputReducer from './slices/inputSlice';
 import paginationReducer from './slices/pageSlice';
 import { pokemonsApi } from './slices/pokemonsApi';
+import loaderReducer from './slices/loaderSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     pokemon: pokemonListReducer,
     pokemonList: pokemonListReducer,
     pagination: paginationReducer,
+    loader: loaderReducer,
     [pokemonsApi.reducerPath]: pokemonsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>

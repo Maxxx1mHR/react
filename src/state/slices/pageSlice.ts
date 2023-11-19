@@ -20,6 +20,9 @@ const pageSlice = createSlice({
     setOffset: (state, action: PayloadAction<number>) => {
       state.offset = action.payload;
     },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
     incrementPage: (state) => {
       state.currentPage += 1;
       state.offset += state.limit;
@@ -42,6 +45,7 @@ const pageSlice = createSlice({
 export const {
   setLimit,
   setOffset,
+  setCurrentPage,
   incrementPage,
   decrementPage,
   setFirstPage,

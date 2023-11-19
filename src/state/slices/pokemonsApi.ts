@@ -19,7 +19,14 @@ export const pokemonsApi = createApi({
     getPokemon: build.query<IPokemon, string>({
       query: (name: string = '') => `/${name}`,
     }),
+    getPokemonAdditionalInfo: build.query<IPokemon, string>({
+      query: (name: string = '') => `/${name}`,
+    }),
   }),
 });
 
-export const { useGetPokemonsQuery, useGetPokemonQuery } = pokemonsApi;
+export const {
+  useGetPokemonsQuery,
+  useGetPokemonQuery,
+  useGetPokemonAdditionalInfoQuery,
+} = pokemonsApi;

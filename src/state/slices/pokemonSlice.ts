@@ -4,6 +4,7 @@ import { IPokemon } from '../../types';
 const initialState = {
   pokemon: <IPokemon>{},
   pokemonsList: <IPokemon[]>[],
+  pokemonChosenName: '',
 };
 
 const pokemonListSlice = createSlice({
@@ -15,6 +16,9 @@ const pokemonListSlice = createSlice({
     },
     setPokemon: (state, action: PayloadAction<IPokemon>) => {
       state.pokemon = action.payload;
+    },
+    setPokemonName: (state, action: PayloadAction<string>) => {
+      state.pokemonChosenName = action.payload;
     },
     // setPokemonAsync: (state, action: PayloadAction<IPokemon>) => {
     //   state.pokemonList.push(action.payload);
@@ -37,6 +41,7 @@ const pokemonListSlice = createSlice({
 //   }
 // );
 
-export const { setPokemonList, setPokemon } = pokemonListSlice.actions;
+export const { setPokemonList, setPokemon, setPokemonName } =
+  pokemonListSlice.actions;
 
 export default pokemonListSlice.reducer;

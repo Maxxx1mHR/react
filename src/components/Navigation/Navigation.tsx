@@ -8,6 +8,7 @@ import {
   setLastPage,
 } from '../../state/slices/pageSlice';
 import { useSearchParams } from 'react-router-dom';
+import { setMainLoading } from '../../state/slices/loaderSlice';
 
 const POKEMON_PER_PAGE = 4;
 const COUNT_ALL_POKEMONS = 648;
@@ -39,6 +40,8 @@ const Navigation = () => {
       return;
     }
     dispatch(incrementPage());
+    dispatch(setMainLoading(true));
+
     if (details) {
       setSearchParams?.({
         page: String((currentPage || 0) + 1),
@@ -56,6 +59,8 @@ const Navigation = () => {
       return;
     }
     dispatch(decrementPage());
+    dispatch(setMainLoading(true));
+
     if (details) {
       setSearchParams?.({
         page: String((currentPage || 0) - 1),
@@ -73,6 +78,8 @@ const Navigation = () => {
       return;
     }
     dispatch(setFirstPage());
+    dispatch(setMainLoading(true));
+
     if (details) {
       setSearchParams?.({
         page: '1',
@@ -90,6 +97,8 @@ const Navigation = () => {
       return;
     }
     dispatch(setLastPage());
+    dispatch(setMainLoading(true));
+
     if (details) {
       setSearchParams?.({
         page: String(countsPage),

@@ -19,6 +19,10 @@ import {
   pokemonsApi,
   useGetPokemonQuery,
 } from '../../state/slices/pokemonsApi';
+import {
+  setMainLoading,
+  setSearchLoading,
+} from '../../state/slices/loaderSlice';
 
 export const MainPage = () =>
   //   {
@@ -42,15 +46,33 @@ export const MainPage = () =>
     // } = useContext(PokemonContext) || {};
 
     // const { inputValue } = useContext(PokemonContext) || {};
+    const dispatch = useDispatch();
 
     const { limit, offset } = useSelector(
       (state: RootState) => state.pagination
     );
 
-    const { data: pokemons } = pokemonsApi.useGetPokemonsQuery({
+    const { mainLoader, isNotFound } = useSelector(
+      (state: RootState) => state.loader
+    );
+
+    const { data: pokemons, isSuccess } = pokemonsApi.useGetPokemonsQuery({
       limit,
       offset,
     });
+
+    const pokemon = useSelector((state: RootState) => state.pokemon.pokemon);
+
+    // console.log('Main');
+    // if (mainLoader) {
+    //   dispatch(setMainLoading(false));
+    // }
+
+    useEffect(() => {
+      if (pokemons) {
+        dispatch(setMainLoading(false));
+      }
+    }, [dispatch, pokemons]);
 
     // console.log(pokemonsNameResponse);
     // pokemonsNameResponse.forEach((pokemon) => {
@@ -58,21 +80,25 @@ export const MainPage = () =>
     //   console.log(pokemons);
     // });
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const pokemonInfo = useSelector(
-      (state: RootState) => state.pokemon.pokemon
-    );
+    // const pokemonInfo = useSelector(
+    //   (state: RootState) => state.pokemon.pokemon
+    // );
 
-    const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
-    const setLocalStorageSearchData = (localStorageValue: string = '') => {
-      localStorage.setItem('pokemonQuery', localStorageValue);
-    };
+    // const getLocalStorageSearchData = localStorage.getItem('pokemonQuery');
+    // const setLocalStorageSearchData = (localStorageValue: string = '') => {
+    //   localStorage.setItem('pokemonQuery', localStorageValue);
+    // };
 
-    const [searchParams] = useSearchParams();
-    const [isLoading, setIsLoading] = useState(false);
-    const [isNotFound, setIsNotFound] = useState(false);
-    const [pokemonsPerPage, setPokemonPerPage] = useState(4);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+      setSearchParams();
+    }, []);
+    // const [isLoading, setIsLoading] = useState(false);
+    // const [isNotFound, setIsNotFound] = useState(false);
+    // const [pokemonsPerPage, setPokemonPerPage] = useState(4);
     // const [offset, setOffset] = useState(
     //   searchParams.get('page')
     //     ? (Number(searchParams.get('page')) - 1) * pokemonsPerPage
@@ -168,29 +194,29 @@ export const MainPage = () =>
     // getPokemons();
     // }, [getPokemons]);
 
-    useEffect(() => {
-      // getPokemons();
-      // getPokemonAdditionalInfo();
-      // getLocalStorageSearchData || searchParams?.get('search')
-      //   ? (searchPokemon(
-      //       getLocalStorageSearchData || searchParams?.get('search')
-      //     ),
-      //     setInputValue?.(getLocalStorageSearchData?.toString() || ''))
-      //   : getPokemons();
-      // console.log(data);
-      // console.log(inputValue);
-    }, []);
+    // useEffect(() => {
+    // getPokemons();
+    // getPokemonAdditionalInfo();
+    // getLocalStorageSearchData || searchParams?.get('search')
+    //   ? (searchPokemon(
+    //       getLocalStorageSearchData || searchParams?.get('search')
+    //     ),
+    //     setInputValue?.(getLocalStorageSearchData?.toString() || ''))
+    //   : getPokemons();
+    // console.log(data);
+    // console.log(inputValue);
+    // }, []);
 
     // const notFound = Boolean(isNotFound) && <NotFoundMessage />;
 
-    // const loader = Boolean(isLoading) && (
-    //   <PuffLoader
-    //     color="#ad5905"
-    //     size={150}
-    //     data-testid="spinner"
-    //     className="spinner"
-    //   />
-    // );
+    const loader = Boolean(mainLoader && !searchParams?.get('search')) && (
+      <PuffLoader
+        color="#ad5905"
+        size={150}
+        data-testid="spinner"
+        className="spinner"
+      />
+    );
 
     // const searchInput = Boolean(!isNotFound) && (
     //   <SearchInput searchPokemon={searchPokemon} />
@@ -198,15 +224,15 @@ export const MainPage = () =>
     const searchInput = Boolean(!isNotFound) && <SearchInput />;
 
     const singlePokemonView = Boolean(
-      !isLoading && !isNotFound && searchParams?.get('search')
+      !isNotFound && searchParams?.get('search')
     ) && (
       <PokemonCard
-        pokemonName={'weedle'}
+        pokemonName={''}
         // pokemonFullInfo={pokemonFullInfo}
         // setPokemonFullInfo={setPokemonFullInfo}
       />
     );
-    // const item = Boolean(!searchParams?.get('search')) && <ItemPerPage />;
+    const item = Boolean(!searchParams?.get('search')) && <ItemPerPage />;
 
     // const pokemon = Boolean(
     //   !isLoading && !isNotFound && !searchParams?.get('search')
@@ -223,8 +249,8 @@ export const MainPage = () =>
     //   </>
     // );
 
-    const pokemon = Boolean(
-      !isLoading && !isNotFound && !searchParams?.get('search')
+    const pokemonView = Boolean(
+      !mainLoader && !isNotFound && !searchParams?.get('search')
     ) && (
       <>
         <div className="pokemon">
@@ -246,7 +272,7 @@ export const MainPage = () =>
 
     // searchParams={searchParams}
 
-    // const additionInfo = Boolean(searchParams?.get('details')) && <Outlet />;
+    const additionInfo = Boolean(searchParams?.get('details')) && <Outlet />;
     // const breakAppView = Boolean(!isNotFound || searchParams?.get('search')) && (
     //   <BreakApp />
     // );
@@ -261,11 +287,11 @@ export const MainPage = () =>
           {/* {breakAppView} */}
           {searchInput}
           {singlePokemonView}
-          {/* {item} */}
-          {pokemon}
-          {/* {loader} */}
+          {item}
+          {pokemonView}
+          {loader}
         </div>
-        {/* {additionInfo} */}
+        {additionInfo}
 
         {/* <div className="pokemon">
           <ul className="pokemon__list">
