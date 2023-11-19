@@ -34,14 +34,20 @@ const PokemonCardAdditional = () => {
     (state: RootState) => state.pokemon.pokemonChosenName
   );
 
-  const { data: pokemon, isSuccess } =
-    pokemonsApi.useGetPokemonAdditionalInfoQuery(pokemonChosenName);
+  const {
+    data: pokemon,
+    isSuccess,
+    isError,
+  } = pokemonsApi.useGetPokemonAdditionalInfoQuery(pokemonChosenName);
 
   useEffect(() => {
+    if (isError) {
+      dispatch(setDetailsLoading(true));
+    }
     if (isSuccess) {
       dispatch(setDetailsLoading(false));
     }
-  }, [dispatch, isSuccess]);
+  }, [dispatch, isSuccess, isError]);
 
   return (
     <div className={wrapperClass}>
@@ -68,6 +74,7 @@ const PokemonCardAdditional = () => {
                   <span data-testid="stats" className="pokemon__info-header">
                     Stats:
                   </span>
+
                   {pokemon?.stats.map(({ base_stat, stat }, index) => (
                     <li key={index}>
                       {index + 1 < pokemon?.stats.length

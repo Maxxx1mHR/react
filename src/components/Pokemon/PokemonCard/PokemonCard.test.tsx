@@ -1,68 +1,77 @@
 import { describe, it } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import PokemonCard from './PokemonCard';
-import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
-import * as reduxHooks from 'react-redux';
 import { Provider } from 'react-redux';
-vi.mock('react-redux');
-
-const mockedDispatch = vi.spyOn(reduxHooks, 'useDispatch');
+import { store } from '../../../state/store';
+import { MainPage } from '../../MainPage/MainPage';
+import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
 
 describe('Tests for the Search component:', () => {
-  mockedDispatch.mockReturnValue(vi.fn()).mockReturnValue;
-  vi.spyOn(reduxHooks, 'useSelector');
+  it('Verify that the component renders the specified number of cards', async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <MainPage />
+        </Provider>
+      </BrowserRouter>
+    );
+
+    const pokemonList = await screen.findAllByTestId('pokemonTest');
+    expect(pokemonList).toHaveLength(4);
+  });
 
   it('Ensure that the card component renders the relevant card data', async () => {
     render(
-      <Provider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <Provider store={store}>
           <PokemonCard pokemonName="bulbasaur"></PokemonCard>
-        </BrowserRouter>
-      </Provider>
+        </Provider>
+      </BrowserRouter>
     );
-    // const pokemonList = await screen.findByTestId('pokemonTest');
-    // expect(pokemonList).toBeInTheDocument;
+    const pokemonList = await screen.findByTestId('pokemonTest');
+    expect(pokemonList).toBeInTheDocument;
+  });
+
+  it('Make sure the detailed card component correctly displays the detailed card data', async () => {
+    render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <MainPage></MainPage>
+        </Provider>
+      </BrowserRouter>
+    );
+
+    const pokemonMainInfo = await screen.findAllByTestId('pokemonTest');
+    expect(pokemonMainInfo).toBeInTheDocument;
+    const additionalInfo = render(
+      <BrowserRouter>
+        <Provider store={store}>
+          <PokemonCardAdditional></PokemonCardAdditional>
+        </Provider>
+      </BrowserRouter>
+    );
+    expect(additionalInfo).toBeInTheDocument;
   });
 
   it('Validate that clicking on a card opens a detailed card component', async () => {
     render(
-      <Provider>
-        <BrowserRouter>
-          <PokemonCard pokemonName="bulbasaur"></PokemonCard>
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <MainPage></MainPage>
+        </Provider>
+      </BrowserRouter>
     );
-    // const pokemonList = await screen.findByTestId('pokemonTest');
-    // expect(pokemonList).toBeInTheDocument;
-    // fireEvent.click(pokemonList);
-    // render(
-    //   <BrowserRouter>
-    //     <PokemonCardAdditional></PokemonCardAdditional>
-    //   </BrowserRouter>
-    // );
-  });
 
-  // vi.mock('../../Services/PokeService', () => {
-  //   const pokemon = {
-  //     id: 1,
-  //     name: 'bulbasaur',
-  //   };
-
-  //   const getPokemon = vi.fn();
-  //   getPokemon.mockResolvedValue(pokemon);
-  //   return {
-  //     getPokemon,
-  //   };
-  // });
-
-  it('Check that clicking triggers an additional API call to fetch detailed information', () => {
-    render(
-      <Provider>
+    const pokemonMainInfo = await screen.findAllByTestId('pokemonTest');
+    expect(pokemonMainInfo).toBeInTheDocument;
+    const additionalInfo = render(
+      <Provider store={store}>
         <BrowserRouter>
           <PokemonCardAdditional></PokemonCardAdditional>
         </BrowserRouter>
       </Provider>
     );
+    expect(additionalInfo).toBeInTheDocument;
   });
 });

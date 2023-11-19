@@ -16,14 +16,8 @@ import { setMainLoading } from '../../state/slices/loaderSlice';
 export const MainPage = () => {
   const dispatch = useDispatch();
 
-  // const { limit, offset } = useSelector((state: RootState) => state.pagination);
-
   const limit = useSelector((state: RootState) => state.pagination.limit);
   const offset = useSelector((state: RootState) => state.pagination.offset);
-
-  // const { mainLoader, isNotFound } = useSelector(
-  //   (state: RootState) => state.loader
-  // );
   const mainLoader = useSelector((state: RootState) => state.loader.mainLoader);
   const isNotFound = useSelector((state: RootState) => state.loader.isNotFound);
 

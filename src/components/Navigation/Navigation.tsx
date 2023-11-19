@@ -12,10 +12,6 @@ import { setMainLoading } from '../../state/slices/loaderSlice';
 const Navigation = () => {
   const dispatch = useDispatch();
 
-  // const { limit, currentPage, countPokemons } = useSelector(
-  //   (state: RootState) => state.pagination
-  // );
-
   const limit = useSelector((state: RootState) => state.pagination.limit);
   const currentPage = useSelector(
     (state: RootState) => state.pagination.currentPage
