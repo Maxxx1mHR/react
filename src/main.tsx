@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom/client';
 import App from './components/App/App';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
-import { PokemonContextProvider } from './components/Context/PokemonContextProvider';
+import { Provider } from 'react-redux';
+import { store } from './state/store';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <React.StrictMode>
-      <PokemonContextProvider>
+      <Provider store={store}>
         <App />
-      </PokemonContextProvider>
+      </Provider>
     </React.StrictMode>
   </BrowserRouter>
 );
