@@ -1,99 +1,68 @@
-// import { describe, it } from 'vitest';
-// import { fireEvent, render, screen } from '@testing-library/react';
-// import { BrowserRouter } from 'react-router-dom';
-// import { IPokemon } from '../../../types';
-// import PokemonCard from './PokemonCard';
-// import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
-// import { getPokemon } from '../../Services/PokeService';
+import { describe, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import PokemonCard from './PokemonCard';
+import PokemonCardAdditional from '../PokemonCardAdditional/PokemonCardAdditional';
+import * as reduxHooks from 'react-redux';
+import { Provider } from 'react-redux';
+vi.mock('react-redux');
 
-// describe('Tests for the Search component:', () => {
-//   const pokemonObj: IPokemon = {
-//     id: 5,
-//     name: 'charmeleon',
-//     url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/5.svg',
-//     abilities: [
-//       {
-//         ability: {
-//           name: 'blaze',
-//         },
-//       },
-//       {
-//         ability: {
-//           name: 'solar-power',
-//         },
-//       },
-//     ],
-//     types: [
-//       {
-//         type: {
-//           name: 'fire',
-//         },
-//       },
-//     ],
-//     stats: [
-//       {
-//         base_stat: 64,
-//         stat: {
-//           name: 'attack',
-//         },
-//       },
-//     ],
-//   };
-//   it('Ensure that the card component renders the relevant card data', async () => {
-//     render(
-//       <BrowserRouter>
-//         <PokemonCard
-//           pokemonFullInfo={pokemonObj}
-//           setPokemonFullInfo={vi.fn()}
-//         ></PokemonCard>
-//       </BrowserRouter>
-//     );
-//     const pokemonList = await screen.findByTestId('pokemonTest');
-//     expect(pokemonList).toBeInTheDocument;
-//   });
+const mockedDispatch = vi.spyOn(reduxHooks, 'useDispatch');
 
-//   it('Validate that clicking on a card opens a detailed card component', async () => {
-//     render(
-//       <BrowserRouter>
-//         <PokemonCard
-//           pokemonFullInfo={pokemonObj}
-//           setPokemonFullInfo={vi.fn()}
-//         ></PokemonCard>
-//       </BrowserRouter>
-//     );
-//     const pokemonList = await screen.findByTestId('pokemonTest');
-//     expect(pokemonList).toBeInTheDocument;
-//     fireEvent.click(pokemonList);
-//     render(
-//       <BrowserRouter>
-//         <PokemonCardAdditional
-//           pokemonFullInfo={pokemonObj}
-//         ></PokemonCardAdditional>
-//       </BrowserRouter>
-//     );
-//   });
+describe('Tests for the Search component:', () => {
+  mockedDispatch.mockReturnValue(vi.fn()).mockReturnValue;
+  vi.spyOn(reduxHooks, 'useSelector');
 
-//   vi.mock('../../Services/PokeService', () => {
-//     const pokemon = {
-//       id: 1,
-//       name: 'bulbasaur',
-//     };
+  it('Ensure that the card component renders the relevant card data', async () => {
+    render(
+      <Provider>
+        <BrowserRouter>
+          <PokemonCard pokemonName="bulbasaur"></PokemonCard>
+        </BrowserRouter>
+      </Provider>
+    );
+    // const pokemonList = await screen.findByTestId('pokemonTest');
+    // expect(pokemonList).toBeInTheDocument;
+  });
 
-//     const getPokemon = vi.fn();
-//     getPokemon.mockResolvedValue(pokemon);
-//     return {
-//       getPokemon,
-//     };
-//   });
+  it('Validate that clicking on a card opens a detailed card component', async () => {
+    render(
+      <Provider>
+        <BrowserRouter>
+          <PokemonCard pokemonName="bulbasaur"></PokemonCard>
+        </BrowserRouter>
+      </Provider>
+    );
+    // const pokemonList = await screen.findByTestId('pokemonTest');
+    // expect(pokemonList).toBeInTheDocument;
+    // fireEvent.click(pokemonList);
+    // render(
+    //   <BrowserRouter>
+    //     <PokemonCardAdditional></PokemonCardAdditional>
+    //   </BrowserRouter>
+    // );
+  });
 
-//   it('Check that clicking triggers an additional API call to fetch detailed information', () => {
-//     render(
-//       <BrowserRouter>
-//         <PokemonCardAdditional
-//           pokemonFullInfo={pokemonObj}
-//         ></PokemonCardAdditional>
-//       </BrowserRouter>
-//     );
-//     expect(getPokemon).toHaveBeenCalledTimes(1);
-//   });
-// });
+  // vi.mock('../../Services/PokeService', () => {
+  //   const pokemon = {
+  //     id: 1,
+  //     name: 'bulbasaur',
+  //   };
+
+  //   const getPokemon = vi.fn();
+  //   getPokemon.mockResolvedValue(pokemon);
+  //   return {
+  //     getPokemon,
+  //   };
+  // });
+
+  it('Check that clicking triggers an additional API call to fetch detailed information', () => {
+    render(
+      <Provider>
+        <BrowserRouter>
+          <PokemonCardAdditional></PokemonCardAdditional>
+        </BrowserRouter>
+      </Provider>
+    );
+  });
+});

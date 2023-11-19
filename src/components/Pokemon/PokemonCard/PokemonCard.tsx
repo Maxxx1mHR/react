@@ -12,7 +12,7 @@ import {
 } from '../../../state/slices/loaderSlice';
 import { PuffLoader } from 'react-spinners';
 const PokemonCard = ({ pokemonName }: { pokemonName: string }) => {
-  const { isBreak } = useSelector((state: RootState) => state.loader);
+  const isBreak = useSelector((state: RootState) => state.loader.isBreak);
   if (isBreak) {
     throw Error('error!');
   }
@@ -44,7 +44,7 @@ const PokemonCard = ({ pokemonName }: { pokemonName: string }) => {
     }
   }, [dispatch, error, isSuccess]);
 
-  const { mainLoader } = useSelector((state: RootState) => state.loader);
+  const mainLoader = useSelector((state: RootState) => state.loader.mainLoader);
 
   return (
     <>

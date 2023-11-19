@@ -26,7 +26,9 @@ const PokemonCardAdditional = () => {
 
   const dispatch = useDispatch();
 
-  const { detailsLoader } = useSelector((state: RootState) => state.loader);
+  const detailsLoader = useSelector(
+    (state: RootState) => state.loader.detailsLoader
+  );
 
   const pokemonChosenName = useSelector(
     (state: RootState) => state.pokemon.pokemonChosenName

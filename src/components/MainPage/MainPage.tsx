@@ -37,6 +37,10 @@ export const MainPage = () => {
   });
 
   useEffect(() => {
+    setSearchParams();
+  }, []);
+
+  useEffect(() => {
     if (pokemons) {
       dispatch(setMainLoading(false));
     }
