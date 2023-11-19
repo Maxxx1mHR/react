@@ -1,5 +1,4 @@
-import { useContext, useMemo } from 'react';
-import { PokemonContext } from '../Context/PokemonContextProvider';
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   setCurrentPage,
@@ -17,13 +16,8 @@ const ItemPerPage = () => {
       <select
         onChange={(e) => {
           dispatch(setLimit(Number(e.target.value)));
-          // setPokemonPerPage?.(Number(e.target.value));
-          // setSearchParams?.({ page: 1 });
-          // setCurrentPage?.(1);
           dispatch(setCurrentPage(1));
           dispatch(setOffset(0));
-
-          // setOffset?.(0);
         }}
       >
         {countItem.map((item) => (

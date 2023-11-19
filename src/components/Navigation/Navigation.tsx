@@ -1,4 +1,3 @@
-import { useCallback, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../state/store';
 import {
@@ -10,19 +9,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { setMainLoading } from '../../state/slices/loaderSlice';
 
-const POKEMON_PER_PAGE = 4;
-const COUNT_ALL_POKEMONS = 648;
-
 const Navigation = () => {
-  // const {
-  //   searchParams,
-  //   setSearchParams,
-  //   pokemonsPerPage,
-  //   currentPage,
-  //   setCurrentPage,
-  //   setOffset,
-  // } = useContext(PokemonContext) || {};
-
   const dispatch = useDispatch();
 
   const { limit, currentPage, countPokemons } = useSelector(
@@ -110,82 +97,6 @@ const Navigation = () => {
       });
     }
   };
-
-  // const countsPage = Math.ceil(
-  //   COUNT_ALL_POKEMONS / (pokemonsPerPage || POKEMON_PER_PAGE)
-  // );
-
-  // const details = searchParams?.get('details');
-
-  // const incrementPage = useCallback(() => {
-  //   if (currentPage === countsPage) {
-  //     return;
-  //   }
-  //   setOffset?.(
-  //     (offset: number) => offset + (pokemonsPerPage || POKEMON_PER_PAGE)
-  //   );
-  //   setCurrentPage?.((currentPage: number) => (currentPage || 0) + 1);
-  //   if (details) {
-  //     setSearchParams?.({
-  //       page: (currentPage || 0) + 1,
-  //       details: details,
-  //     });
-  //   } else {
-  //     setSearchParams?.({
-  //       page: (currentPage || 0) + 1,
-  //     });
-  //   }
-  // }, []);
-
-  // const decrementPage = useCallback(() => {
-  //   if (currentPage === 1) {
-  //     return;
-  //   }
-  //   setOffset?.(
-  //     (offset: number) => offset - (pokemonsPerPage || POKEMON_PER_PAGE)
-  //   );
-  //   setCurrentPage?.((currentPage: number) => (currentPage || 0) - 1);
-  //   if (details) {
-  //     setSearchParams?.({
-  //       page: (currentPage || 0) - 1,
-  //       details: details,
-  //     });
-  //   } else {
-  //     setSearchParams?.({
-  //       page: (currentPage || 0) - 1,
-  //     });
-  //   }
-  // }, []);
-
-  // const toFirstPage = useCallback(() => {
-  //   setOffset?.(0);
-  //   setCurrentPage?.(1);
-  //   if (details) {
-  //     setSearchParams?.({
-  //       page: 1,
-  //       details: details,
-  //     });
-  //   } else {
-  //     setSearchParams?.({
-  //       page: 1,
-  //     });
-  //   }
-  // }, []);
-
-  // const toLastPage = useCallback(() => {
-  //   setOffset?.(COUNT_ALL_POKEMONS - (pokemonsPerPage || POKEMON_PER_PAGE));
-  //   setCurrentPage?.(countsPage);
-  //   if (details) {
-  //     setSearchParams?.({
-  //       page: countsPage,
-  //       details: details,
-  //     });
-  //   } else {
-  //     setSearchParams?.({
-  //       page: countsPage,
-  //     });
-  //   }
-  // }, []);
 
   return (
     <div data-testid="navigation" className="navigation">
