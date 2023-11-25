@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import { Inter } from 'next/font/google';
-import styles from '@/styles/Home.module.css';
 import { wrapper } from '@/state/store';
 import {
   getPokemon,
@@ -9,7 +7,7 @@ import {
   getPokemons,
   getRunningQueriesThunk,
 } from '@/state/slices/pokemonsApi';
-import { IPokemon, IPokemonsResponse } from '@/types';
+import { IPokemon } from '@/types';
 import PokemonCard from '@/components/Pokemon/PokemonCard/PokemonCard';
 import Navigation from '@/components/Navigation/Navigation';
 import { SearchInput } from '@/components/Search/SearchInput';

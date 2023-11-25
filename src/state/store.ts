@@ -1,22 +1,8 @@
-import {
-  combineReducers,
-  configureStore,
-  ThunkAction,
-  Action,
-} from '@reduxjs/toolkit';
-import pokemonListReducer from './slices/pokemonSlice';
-import inputReducer from './slices/inputSlice';
-import paginationReducer from './slices/pageSlice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { pokemonsApi } from './slices/pokemonsApi';
-import loaderReducer from './slices/loaderSlice';
 import { createWrapper } from 'next-redux-wrapper';
 
 const combineReducer = combineReducers({
-  inputValue: inputReducer,
-  pokemon: pokemonListReducer,
-  pokemonList: pokemonListReducer,
-  pagination: paginationReducer,
-  loader: loaderReducer,
   [pokemonsApi.reducerPath]: pokemonsApi.reducer,
 });
 

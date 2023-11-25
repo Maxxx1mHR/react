@@ -1,7 +1,4 @@
 import { useRef } from 'react';
-import { useDispatch } from 'react-redux';
-import { setInputValue } from '../../state/slices/inputSlice';
-import { setMainLoading } from '../../state/slices/loaderSlice';
 import { useRouter } from 'next/router';
 
 export const SearchInput = ({ inputValue }: { inputValue: string }) => {

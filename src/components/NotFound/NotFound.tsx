@@ -1,5 +1,3 @@
-import { useDispatch } from 'react-redux';
-import { setNotFound } from '../../state/slices/loaderSlice';
 import { useRouter } from 'next/router';
 
 const NotFound = () => {

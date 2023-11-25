@@ -1,10 +1,4 @@
-import { PuffLoader } from 'react-spinners';
 import PokemonBaseInfo from '../PokemonBaseInfo/PokemonBaseInfo';
-import { pokemonsApi } from '../../../state/slices/pokemonsApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../state/store';
-import { setDetailsLoading } from '../../../state/slices/loaderSlice';
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { IPokemon } from '@/types';
 
@@ -28,8 +22,6 @@ const PokemonCardAdditional = ({
   const wrapperClass = router.query.details
     ? 'pokemon-additional-info pokemon-additional-info_active'
     : 'pokemon-additional-info';
-
-  console.log('___+++', pokemonsFullInfo);
 
   return (
     <div className={wrapperClass}>

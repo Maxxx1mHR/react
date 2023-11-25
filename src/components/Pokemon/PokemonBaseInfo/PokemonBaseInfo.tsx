@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { IPokemon } from '../../../types';
-import { useRouter } from 'next/router';
 
 const PokemonBaseInfo = ({
   pokemonFullInfo,

@@ -1,14 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
-import {
-  decrementPage,
-  incrementPage,
-  setFirstPage,
-  setLastPage,
-} from '../../state/slices/pageSlice';
 import { useRouter } from 'next/router';
 const COUNT_ALL_POKEMONS = 648;
-import { setMainLoading } from '../../state/slices/loaderSlice';
 
 const Navigation = ({
   limit,
