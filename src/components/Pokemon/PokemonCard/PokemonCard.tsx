@@ -12,6 +12,7 @@ import {
 } from '../../../state/slices/loaderSlice';
 import { PuffLoader } from 'react-spinners';
 import { IPokemon } from '@/types';
+import { useRouter } from 'next/router';
 const PokemonCard = ({
   pokemonsFullInfo,
 }: {
@@ -21,16 +22,26 @@ const PokemonCard = ({
   if (isBreak) {
     throw Error('error!');
   }
+  const router = useRouter();
 
-  const inputValue = useSelector(
-    (state: RootState) => state.inputValue.inputValue
-  );
-
-  const test = pokemonsFullInfo.map((pokemon) => {
-    return <PokemonBaseInfo key={pokemon.id} pokemonFullInfo={pokemon} />;
+  console.log('single Pok', pokemonsFullInfo);
+  const pokemon = pokemonsFullInfo.map((pokemon) => {
+    return (
+      <li
+        key={pokemon.id}
+        className="pokemon__item"
+        onClick={() => {
+          // console.log(pokemon.name);
+          router.query.details = `${pokemon?.name}`;
+          router.push(router);
+        }}
+      >
+        <PokemonBaseInfo key={pokemon.id} pokemonFullInfo={pokemon} />;
+      </li>
+    );
   });
 
-  return <>{test}</>;
+  return <>{pokemon}</>;
 };
 
 export default PokemonCard;

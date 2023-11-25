@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { IPokemon } from '../../../types';
+import { useRouter } from 'next/router';
 
 const PokemonBaseInfo = ({
   pokemonFullInfo,
@@ -7,7 +8,7 @@ const PokemonBaseInfo = ({
   pokemonFullInfo: IPokemon | undefined;
 }) => {
   return (
-    <li className="pokemon__item">
+    <>
       <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
       <div className="pokemon__wrapper">
         <Image
@@ -38,7 +39,7 @@ const PokemonBaseInfo = ({
           </li>
         ))}
       </ul>
-    </li>
+    </>
   );
 };
 

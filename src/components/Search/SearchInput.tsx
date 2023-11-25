@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 export const SearchInput = ({ inputValue }: { inputValue: string }) => {
   const inputCurrentValue = useRef(inputValue);
+
   const router = useRouter();
 
   return (
@@ -16,8 +17,9 @@ export const SearchInput = ({ inputValue }: { inputValue: string }) => {
         e.preventDefault();
         if (inputCurrentValue.current === '') {
           router.push('');
+        } else {
+          router.push(`?search=${inputCurrentValue.current}`);
         }
-        router.push(`?search=${inputCurrentValue.current}`);
       }}
     >
       <input

@@ -38,4 +38,5 @@ export const {
   util: { getRunningQueriesThunk },
 } = pokemonsApi;
 
-export const { getPokemons, getPokemon } = pokemonsApi.endpoints;
+export const { getPokemons, getPokemon, getPokemonAdditionalInfo } =
+  pokemonsApi.endpoints;
