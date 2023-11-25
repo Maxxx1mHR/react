@@ -18,10 +18,10 @@ const PokemonCard = ({
 }: {
   pokemonsFullInfo: IPokemon[];
 }) => {
-  const isBreak = useSelector((state: RootState) => state.loader.isBreak);
-  if (isBreak) {
-    throw Error('error!');
-  }
+  // const isBreak = useSelector((state: RootState) => state.loader.isBreak);
+  // if (isBreak) {
+  //   throw Error('error!');
+  // }
   const router = useRouter();
 
   console.log('single Pok', pokemonsFullInfo);
@@ -36,7 +36,7 @@ const PokemonCard = ({
           router.push(router);
         }}
       >
-        <PokemonBaseInfo key={pokemon.id} pokemonFullInfo={pokemon} />;
+        <PokemonBaseInfo key={pokemon.id} pokemonFullInfo={pokemon} />
       </li>
     );
   });

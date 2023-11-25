@@ -15,6 +15,16 @@ const PokemonCardAdditional = ({
 }) => {
   const router = useRouter();
 
+  const setUrlParams = () => {
+    if (router.query.search) {
+      router.push(`?search=${String(router.query.search)}`);
+    } else if (router.query.page) {
+      router.push(String(`?page=${router.query.page}`));
+    } else {
+      router.push('');
+    }
+  };
+
   const wrapperClass = router.query.details
     ? 'pokemon-additional-info pokemon-additional-info_active'
     : 'pokemon-additional-info';
@@ -31,7 +41,7 @@ const PokemonCardAdditional = ({
           <span
             data-testid="close__button"
             className="pokemon__close-menu"
-            // onClick={() => setUrlParams()}
+            onClick={() => setUrlParams()}
           >
             Close
           </span>
@@ -66,7 +76,7 @@ const PokemonCardAdditional = ({
           }
         </>
       </div>
-      {/* <div className="pokemon__overlay" onClick={() => setUrlParams()}></div> */}
+      <div className="pokemon__overlay" onClick={() => setUrlParams()}></div>
     </div>
   );
 };
