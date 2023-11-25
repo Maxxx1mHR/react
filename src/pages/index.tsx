@@ -10,18 +10,29 @@ import {
 } from '@/state/slices/pokemonsApi';
 import { IPokemon, IPokemonsResponse } from '@/types';
 import PokemonCard from '@/components/Pokemon/PokemonCard/PokemonCard';
+import Navigation from '@/components/Navigation/Navigation';
+import { SearchInput } from '@/components/Search/SearchInput';
+import { useRouter } from 'next/router';
 
-const inter = Inter({ subsets: ['latin'] });
+const POKEMON_PER_PAGE = 4;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    const limit = 4;
-    const offset = 0;
+    console.log(context);
+    const limit = Number(context.query.limit) || POKEMON_PER_PAGE;
+    const currentPage = Number(context.query.page) || 1;
+    const offset = limit * (currentPage - 1);
+    const inputValue = context.query.search?.toString() || '';
+
     const pokemons = await store.dispatch(
       getPokemons.initiate({ limit, offset })
     );
 
+    const pokemon = await store.dispatch(getPokemon.initiate(inputValue));
+
     const pokemonsFullInfo: IPokemon[] = [];
+    const pokemonFullInfo: IPokemon[] = [];
+
     pokemons.data?.results.map(async (pokemon) => {
       const singlePokemon = await store.dispatch(
         getPokemon.initiate(pokemon.name)
@@ -31,21 +42,47 @@ export const getServerSideProps = wrapper.getServerSideProps(
         pokemonsFullInfo.push(singlePokemonData);
       }
     });
+
+    //
+    const singlePokemon = pokemon.data;
+    if (inputValue && singlePokemon) {
+      pokemonFullInfo.push(singlePokemon);
+    }
+
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
     return {
-      props: { pokemons, pokemonsFullInfo },
+      props: {
+        pokemonsFullInfo,
+        limit,
+        currentPage,
+        inputValue,
+        pokemonFullInfo,
+      },
     };
   }
 );
 
 export default function Home({
-  pokemons,
   pokemonsFullInfo,
+  limit,
+  currentPage,
+  inputValue,
+  pokemonFullInfo,
 }: {
-  pokemons: IPokemonsResponse;
   pokemonsFullInfo: IPokemon[];
+  limit: number;
+  currentPage: number;
+  inputValue: string;
+  pokemonFullInfo: IPokemon[];
 }) {
+  const router = useRouter();
+
+  const pokemons = <PokemonCard pokemonsFullInfo={pokemonsFullInfo} />;
+  const pokemon = <PokemonCard pokemonsFullInfo={pokemonFullInfo} />;
+
+  const pokemonsView = router.query.search ? pokemon : pokemons;
+
   return (
     <>
       <Head>
@@ -54,12 +91,12 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={`${styles.main} ${inter.className}`}>
+      <main>
+        <SearchInput inputValue={inputValue} />
         <div className="pokemon">
-          <ul className="pokemon__list">
-            <PokemonCard pokemonsFullInfo={pokemonsFullInfo}></PokemonCard>
-          </ul>
+          <ul className="pokemon__list">{pokemonsView}</ul>
         </div>
+        <Navigation limit={limit} currentPage={currentPage} />
       </main>
     </>
   );

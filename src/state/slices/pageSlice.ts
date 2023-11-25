@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
 
 const POKEMON_PER_PAGE = 4;
 const COUNT_ALL_POKEMONS = 648;
@@ -38,6 +39,14 @@ const pageSlice = createSlice({
     setLastPage: (state) => {
       state.currentPage = state.countPokemons / state.limit;
       state.offset = state.countPokemons - state.limit;
+    },
+  },
+  extraReducers: {
+    [HYDRATE]: (state, action) => {
+      return {
+        ...state,
+        ...action.payload.auth,
+      };
     },
   },
 });
