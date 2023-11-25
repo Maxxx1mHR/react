@@ -3,16 +3,17 @@
 // @import './styles/abstracts/spinner';
 @import './abstracts/variables';
 @import './abstracts/mixins';
-// @import './styles/base/logo';
+@import './base/logo';
 @import './base/button';
+@import './base/notFound';
 // @import './components//MainPage/mainPage';
 @import '../components/Navigation/navigation';
 // @import './components/NotFound/notFound';
 // @import './components/App/app';
-// @import './components/ErrorBoundary/errorBoundary';
+@import '../components/ErrorBoundary/errorBoundary';
 @import '../components//Pokemon/pokemonList';
 @import '../components/Search/search';
-// @import './components/ItemPerPage/itemPerPage';
+@import '../components/ItemPerPage/itemPerPage';
 
 html {
   font-size: 10px;

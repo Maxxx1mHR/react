@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setInputValue } from '../../state/slices/inputSlice';
 import { setMainLoading } from '../../state/slices/loaderSlice';

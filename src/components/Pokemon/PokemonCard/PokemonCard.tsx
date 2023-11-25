@@ -31,7 +31,6 @@ const PokemonCard = ({
         key={pokemon.id}
         className="pokemon__item"
         onClick={() => {
-          // console.log(pokemon.name);
           router.query.details = `${pokemon?.name}`;
           router.push(router);
         }}

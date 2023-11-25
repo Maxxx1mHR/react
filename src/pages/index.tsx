@@ -15,12 +15,15 @@ import Navigation from '@/components/Navigation/Navigation';
 import { SearchInput } from '@/components/Search/SearchInput';
 import { useRouter } from 'next/router';
 import PokemonCardAdditional from '@/components/Pokemon/PokemonCardAdditional/PokemonCardAdditional';
+import ItemPerPage from '@/components/ItemPerPage/ItemPerPage';
+import NotFound from '@/components/NotFound/NotFound';
+import BreakApp from '@/components/BreakApp/BreakApp';
+import logo from '../assets/logo.png';
 
 const POKEMON_PER_PAGE = 4;
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
-    // console.log('context', context);
     const limit = Number(context.query.limit) || POKEMON_PER_PAGE;
     const currentPage = Number(context.query.page) || 1;
     const offset = limit * (currentPage - 1);
@@ -51,7 +54,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       }
     });
 
-    //
     const singlePokemon = pokemon.data;
     if (singlePokemon) {
       pokemonFullInfo.push(singlePokemon);
@@ -61,11 +63,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     if (singlePokemonDetails && context.query.details) {
       pokemonFullInfoDetails.push(singlePokemonDetails);
     }
-
-    // const singlePokemonDetails = pokemonAdditional.data;
-    // if (singlePokemonDetails && details) {
-    //   pokemonFullInfoDetails.push(singlePokemonDetails);
-    // }
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
@@ -95,13 +92,13 @@ export default function Home({
   currentPage: number;
   inputValue: string;
   pokemonFullInfo: IPokemon[];
-  singlePokemonDetails: IPokemon[];
   pokemonFullInfoDetails: IPokemon[];
 }) {
   const router = useRouter();
 
   const pokemons = (
     <>
+      <ItemPerPage />
       <div className="pokemon">
         <ul className="pokemon__list">
           <PokemonCard pokemonsFullInfo={pokemonsFullInfo} />
@@ -118,6 +115,8 @@ export default function Home({
     <PokemonCardAdditional pokemonsFullInfo={pokemonFullInfoDetails} />
   );
 
+  const checkSearch = pokemonFullInfo.length || pokemonFullInfoDetails.length;
+
   return (
     <>
       <Head>
@@ -126,9 +125,17 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main className="app">
+        <Image
+          src={logo}
+          alt="pokemon logo"
+          className="logo"
+          width={500}
+          height={200}
+        />
+        <BreakApp />
         <SearchInput inputValue={inputValue} />
-        {pokemonsView}
+        {checkSearch ? pokemonsView : <NotFound />}
         {additionInfo}
       </main>
     </>
