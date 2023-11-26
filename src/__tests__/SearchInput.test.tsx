@@ -6,8 +6,7 @@ import mockRouter from 'next-router-mock';
 
 describe('Tests for the Search component:', () => {
   it('Verify that clicking the Search button saves the entered value to the local storage;', async () => {
-    const test = '';
-    render(<SearchInput inputValue={test} />, {
+    render(<SearchInput inputValue="" />, {
       wrapper: MemoryRouterProvider,
     });
     const inputSearch = (await screen.findByTestId(
