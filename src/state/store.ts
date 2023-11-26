@@ -1,14 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { pokemonsApi } from './slices/pokemonsApi';
 import { createWrapper } from 'next-redux-wrapper';
 
-const combineReducer = combineReducers({
-  [pokemonsApi.reducerPath]: pokemonsApi.reducer,
-});
-
-export const makeStore = () =>
+const makeStore = () =>
   configureStore({
-    reducer: combineReducer,
+    reducer: {
+      [pokemonsApi.reducerPath]: pokemonsApi.reducer,
+    },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(pokemonsApi.middleware),
   });

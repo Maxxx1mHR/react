@@ -8,14 +8,23 @@ export const SearchInput = ({ inputValue }: { inputValue: string }) => {
 
   return (
     <form
+      data-testid="searchForm"
       action="#"
       className="search"
       onSubmit={(e) => {
         e.preventDefault();
         if (inputCurrentValue.current === '') {
+          localStorage.setItem(
+            'pokemonQuery',
+            inputCurrentValue.current.toLowerCase()
+          );
           router.push('');
         } else {
-          router.push(`?search=${inputCurrentValue.current}`);
+          localStorage.setItem(
+            'pokemonQuery',
+            inputCurrentValue.current.toLowerCase()
+          );
+          router.push(`?search=${inputCurrentValue.current.toLowerCase()}`);
         }
       }}
     >
@@ -32,7 +41,11 @@ export const SearchInput = ({ inputValue }: { inputValue: string }) => {
         }}
       />
       <div className="search__button">
-        <button type="submit" className="button button_success">
+        <button
+          data-testid="pokemon-search-button"
+          type="submit"
+          className="button button_success"
+        >
           Search
         </button>
       </div>
