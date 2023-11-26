@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { IPokemon } from '../../../types';
 
 const PokemonBaseInfo = ({
@@ -9,9 +10,11 @@ const PokemonBaseInfo = ({
     <>
       <h2 className="pokemon__name">{pokemonFullInfo?.name}</h2>
       <div className="pokemon__wrapper">
-        <img
-          src={pokemonFullInfo?.sprites.other.dream_world.front_default}
-          alt={pokemonFullInfo?.name}
+        <Image
+          src={pokemonFullInfo?.sprites.other.dream_world.front_default || ''}
+          width={200}
+          height={300}
+          alt={pokemonFullInfo?.name || ''}
           className="pokemon__img"
         />
       </div>

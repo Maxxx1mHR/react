@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
-import error from '../../assets/img/error.gif';
+import error from '../../assets/error.gif';
+import Image from 'next/image';
 
 export default class ErrorBoundary extends Component<{
   children: ReactNode;
@@ -18,7 +19,15 @@ export default class ErrorBoundary extends Component<{
 
   render() {
     if (this.state.error) {
-      return <img src={error} alt="error" className="error" />;
+      return (
+        <Image
+          src={error}
+          alt="error"
+          className="error"
+          width={600}
+          height={500}
+        />
+      );
     }
 
     return this.props.children;

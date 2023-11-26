@@ -1,7 +1,6 @@
 export interface IPokemon {
   id: number;
   name: string;
-  // url: string;
   sprites: {
     other: {
       dream_world: {
@@ -12,6 +11,12 @@ export interface IPokemon {
   abilities: IAbility[];
   types: ITypes[];
   stats: IStats[];
+}
+
+export interface IPokemonsResponse {
+  data: {
+    results: [IPokemon];
+  };
 }
 
 export interface ISearchInputProps {

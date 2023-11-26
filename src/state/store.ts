@@ -1,22 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import pokemonListReducer from './slices/pokemonSlice';
-import inputReducer from './slices/inputSlice';
-import paginationReducer from './slices/pageSlice';
 import { pokemonsApi } from './slices/pokemonsApi';
-import loaderReducer from './slices/loaderSlice';
+import { createWrapper } from 'next-redux-wrapper';
 
-export const store = configureStore({
-  reducer: {
-    inputValue: inputReducer,
-    pokemon: pokemonListReducer,
-    pokemonList: pokemonListReducer,
-    pagination: paginationReducer,
-    loader: loaderReducer,
-    [pokemonsApi.reducerPath]: pokemonsApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pokemonsApi.middleware),
-});
+const makeStore = () =>
+  configureStore({
+    reducer: {
+      [pokemonsApi.reducerPath]: pokemonsApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(pokemonsApi.middleware),
+  });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
+
+export const wrapper = createWrapper<AppStore>(makeStore);

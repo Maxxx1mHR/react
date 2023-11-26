@@ -1,14 +1,12 @@
-import { useDispatch } from 'react-redux';
-import { setBreak } from '../../state/slices/loaderSlice';
+import { useState } from 'react';
 
 const BreakApp = () => {
-  const dispatch = useDispatch();
-
+  const [isBreak, setIsBreak] = useState(false);
+  if (isBreak) {
+    throw Error('error!');
+  }
   return (
-    <button
-      className="button button_danger"
-      onClick={() => dispatch(setBreak(true))}
-    >
+    <button className="button button_danger" onClick={() => setIsBreak(true)}>
       Break app
     </button>
   );

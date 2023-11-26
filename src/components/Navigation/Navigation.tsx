@@ -1,105 +1,45 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
-import {
-  decrementPage,
-  incrementPage,
-  setFirstPage,
-  setLastPage,
-} from '../../state/slices/pageSlice';
-import { useSearchParams } from 'react-router-dom';
-import { setMainLoading } from '../../state/slices/loaderSlice';
+import { useRouter } from 'next/router';
+const COUNT_ALL_POKEMONS = 648;
 
-const Navigation = () => {
-  const dispatch = useDispatch();
+const Navigation = ({
+  limit,
+  currentPage,
+}: {
+  limit: number;
+  currentPage: number;
+}) => {
+  const countPokemons = COUNT_ALL_POKEMONS;
 
-  const limit = useSelector((state: RootState) => state.pagination.limit);
-  const currentPage = useSelector(
-    (state: RootState) => state.pagination.currentPage
-  );
-  const countPokemons = useSelector(
-    (state: RootState) => state.pagination.countPokemons
-  );
-
-  const [searchParams, setSearchParams] = useSearchParams();
+  const router = useRouter();
 
   const countsPage = Math.ceil(countPokemons / limit);
-
-  const details = searchParams?.get('details');
 
   const nextPage = () => {
     if (currentPage === countsPage) {
       return;
     }
-    dispatch(incrementPage());
-    dispatch(setMainLoading(true));
-
-    if (details) {
-      setSearchParams?.({
-        page: String((currentPage || 0) + 1),
-        details: details,
-      });
-    } else {
-      setSearchParams?.({
-        page: String((currentPage || 0) + 1),
-      });
-    }
+    router.push(`?page=${currentPage + 1}&limit=${limit}`);
   };
 
   const prevPage = () => {
     if (currentPage === 1) {
       return;
     }
-    dispatch(decrementPage());
-    dispatch(setMainLoading(true));
-
-    if (details) {
-      setSearchParams?.({
-        page: String((currentPage || 0) - 1),
-        details: details,
-      });
-    } else {
-      setSearchParams?.({
-        page: String((currentPage || 0) - 1),
-      });
-    }
+    router.push(`?page=${currentPage - 1}&limit=${limit}`);
   };
 
   const toFirstPage = () => {
     if (currentPage === 1) {
       return;
     }
-    dispatch(setFirstPage());
-    dispatch(setMainLoading(true));
-
-    if (details) {
-      setSearchParams?.({
-        page: '1',
-        details: details,
-      });
-    } else {
-      setSearchParams?.({
-        page: '1',
-      });
-    }
+    router.push(`?page=1&limit=${limit}`);
   };
 
   const toLastPage = () => {
     if (currentPage === countsPage) {
       return;
     }
-    dispatch(setLastPage());
-    dispatch(setMainLoading(true));
-
-    if (details) {
-      setSearchParams?.({
-        page: String(countsPage),
-        details: details,
-      });
-    } else {
-      setSearchParams?.({
-        page: String(countsPage),
-      });
-    }
+    router.push(`?page=${countsPage}&limit=${limit}`);
   };
 
   return (

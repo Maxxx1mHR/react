@@ -1,49 +1,54 @@
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setInputValue } from '../../state/slices/inputSlice';
-import { setMainLoading } from '../../state/slices/loaderSlice';
+import { useRef } from 'react';
+import { useRouter } from 'next/router';
 
-export const SearchInput = () => {
-  const [input, setInput] = useState('');
-  const [searchParams, setSearchParams] = useSearchParams();
-  const dispatch = useDispatch();
+export const SearchInput = ({ inputValue }: { inputValue: string }) => {
+  const inputCurrentValue = useRef(inputValue);
+
+  const router = useRouter();
 
   return (
-    <div className="search">
+    <form
+      data-testid="searchForm"
+      action="#"
+      className="search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (inputCurrentValue.current === '') {
+          localStorage.setItem(
+            'pokemonQuery',
+            inputCurrentValue.current.toLowerCase()
+          );
+          router.push('');
+        } else {
+          localStorage.setItem(
+            'pokemonQuery',
+            inputCurrentValue.current.toLowerCase()
+          );
+          router.push(`?search=${inputCurrentValue.current.toLowerCase()}`);
+        }
+      }}
+    >
       <input
+        defaultValue={inputValue}
+        type="text"
+        name="input"
+        id="input"
         data-testid="pokemon-search-input"
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value);
-        }}
         className="search__input"
+        onChange={(e) => {
+          e.target.value = e.target.value.trim();
+          inputCurrentValue.current = e.target.value;
+        }}
       />
       <div className="search__button">
         <button
           data-testid="pokemon-search-button"
-          onClick={() => {
-            if (searchParams.get('search') === input) {
-              return;
-            } else if (!input && !searchParams.get('search')) {
-              return;
-            }
-            dispatch(setInputValue(input));
-            dispatch(setMainLoading(true));
-
-            localStorage.setItem('pokemonQuery', input);
-            if (input) {
-              setSearchParams?.({ search: input });
-            } else {
-              setSearchParams?.({ page: '1' });
-              dispatch(setMainLoading(false));
-            }
-          }}
+          type="submit"
           className="button button_success"
         >
           Search
         </button>
       </div>
-    </div>
+    </form>
   );
 };
