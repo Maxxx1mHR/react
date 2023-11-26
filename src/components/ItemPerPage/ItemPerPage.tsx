@@ -9,6 +9,7 @@ const ItemPerPage = () => {
     <div className="count">
       <h2 className="count__title">Choose item per page</h2>
       <select
+        data-testid="select"
         onChange={(e) => {
           router.replace({
             query: { ...router.query, limit: e.target.value },
@@ -16,7 +17,7 @@ const ItemPerPage = () => {
         }}
       >
         {countItem.map((item) => (
-          <option key={item} value={item}>
+          <option data-testid="select-option" key={item} value={item}>
             {item}
           </option>
         ))}

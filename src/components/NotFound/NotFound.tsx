@@ -8,6 +8,7 @@ const NotFound = () => {
       <div className="not-found">Pokemon Not Found</div>;
       <div className="not-found">
         <button
+          data-testid="not-found"
           className="button"
           onClick={() => {
             router.push('');
