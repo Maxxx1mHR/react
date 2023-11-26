@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ItemPerPage from '../components/ItemPerPage/ItemPerPage';
 
-describe('Tests for the 404 Page component:', () => {
-  it('Ensure that the 404 page is displayed when navigating to an invalid route', async () => {
+describe('Tests for the Item Page component:', () => {
+  it('Check that value change when user change count items per page', async () => {
     render(<ItemPerPage />);
     expect(screen.getByText('Choose item per page')).toBeInTheDocument();
     fireEvent.change(await screen.getByTestId('select'), {

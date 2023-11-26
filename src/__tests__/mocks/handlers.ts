@@ -21,69 +21,61 @@ export const handlers = [
   }),
   http.get('https://pokeapi.co/api/v2/pokemon/meowth', () => {
     return HttpResponse.json({
-      id: 522,
-      name: 'meowth',
+      id: 1,
+      name: 'bulbasaur',
       sprites: {
         other: {
           dream_world: {
             front_default:
-              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/52.svg',
+              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg',
           },
         },
       },
-      abilities: {
-        ability: [
-          {
-            name: 'pickup',
+      abilities: [
+        { ability: { name: 'overgrow' } },
+        { ability: { name: 'chlorophyll' } },
+      ],
+      types: [
+        {
+          type: {
+            name: 'grass',
           },
-          {
-            name: 'technician',
-          },
-          {
-            name: 'unnerve',
-          },
-        ],
-      },
-      types: {
-        type: [
-          {
-            name: 'nornmal',
-          },
-        ],
-      },
+        },
+        { type: { name: 'poison' } },
+      ],
       stats: [
         {
-          base_stat: 40,
+          base_stat: 45,
           stat: {
             name: 'hp',
           },
         },
         {
-          base_stat: 45,
+          base_stat: 49,
           stat: {
             name: 'attack',
           },
         },
         {
-          base_stat: 35,
+          base_stat: 49,
           stat: {
             name: 'defense',
           },
         },
         {
-          base_stat: 40,
+          base_stat: 65,
           stat: {
             name: 'special-attack',
           },
         },
         {
-          base_stat: 40,
+          base_stat: 65,
           stat: {
             name: 'special-defense',
           },
         },
         {
-          base_stat: 90,
+          base_stat: 45,
           stat: {
             name: 'speed',
           },

@@ -5,7 +5,7 @@ import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 import mockRouter from 'next-router-mock';
 
 describe('Tests for the Search component:', () => {
-  it('Verify that clicking the Search button saves the entered value to the local storage;', async () => {
+  it('Verify that clicking the Search button saves the entered value to the local storage. Check that the component retrieves the value from the local storage', async () => {
     render(<SearchInput inputValue="" />, {
       wrapper: MemoryRouterProvider,
     });

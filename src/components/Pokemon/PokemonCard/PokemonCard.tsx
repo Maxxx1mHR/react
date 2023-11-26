@@ -10,6 +10,7 @@ const PokemonCard = ({
   const pokemon = pokemonsFullInfo.map((pokemon) => {
     return (
       <li
+        data-testid="pokemon__item"
         key={pokemon.id}
         className="pokemon__item"
         onClick={() => {
