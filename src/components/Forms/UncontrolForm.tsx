@@ -13,11 +13,26 @@ export default function UncontrolForm() {
   const genderMaleRef = useRef<HTMLInputElement>(null);
   const genderFemaleRef = useRef<HTMLInputElement>(null);
   const acceptRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
   const id = useSelector((state: RootState) => state.user.id);
 
-  const addNewUser = (e: React.FormEvent<HTMLFormElement>) => {
+  const convertBase64 = (file: File) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const addNewUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = nameRef?.current?.value;
     const age = Number(ageRef?.current?.value);
@@ -34,12 +49,21 @@ export default function UncontrolForm() {
     }
     const accept = acceptRef.current?.checked;
 
+    const file = imageRef?.current?.files;
+
     const checkExistValue =
-      name && age && email && password && passwordRepeat && gender && accept;
+      name &&
+      age &&
+      email &&
+      password &&
+      passwordRepeat &&
+      gender &&
+      accept &&
+      file;
 
     if (checkExistValue) {
-      // console.log(genderMaleRef.current?.checked);
-      console.log(gender);
+      const image = await convertBase64(file[0]);
+      console.log(accept);
       dispatch(
         addUser({
           id,
@@ -50,6 +74,7 @@ export default function UncontrolForm() {
           passwordRepeat,
           gender,
           accept,
+          image,
         })
       );
     }
@@ -68,7 +93,7 @@ export default function UncontrolForm() {
           </li>
         </u>
       </div>
-      <form onSubmit={(e) => addNewUser(e)}>
+      <form className="form" onSubmit={(e) => addNewUser(e)}>
         <label>
           Name:
           <input type="text" ref={nameRef} />
@@ -108,7 +133,12 @@ export default function UncontrolForm() {
         </label>
         <label>
           Your Image File
-          <input type="file" name="myImage" accept="image/png,  image/jpeg" />
+          <input
+            type="file"
+            name="myImage"
+            accept="image/png,  image/jpeg"
+            ref={imageRef}
+          />
         </label>
 
         <button>Add User</button>

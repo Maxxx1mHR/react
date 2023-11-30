@@ -26,6 +26,7 @@ export default function Home() {
           <li className="user__item">repeatPassword</li>
           <li className="user__item">Gender</li>
           <li className="user__item">Accept</li>
+          <li className="user__item">Image</li>
         </ul>
         {usersInfo.map((user) => (
           <ul key={user.id} className="user__list">
@@ -33,7 +34,12 @@ export default function Home() {
             <li className="user__item">{user.age}</li>
             <li className="user__item">{user.email}</li>
             <li className="user__item">{user.password}</li>
-            <li className="user__item">{user.accept}</li>
+            <li className="user__item">{user.passwordRepeat}</li>
+            <li className="user__item">{user.gender}</li>
+            <li className="user__item">{String(user.accept)}</li>
+            <li className="user__item">
+              <img src={String(user.image)} alt="image" height="200px" />
+            </li>
           </ul>
         ))}
       </div>

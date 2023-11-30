@@ -10,6 +10,7 @@ interface IUser {
   passwordRepeat: string;
   gender: string;
   accept: boolean;
+  image: string | unknown;
 }
 
 const initialState = {
