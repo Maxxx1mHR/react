@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-// import { IPokemon } from '../../types';
 
 interface IUser {
   id: number;

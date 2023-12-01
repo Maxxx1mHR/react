@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addUser } from '../../redux/features/FormSlice';
@@ -14,9 +14,12 @@ export default function UncontrolForm() {
   const genderFemaleRef = useRef<HTMLInputElement>(null);
   const acceptRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
+  const countryRef = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useDispatch();
   const id = useSelector((state: RootState) => state.user.id);
+
+  const countries = useSelector((state: RootState) => state.country.country);
 
   const convertBase64 = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -32,6 +35,16 @@ export default function UncontrolForm() {
     });
   };
 
+  const [countryMatch, setCountryMatch] = useState<string[]>([]);
+  const searchCountries = (searchCountry: string) => {
+    const matches = countries.filter((country) => {
+      if (searchCountry) {
+        return !country.indexOf(searchCountry);
+      }
+    });
+    setCountryMatch(matches);
+    console.log(countryMatch);
+  };
   const addNewUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = nameRef?.current?.value;
@@ -140,6 +153,27 @@ export default function UncontrolForm() {
             ref={imageRef}
           />
         </label>
+        <label>
+          Country:
+          <input
+            id="country"
+            type="input"
+            ref={countryRef}
+            onChange={() => searchCountries(String(countryRef.current?.value))}
+          />
+        </label>
+        {countryMatch.map((item) => (
+          <label
+            key={item}
+            htmlFor="country"
+            onClick={() => {
+              countryRef.current!.value = item;
+              searchCountries('');
+            }}
+          >
+            {item}
+          </label>
+        ))}
 
         <button>Add User</button>
       </form>
