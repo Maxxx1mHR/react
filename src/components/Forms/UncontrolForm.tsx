@@ -1,8 +1,11 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addUser } from '../../redux/features/FormSlice';
 import { RootState } from '../../redux/store/store';
+import { userScheme } from '../../validations/UserValidation';
+import { ValidationError } from 'yup';
+import { clearError, setError } from '../../redux/features/ErrorSlice';
 
 export default function UncontrolForm() {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -18,6 +21,7 @@ export default function UncontrolForm() {
 
   const dispatch = useDispatch();
   const id = useSelector((state: RootState) => state.user.id);
+  const errors = useSelector((state: RootState) => state.error);
 
   const countries = useSelector((state: RootState) => state.country.country);
 
@@ -43,15 +47,36 @@ export default function UncontrolForm() {
       }
     });
     setCountryMatch(matches);
-    console.log(countryMatch);
   };
+
+  // const [errorsMessages, setErrorsMessages] = useState({
+  //   name: '',
+  //   age: '',
+  //   email: '',
+  //   password: '',
+  //   passwordRepeat: '',
+  //   gender: '',
+  //   accept: '',
+  //   image: '',
+  // });
+  // const errorsMessages = {
+  //   name: '',
+  //   age: '',
+  //   email: '',
+  //   password: '',
+  //   passwordRepeat: '',
+  //   gender: '',
+  //   accept: '',
+  //   image: '',
+  // };
+
   const addNewUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const name = nameRef?.current?.value;
-    const age = Number(ageRef?.current?.value);
-    const email = emailRef?.current?.value;
-    const password = passwordRef?.current?.value;
-    const passwordRepeat = passwordRepeatRef?.current?.value;
+    const name = nameRef.current?.value;
+    const age = ageRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    const passwordRepeat = passwordRepeatRef.current?.value;
 
     let gender = '';
     if (genderMaleRef.current?.checked) {
@@ -74,24 +99,47 @@ export default function UncontrolForm() {
       accept &&
       file;
 
-    if (checkExistValue) {
-      const image = await convertBase64(file[0]);
-      console.log(accept);
-      dispatch(
-        addUser({
-          id,
-          name,
-          age,
-          email,
-          password,
-          passwordRepeat,
-          gender,
-          accept,
-          image,
-        })
-      );
+    // if (checkExistValue) {
+    // const image = await convertBase64(file[0]);
+
+    const data = {
+      id,
+      name,
+      age,
+      email,
+      password,
+      passwordRepeat,
+      gender,
+      accept,
+      // image,
+    };
+    // const keys = Object.keys(errorsMessages);
+    try {
+      await userScheme.validate(data, { abortEarly: false });
+      dispatch(clearError());
+      dispatch(addUser(data));
+    } catch (e) {
+      if (e instanceof ValidationError) {
+        console.log(e.errors);
+        dispatch(setError(e.errors));
+        // e.errors.map((err) => {
+        //   const test = err.split(' ')[0];
+        //   if (keys.includes(test)) {
+        //     setErrorsMessages((prev) => ({
+        //       ...prev,
+        //       [`${test as keyof typeof errorsMessages}`]: err,
+        //     }));
+        //   }
+        // });
+      }
     }
+    // }
   };
+
+  // console.log('test', errors);
+  // useEffect(() => {
+  //   errors;
+  // }, [errors]);
 
   return (
     <>
@@ -111,22 +159,35 @@ export default function UncontrolForm() {
           Name:
           <input type="text" ref={nameRef} />
         </label>
+        <p>{errors.name ? errors.name : ''}</p>
         <label>
           Age:
           <input type="text" ref={ageRef} />
         </label>
+        <p>{errors.age ? errors.age : ''}</p>
         <label>
           Email:
-          <input type="email" ref={emailRef} />
+          <input type="text" ref={emailRef} autoComplete="username" />
         </label>
+        <p>{errors.email ? errors.email : ''}</p>
         <label>
           Password:
-          <input type="password" ref={passwordRef} />
+          <input
+            type="password"
+            ref={passwordRef}
+            autoComplete="new-password"
+          />
         </label>
+        <p>{errors.password ? errors.password : ''}</p>
         <label>
           Repeat:
-          <input type="password" ref={passwordRepeatRef} />
+          <input
+            type="password"
+            ref={passwordRepeatRef}
+            autoComplete="new-password"
+          />
         </label>
+        <p>{errors.passwordRepeat ? errors.passwordRepeat : ''}</p>
         <label>
           Male:
           <input type="radio" name="gender" value="male" ref={genderMaleRef} />
@@ -140,10 +201,12 @@ export default function UncontrolForm() {
             ref={genderFemaleRef}
           />
         </label>
+        <p>{errors.gender ? errors.gender : ''}</p>
         <label>
           Accept:
           <input type="checkbox" ref={acceptRef} />
         </label>
+        <p>{errors.accept ? errors.accept : ''}</p>
         <label>
           Your Image File
           <input
