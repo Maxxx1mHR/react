@@ -10,6 +10,7 @@ interface IUser {
   gender: string;
   accept: boolean;
   image: string | unknown;
+  country: string;
 }
 
 const initialState = {

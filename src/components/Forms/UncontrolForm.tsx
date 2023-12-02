@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { addUser } from '../../redux/features/FormSlice';
 import { RootState } from '../../redux/store/store';
 import { userScheme } from '../../validations/UserValidation';
@@ -48,32 +48,12 @@ export default function UncontrolForm() {
     });
     setCountryMatch(matches);
   };
-
-  // const [errorsMessages, setErrorsMessages] = useState({
-  //   name: '',
-  //   age: '',
-  //   email: '',
-  //   password: '',
-  //   passwordRepeat: '',
-  //   gender: '',
-  //   accept: '',
-  //   image: '',
-  // });
-  // const errorsMessages = {
-  //   name: '',
-  //   age: '',
-  //   email: '',
-  //   password: '',
-  //   passwordRepeat: '',
-  //   gender: '',
-  //   accept: '',
-  //   image: '',
-  // };
+  const navigate = useNavigate();
 
   const addNewUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = nameRef.current?.value;
-    const age = ageRef.current?.value;
+    const age = Number(ageRef.current?.value);
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     const passwordRepeat = passwordRepeatRef.current?.value;
@@ -88,8 +68,10 @@ export default function UncontrolForm() {
     const accept = acceptRef.current?.checked;
 
     const file = imageRef?.current?.files;
+    const country = countryRef.current?.value;
 
     const checkExistValue =
+      id &&
       name &&
       age &&
       email &&
@@ -97,49 +79,50 @@ export default function UncontrolForm() {
       passwordRepeat &&
       gender &&
       accept &&
-      file;
+      file &&
+      country;
 
-    // if (checkExistValue) {
-    // const image = await convertBase64(file[0]);
-
-    const data = {
-      id,
-      name,
-      age,
-      email,
-      password,
-      passwordRepeat,
-      gender,
-      accept,
-      // image,
-    };
-    // const keys = Object.keys(errorsMessages);
     try {
-      await userScheme.validate(data, { abortEarly: false });
+      await userScheme.validate(
+        {
+          id,
+          name,
+          age,
+          email,
+          password,
+          passwordRepeat,
+          gender,
+          accept,
+          file,
+          country,
+        },
+        { abortEarly: false }
+      );
       dispatch(clearError());
-      dispatch(addUser(data));
+      if (checkExistValue) {
+        const image = await convertBase64(file[0]);
+        dispatch(
+          addUser({
+            id,
+            name,
+            age,
+            email,
+            password,
+            passwordRepeat,
+            gender,
+            accept,
+            image,
+            country,
+          })
+        );
+        navigate('/');
+      }
     } catch (e) {
       if (e instanceof ValidationError) {
-        console.log(e.errors);
         dispatch(setError(e.errors));
-        // e.errors.map((err) => {
-        //   const test = err.split(' ')[0];
-        //   if (keys.includes(test)) {
-        //     setErrorsMessages((prev) => ({
-        //       ...prev,
-        //       [`${test as keyof typeof errorsMessages}`]: err,
-        //     }));
-        //   }
-        // });
       }
     }
-    // }
   };
-
-  // console.log('test', errors);
-  // useEffect(() => {
-  //   errors;
-  // }, [errors]);
 
   return (
     <>
@@ -155,88 +138,120 @@ export default function UncontrolForm() {
         </u>
       </div>
       <form className="form" onSubmit={(e) => addNewUser(e)}>
-        <label>
-          Name:
-          <input type="text" ref={nameRef} />
-        </label>
-        <p>{errors.name ? errors.name : ''}</p>
-        <label>
-          Age:
-          <input type="text" ref={ageRef} />
-        </label>
-        <p>{errors.age ? errors.age : ''}</p>
-        <label>
-          Email:
-          <input type="text" ref={emailRef} autoComplete="username" />
-        </label>
-        <p>{errors.email ? errors.email : ''}</p>
-        <label>
-          Password:
-          <input
-            type="password"
-            ref={passwordRef}
-            autoComplete="new-password"
-          />
-        </label>
-        <p>{errors.password ? errors.password : ''}</p>
-        <label>
-          Repeat:
-          <input
-            type="password"
-            ref={passwordRepeatRef}
-            autoComplete="new-password"
-          />
-        </label>
-        <p>{errors.passwordRepeat ? errors.passwordRepeat : ''}</p>
-        <label>
-          Male:
-          <input type="radio" name="gender" value="male" ref={genderMaleRef} />
-        </label>
-        <label>
-          Female:
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            ref={genderFemaleRef}
-          />
-        </label>
-        <p>{errors.gender ? errors.gender : ''}</p>
-        <label>
-          Accept:
-          <input type="checkbox" ref={acceptRef} />
-        </label>
-        <p>{errors.accept ? errors.accept : ''}</p>
-        <label>
-          Your Image File
-          <input
-            type="file"
-            name="myImage"
-            accept="image/png,  image/jpeg"
-            ref={imageRef}
-          />
-        </label>
-        <label>
-          Country:
-          <input
-            id="country"
-            type="input"
-            ref={countryRef}
-            onChange={() => searchCountries(String(countryRef.current?.value))}
-          />
-        </label>
-        {countryMatch.map((item) => (
-          <label
-            key={item}
-            htmlFor="country"
-            onClick={() => {
-              countryRef.current!.value = item;
-              searchCountries('');
-            }}
-          >
-            {item}
+        <div className="form__field">
+          <label>
+            Name:
+            <input type="text" ref={nameRef} />
           </label>
-        ))}
+          <p className="form__error">{errors.name ? errors.name : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Age:
+            <input type="text" ref={ageRef} />
+          </label>
+          <p className="form__error">{errors.age ? errors.age : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Email:
+            <input type="text" ref={emailRef} autoComplete="username" />
+          </label>
+          <p className="form__error">{errors.email ? errors.email : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Password:
+            <input
+              type="password"
+              ref={passwordRef}
+              autoComplete="new-password"
+            />
+          </label>
+          <p className="form__error">
+            {errors.password ? errors.password : ''}
+          </p>
+        </div>
+        <div className="form__field">
+          <label>
+            Repeat:
+            <input
+              type="password"
+              ref={passwordRepeatRef}
+              autoComplete="new-password"
+            />
+          </label>
+          <p className="form__error">
+            {errors.passwordRepeat ? errors.passwordRepeat : ''}
+          </p>
+        </div>
+        <div className="form__field">
+          <label>
+            Male:
+            <input
+              type="radio"
+              name="gender"
+              value="male"
+              ref={genderMaleRef}
+            />
+          </label>
+          <label>
+            Female:
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              ref={genderFemaleRef}
+            />
+          </label>
+          <p className="form__error">{errors.gender ? errors.gender : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Accept:
+            <input type="checkbox" ref={acceptRef} />
+          </label>
+          <p className="form__error">{errors.accept ? errors.accept : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Your Image File
+            <input type="file" name="myImage" ref={imageRef} />
+          </label>
+          <p className="form__error">{errors.file ? errors.file : ''}</p>
+        </div>
+        <div className="form__field">
+          <label>
+            Country:
+            <input
+              id="country"
+              type="input"
+              ref={countryRef}
+              onChange={() =>
+                searchCountries(String(countryRef.current?.value))
+              }
+            />
+          </label>
+
+          <div className="country">
+            {countryMatch.map((item) => (
+              <label
+                className="country__item"
+                key={item}
+                htmlFor="country"
+                onClick={() => {
+                  countryRef.current!.value = item;
+                  searchCountries('');
+                }}
+              >
+                {item}
+              </label>
+            ))}
+            <p className="form__error">
+              {errors.country ? errors.country : ''}
+            </p>
+          </div>
+        </div>
 
         <button>Add User</button>
       </form>

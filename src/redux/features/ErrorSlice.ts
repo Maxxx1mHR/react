@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-// import { ValidationError } from 'yup';
 
 const initialState = {
   name: '',
@@ -9,7 +8,8 @@ const initialState = {
   passwordRepeat: '',
   gender: '',
   accept: '',
-  // image: '',
+  file: '',
+  country: '',
 };
 
 const errorSlice = createSlice({
@@ -22,7 +22,6 @@ const errorSlice = createSlice({
       }
       const objKeys = Object.keys(state);
       errors.payload.map((err) => {
-        // console.log(err);
         const test = err.split(' ')[0];
         if (objKeys.includes(test)) {
           state[test as keyof typeof state] = err;
@@ -34,10 +33,6 @@ const errorSlice = createSlice({
         state[keys as keyof typeof state] = '';
       }
     },
-    // addUser: (state, action: PayloadAction<IUser>) => {
-    //   state.userInfo.push(action.payload);
-    //   state.id += 1;
-    // },
   },
 });
 

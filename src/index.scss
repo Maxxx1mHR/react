@@ -1,6 +1,12 @@
 @import './styles/base/normalize';
 @import './components/Forms/form';
 
+#root {
+  max-width: 100%;
+  padding: 40px 100px;
+  margin: 0 auto;
+}
+
 .user {
   // display: flex;
   // width: 90%;
@@ -9,5 +15,6 @@
     display: flex;
     width: 90%;
     justify-content: space-between;
+    list-style-type: none;
   }
 }

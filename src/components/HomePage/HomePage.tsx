@@ -38,7 +38,7 @@ export default function Home() {
             <li className="user__item">{user.gender}</li>
             <li className="user__item">{String(user.accept)}</li>
             <li className="user__item">
-              <img src={String(user.image)} alt="image" height="200px" />
+              <img src={String(user.image)} alt="image" height="100px" />
             </li>
           </ul>
         ))}

@@ -1,4 +1,27 @@
 .form {
   display: flex;
   flex-direction: column;
+  gap: 30px;
+  &__field {
+    position: relative;
+  }
+
+  &__error {
+    position: absolute;
+    color: #bc1a1a;
+  }
+}
+
+.country {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(185, 185, 185);
+  width: 300px;
+  &__item {
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(214, 209, 209);
+    }
+  }
 }
