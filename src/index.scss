@@ -1,17 +1,17 @@
 @import './styles/base/normalize';
+@import './styles/base/variables';
+@import './styles/base//titles';
+@import './styles/base//navigation';
 @import './components/Forms/form';
+@import './components/HomePage/homePage';
 
 #root {
-  max-width: 100%;
+  width: 100%;
   padding: 40px 100px;
   margin: 0 auto;
-}
-
-.user {
-  &__list {
-    display: flex;
-    width: 90%;
-    justify-content: space-between;
-    list-style-type: none;
-  }
+  background-color: $color-background;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

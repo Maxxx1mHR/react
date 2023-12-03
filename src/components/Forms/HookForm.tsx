@@ -6,7 +6,7 @@ import { IUserInfo } from '../types/types';
 import { RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { addUser } from '../../redux/features/FormSlice';
+import { addUser, changeUserStatus } from '../../redux/features/FormSlice';
 
 export default function HookForm() {
   const {
@@ -59,6 +59,7 @@ export default function HookForm() {
     );
     reset();
     navigate('/');
+    setTimeout(() => dispatch(changeUserStatus()), 1000);
   };
 
   const countries = useSelector((state: RootState) => state.country.country);
@@ -77,16 +78,20 @@ export default function HookForm() {
 
   return (
     <>
-      <h1>Hook form</h1>
+      <h1 className="title">Hook form</h1>
       <div className="navigation">
-        <u>
-          <li>
-            <Link to="/">Main page</Link>
+        <ul className="navigation__list">
+          <li className="navigation__item">
+            <Link className="navigation__link" to="/">
+              Main page
+            </Link>
           </li>
-          <li>
-            <Link to="/uncontrol-form">Uncontrol Form</Link>
+          <li className="navigation__item">
+            <Link className="navigation__link" to="/uncontrol-form">
+              Uncontrol Form
+            </Link>
           </li>
-        </u>
+        </ul>
       </div>
       <form className="form" onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="form__field">

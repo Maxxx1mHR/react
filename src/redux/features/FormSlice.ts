@@ -16,6 +16,7 @@ export interface IUser {
 const initialState = {
   id: 1,
   userInfo: <IUser[]>[],
+  addNewUser: true,
 };
 
 const userInfoSlice = createSlice({
@@ -26,9 +27,12 @@ const userInfoSlice = createSlice({
       state.userInfo.push(action.payload);
       state.id += 1;
     },
+    changeUserStatus: (state) => {
+      state.addNewUser = false;
+    },
   },
 });
 
-export const { addUser } = userInfoSlice.actions;
+export const { addUser, changeUserStatus } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

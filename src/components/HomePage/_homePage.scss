@@ -1,0 +1,22 @@
+.user {
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    border: 2px solid $color-border;
+    padding: 20px;
+    margin-bottom: 10px;
+  }
+  &__image {
+    width: 150px;
+  }
+  &__empty {
+    text-align: center;
+    color: $color-info;
+    font-size: 20px;
+  }
+}
+
+.new-user {
+  border: 3px solid $color-success;
+}

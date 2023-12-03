@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { addUser } from '../../redux/features/FormSlice';
+import { addUser, changeUserStatus } from '../../redux/features/FormSlice';
 import { RootState } from '../../redux/store/store';
 import { userScheme } from '../../validations/UserValidation';
 import { ValidationError } from 'yup';
@@ -118,6 +118,7 @@ export default function UncontrolForm() {
           })
         );
         navigate('/');
+        setTimeout(() => dispatch(changeUserStatus()), 1000);
       }
     } catch (e) {
       if (e instanceof ValidationError) {
@@ -128,16 +129,20 @@ export default function UncontrolForm() {
 
   return (
     <>
-      <h1>Uncontrol Form</h1>
+      <h1 className="title">Uncontrol Form</h1>
       <div className="navigation">
-        <u>
-          <li>
-            <Link to="/">Main page</Link>
+        <ul className="navigation__list">
+          <li className="navigation__item">
+            <Link className="navigation__link" to="/">
+              Main page
+            </Link>
           </li>
-          <li>
-            <Link to="/hook-form">Hook Form</Link>
+          <li className="navigation__item">
+            <Link className="navigation__link" to="/hook-form">
+              Hook Form
+            </Link>
           </li>
-        </u>
+        </ul>
       </div>
       <form className="form" onSubmit={(e) => addNewUser(e)}>
         <div className="form__field">
