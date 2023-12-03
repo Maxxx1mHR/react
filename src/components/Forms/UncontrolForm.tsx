@@ -43,7 +43,9 @@ export default function UncontrolForm() {
   const searchCountries = (searchCountry: string) => {
     const matches = countries.filter((country) => {
       if (searchCountry) {
-        return !country.indexOf(searchCountry);
+        return !country
+          .toLocaleLowerCase()
+          .indexOf(searchCountry.toLocaleLowerCase());
       }
     });
     setCountryMatch(matches);

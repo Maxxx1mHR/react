@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { userScheme } from '../../validations/UserValidation';
 import { IUserInfo } from '../types/types';
@@ -11,13 +11,17 @@ import { addUser } from '../../redux/features/FormSlice';
 export default function HookForm() {
   const {
     register,
+    trigger,
     setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm({
+    mode: 'all',
     resolver: yupResolver(userScheme),
   });
+
+  const navigate = useNavigate();
 
   const id = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
@@ -53,8 +57,8 @@ export default function HookForm() {
         country: data.country,
       })
     );
-
     reset();
+    navigate('/');
   };
 
   const countries = useSelector((state: RootState) => state.country.country);
@@ -63,7 +67,9 @@ export default function HookForm() {
   const searchCountries = (searchCountry: string) => {
     const matches = countries.filter((country) => {
       if (searchCountry) {
-        return !country.indexOf(searchCountry);
+        return !country
+          .toLocaleLowerCase()
+          .indexOf(searchCountry.toLocaleLowerCase());
       }
     });
     setCountryMatch(matches);
@@ -184,17 +190,18 @@ export default function HookForm() {
                 onClick={() => {
                   setValue('country', item);
                   searchCountries('');
+                  trigger('country');
                 }}
               >
                 {item}
               </label>
             ))}
-            <p className="form__error">
-              {errors.country?.message ? errors.country.message : ''}
-            </p>
           </div>
+          <p className="form__error">
+            {errors.country?.message ? errors.country.message : ''}
+          </p>
         </div>
-        <button>Add User</button>
+        <button disabled={!isValid}>Add User</button>
       </form>
     </>
   );

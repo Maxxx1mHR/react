@@ -260,6 +260,4 @@ const countrySlice = createSlice({
   reducers: {},
 });
 
-// export const { addUser } = countrySlice.actions;
-
 export default countrySlice.reducer;

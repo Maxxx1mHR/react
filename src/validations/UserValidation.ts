@@ -1,4 +1,7 @@
 import * as yup from 'yup';
+import { store } from '../redux/store/store';
+
+const countries = store.getState().country.country;
 
 export const userScheme = yup.object().shape({
   name: yup
@@ -55,5 +58,11 @@ export const userScheme = yup.object().shape({
     .test('extension', 'file is required', (value) => {
       return value?.length == 1;
     }),
-  country: yup.string().required(),
+
+  country: yup
+    .string()
+    .required()
+    .test('exist', 'country does not exist', (value) => {
+      return countries.includes(value);
+    }),
 });
