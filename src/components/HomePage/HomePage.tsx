@@ -49,6 +49,7 @@ export default function Home() {
               </li>
               <li className="user__item">Gender: {user.gender}</li>
               <li className="user__item">Accept:{String(user.accept)}</li>
+              <li className="user__item">Country:{user.country}</li>
             </div>
           </ul>
         ))}
