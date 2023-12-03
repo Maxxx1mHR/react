@@ -7,9 +7,9 @@ export const userScheme = yup.object().shape({
   name: yup
     .string()
     .required()
-    .matches(/^[A-Z]/, 'name must contain at first uppercase letter'),
+    .matches(/^[A-ZА-Я]/, 'name must contain at first uppercase letter'),
 
-  age: yup.number().required().positive(),
+  age: yup.number().required().positive().integer(),
 
   email: yup.string().required().email(),
 
@@ -17,13 +17,12 @@ export const userScheme = yup.object().shape({
     .string()
     .required()
     .matches(/^(?=.*[0-9])/, 'password must contain one number')
-    .matches(/^(?=.*[A-Z])/, 'password must contain one uppercase letter')
-    .matches(/^(?=.*[a-z])/, 'password must contain one lower letter')
+    .matches(/^(?=.*[A-ZА-Я])/, 'password must contain one uppercase letter')
+    .matches(/^(?=.*[a-zа-я])/, 'password must contain one lower letter')
     .matches(
       /^(?=.*[~!@#$%^&*()_+"№;:?*])/,
-      'password must contain one special character'
+      'password must contain one special character ~!@#$%^&*()_+"№;:?*'
     ),
-
   passwordRepeat: yup
     .string()
     .required()

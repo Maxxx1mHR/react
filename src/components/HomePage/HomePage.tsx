@@ -4,7 +4,6 @@ import { RootState } from '../../redux/store/store';
 export default function Home() {
   const usersInfo = useSelector((state: RootState) => state.user.userInfo);
   const addNewUser = useSelector((state: RootState) => state.user.addNewUser);
-  console.log(Boolean(usersInfo));
   return (
     <>
       <h1 className="title">Home page</h1>
@@ -24,7 +23,7 @@ export default function Home() {
       </div>
       {Boolean(!usersInfo.length) && (
         <p className="user__empty">
-          You have not added user information yet. List of user is empty (◕‿◕)
+          You have not added user information yet. List of users is empty (◕‿◕)
         </p>
       )}
       <div className="user">

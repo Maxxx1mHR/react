@@ -7,6 +7,7 @@ import { RootState } from '../../redux/store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { addUser, changeUserStatus } from '../../redux/features/FormSlice';
+import { checkPasswordDifficult, convertBase64 } from './helpers/functions';
 
 export default function HookForm() {
   const {
@@ -25,20 +26,6 @@ export default function HookForm() {
 
   const id = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
-
-  const convertBase64 = (file: File) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
 
   const onSubmitHandler = async (data: IUserInfo): Promise<void> => {
     const accept = Boolean(data.accept);
@@ -122,17 +109,7 @@ export default function HookForm() {
             {errors.password?.message ? errors.password.message : ''}
           </p>
           <p className="form__password-difficult">
-            {Boolean(watch('password') && watch('password').length < 4) && (
-              <li>Easy</li>
-            )}
-            {Boolean(
-              watch('password') &&
-                watch('password').length >= 4 &&
-                watch('password').length < 7
-            ) && <li>Medium</li>}
-            {Boolean(watch('password') && watch('password').length >= 7) && (
-              <li>Hard</li>
-            )}
+            {watch('password') && checkPasswordDifficult(watch('password'))}
           </p>
         </div>
         <div className="form__field">
@@ -191,7 +168,6 @@ export default function HookForm() {
             id="country"
             {...register('country', {
               onChange: (e) => {
-                console.log(e.target.value);
                 searchCountries(e.target.value);
               },
             })}

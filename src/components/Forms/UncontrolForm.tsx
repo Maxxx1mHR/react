@@ -6,6 +6,7 @@ import { RootState } from '../../redux/store/store';
 import { userScheme } from '../../validations/UserValidation';
 import { ValidationError } from 'yup';
 import { clearError, setError } from '../../redux/features/ErrorSlice';
+import { checkPasswordDifficult, convertBase64 } from './helpers/functions';
 
 export default function UncontrolForm() {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -24,20 +25,6 @@ export default function UncontrolForm() {
   const errors = useSelector((state: RootState) => state.error);
 
   const countries = useSelector((state: RootState) => state.country.country);
-
-  const convertBase64 = (file: File) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
 
   const [countryMatch, setCountryMatch] = useState<string[]>([]);
   const searchCountries = (searchCountry: string) => {
@@ -173,17 +160,8 @@ export default function UncontrolForm() {
           </p>
 
           <p className="form__password-difficult">
-            {Boolean(
-              passwordRef.current && passwordRef.current?.value.length < 4
-            ) && <li>Easy</li>}
-            {Boolean(
-              passwordRef.current &&
-                passwordRef.current?.value.length >= 4 &&
-                passwordRef.current?.value.length < 7
-            ) && <li>Medium</li>}
-            {Boolean(
-              passwordRef.current && passwordRef.current?.value.length >= 7
-            ) && <li>Hard</li>}
+            {passwordRef.current &&
+              checkPasswordDifficult(passwordRef.current?.value)}
           </p>
         </div>
         <div className="form__field">
