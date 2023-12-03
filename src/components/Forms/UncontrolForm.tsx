@@ -146,35 +146,28 @@ export default function UncontrolForm() {
       </div>
       <form className="form" onSubmit={(e) => addNewUser(e)}>
         <div className="form__field">
-          <label>
-            Name:
-            <input type="text" ref={nameRef} />
-          </label>
+          <label htmlFor="name">Name:</label>
+          <input id="name" ref={nameRef} />
           <p className="form__error">{errors.name ? errors.name : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Age:
-            <input type="text" ref={ageRef} />
-          </label>
+          <label htmlFor="age">Age:</label>
+          <input id="age" ref={ageRef} />
           <p className="form__error">{errors.age ? errors.age : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Email:
-            <input type="text" ref={emailRef} autoComplete="username" />
-          </label>
+          <label htmlFor="email">Email:</label>
+          <input id="email" ref={emailRef} autoComplete="username" />
           <p className="form__error">{errors.email ? errors.email : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Password:
-            <input
-              type="password"
-              ref={passwordRef}
-              autoComplete="new-password"
-            />
-          </label>
+          <label htmlFor="password">Password:</label>
+          <input
+            id="password"
+            type="password"
+            ref={passwordRef}
+            autoComplete="new-password"
+          />
           <p className="form__error">
             {errors.password ? errors.password : ''}
           </p>
@@ -194,66 +187,59 @@ export default function UncontrolForm() {
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Repeat:
-            <input
-              type="password"
-              ref={passwordRepeatRef}
-              autoComplete="new-password"
-            />
-          </label>
+          <label htmlFor="passwordRepeat">Repeat:</label>
+          <input
+            id="passwordRepeat"
+            type="password"
+            ref={passwordRepeatRef}
+            autoComplete="new-password"
+          />
           <p className="form__error">
             {errors.passwordRepeat ? errors.passwordRepeat : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Male:
+          <div className="form__gender">
+            <label htmlFor="male">Male:</label>
             <input
+              id="male"
               type="radio"
               name="gender"
               value="male"
               ref={genderMaleRef}
             />
-          </label>
-          <label>
-            Female:
+            <label htmlFor="female">Female:</label>
             <input
+              id="female"
               type="radio"
               name="gender"
               value="female"
               ref={genderFemaleRef}
             />
-          </label>
+          </div>
           <p className="form__error">{errors.gender ? errors.gender : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Accept:
-            <input type="checkbox" ref={acceptRef} />
-          </label>
+          <div className="form__accept">
+            <label htmlFor="accept">Accept:</label>
+            <input id="accept" type="checkbox" ref={acceptRef} />
+          </div>
           <p className="form__error">{errors.accept ? errors.accept : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Your Image File
-            <input type="file" name="myImage" ref={imageRef} />
-          </label>
+          <label htmlFor="image">Your Image File:</label>
+          <input id="image" type="file" name="myImage" ref={imageRef} />
           <p className="form__error">{errors.file ? errors.file : ''}</p>
         </div>
         <div className="form__field">
-          <label>
-            Country:
-            <input
-              id="country"
-              type="input"
-              ref={countryRef}
-              onChange={() =>
-                searchCountries(String(countryRef.current?.value))
-              }
-            />
-          </label>
-
+          <label htmlFor="country">Country:</label>
+          <input
+            id="country"
+            type="input"
+            ref={countryRef}
+            onChange={() => searchCountries(String(countryRef.current?.value))}
+          />
+          <p className="form__error">{errors.country ? errors.country : ''}</p>
           <div className="country">
             {countryMatch.map((item) => (
               <label
@@ -268,9 +254,6 @@ export default function UncontrolForm() {
                 {item}
               </label>
             ))}
-            <p className="form__error">
-              {errors.country ? errors.country : ''}
-            </p>
           </div>
         </div>
 

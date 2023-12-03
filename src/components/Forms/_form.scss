@@ -1,19 +1,48 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  gap: 35px;
+  border: 3px solid $color-border;
+  background-color: $color-background-form;
   &__field {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    label {
+      width: 150px;
+    }
+    input {
+      width: 100%;
+      height: 30px;
+      padding: 2px 10px;
+      border-radius: 5px;
+    }
+  }
+  &__gender {
+    display: flex;
+  }
+
+  &__accept {
+    display: flex;
   }
 
   &__error {
     position: absolute;
     color: #bc1a1a;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
   }
   &__password-difficult {
     position: absolute;
-    top: 0;
-    left: 300px;
+    top: -20px;
+    left: 50%;
+    transform: translateX(50%);
+    list-style-type: none;
+    color: $color-info;
   }
 }
 

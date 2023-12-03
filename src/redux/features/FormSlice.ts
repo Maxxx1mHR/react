@@ -26,6 +26,7 @@ const userInfoSlice = createSlice({
     addUser: (state, action: PayloadAction<IUser>) => {
       state.userInfo.push(action.payload);
       state.id += 1;
+      state.addNewUser = true;
     },
     changeUserStatus: (state) => {
       state.addNewUser = false;

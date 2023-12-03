@@ -18,5 +18,7 @@
 }
 
 .new-user {
-  border: 3px solid $color-success;
+  &:last-child {
+    border: 5px solid $color-success;
+  }
 }

@@ -95,37 +95,29 @@ export default function HookForm() {
       </div>
       <form className="form" onSubmit={handleSubmit(onSubmitHandler)}>
         <div className="form__field">
-          <label>
-            Name:
-            <input {...register('name')} />
-          </label>
+          <label htmlFor="name">Name:</label>
+          <input id="name" {...register('name')} />
           <p className="form__error">
             {errors.name?.message ? errors.name.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Age:
-            <input {...register('age')} />
-          </label>
+          <label htmlFor="age">Age:</label>
+          <input id="age" {...register('age')} />
           <p className="form__error">
             {errors.age?.message ? errors.age.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Email:
-            <input {...register('email')} />
-          </label>
+          <label htmlFor="email">Email:</label>
+          <input id="email" {...register('email')} />
           <p className="form__error">
             {errors.email?.message ? errors.email.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Password:
-            <input type="password" {...register('password')} />
-          </label>
+          <label htmlFor="password">Password:</label>
+          <input id="password" type="password" {...register('password')} />
           <p className="form__error">
             {errors.password?.message ? errors.password.message : ''}
           </p>
@@ -144,10 +136,12 @@ export default function HookForm() {
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Repeat:
-            <input type="password" {...register('passwordRepeat')} />
-          </label>
+          <label htmlFor="passwordRepeat">Repeat:</label>
+          <input
+            id="passwordRepeat"
+            type="password"
+            {...register('passwordRepeat')}
+          />
           <p className="form__error">
             {errors.passwordRepeat?.message
               ? errors.passwordRepeat.message
@@ -155,50 +149,56 @@ export default function HookForm() {
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Male:
-            <input type="radio" value="male" {...register('gender')} />
-          </label>
-          <label>
-            Female:
-            <input type="radio" value="female" {...register('gender')} />
-          </label>
+          <div className="form__gender">
+            <label htmlFor="male">Male:</label>
+            <input
+              id="male"
+              type="radio"
+              value="male"
+              {...register('gender')}
+            />
+            <label htmlFor="female">Female:</label>
+            <input
+              id="female"
+              type="radio"
+              value="female"
+              {...register('gender')}
+            />
+          </div>
           <p className="form__error">
             {errors.gender?.message ? errors.gender.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Accept:
-            <input type="checkbox" {...register('accept')} />
-          </label>
+          <div className="form__accept">
+            <label htmlFor="accept">Accept:</label>
+            <input id="accept" type="checkbox" {...register('accept')} />
+          </div>
           <p className="form__error">
             {errors.accept?.message ? errors.accept.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Your Image File
-            <input type="file" {...register('file')} />
-          </label>
+          <label htmlFor="image">Your Image File:</label>
+          <input id="image" type="file" {...register('file')} />
           <p className="form__error">
             {errors.file?.message ? errors.file.message : ''}
           </p>
         </div>
         <div className="form__field">
-          <label>
-            Country:
-            <input
-              id="country"
-              {...register('country', {
-                onChange: (e) => {
-                  console.log(e.target.value);
-                  searchCountries(e.target.value);
-                },
-              })}
-            />
-          </label>
-
+          <label htmlFor="country">Country:</label>
+          <input
+            id="country"
+            {...register('country', {
+              onChange: (e) => {
+                console.log(e.target.value);
+                searchCountries(e.target.value);
+              },
+            })}
+          />
+          <p className="form__error">
+            {errors.country?.message ? errors.country.message : ''}
+          </p>
           <div className="country">
             {countryMatch.map((item) => (
               <label
@@ -215,9 +215,6 @@ export default function HookForm() {
               </label>
             ))}
           </div>
-          <p className="form__error">
-            {errors.country?.message ? errors.country.message : ''}
-          </p>
         </div>
         <button disabled={!isValid}>Add User</button>
       </form>
