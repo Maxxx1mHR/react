@@ -32,6 +32,9 @@ export const userScheme = yup.object().shape({
 
   file: yup
     .mixed<FileList>()
+    .test('extension', 'file is required', (value) => {
+      return value?.length == 1;
+    })
     .test('fileSize', 'file is too large. Max size 2MB', (value) => {
       if (!value?.length) {
         return false;
