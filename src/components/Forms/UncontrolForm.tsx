@@ -173,6 +173,20 @@ export default function UncontrolForm() {
           <p className="form__error">
             {errors.password ? errors.password : ''}
           </p>
+
+          <p className="form__password-difficult">
+            {Boolean(
+              passwordRef.current && passwordRef.current?.value.length < 4
+            ) && <li>Easy</li>}
+            {Boolean(
+              passwordRef.current &&
+                passwordRef.current?.value.length >= 4 &&
+                passwordRef.current?.value.length < 7
+            ) && <li>Medium</li>}
+            {Boolean(
+              passwordRef.current && passwordRef.current?.value.length >= 7
+            ) && <li>Hard</li>}
+          </p>
         </div>
         <div className="form__field">
           <label>

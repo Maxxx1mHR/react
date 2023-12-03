@@ -14,13 +14,13 @@ export default function HookForm() {
     trigger,
     setValue,
     handleSubmit,
+    watch,
     formState: { errors, isValid },
     reset,
   } = useForm({
     mode: 'all',
     resolver: yupResolver(userScheme),
   });
-
   const navigate = useNavigate();
 
   const id = useSelector((state: RootState) => state.user.id);
@@ -123,6 +123,19 @@ export default function HookForm() {
           </label>
           <p className="form__error">
             {errors.password?.message ? errors.password.message : ''}
+          </p>
+          <p className="form__password-difficult">
+            {Boolean(watch('password') && watch('password').length < 4) && (
+              <li>Easy</li>
+            )}
+            {Boolean(
+              watch('password') &&
+                watch('password').length >= 4 &&
+                watch('password').length < 7
+            ) && <li>Medium</li>}
+            {Boolean(watch('password') && watch('password').length >= 7) && (
+              <li>Hard</li>
+            )}
           </p>
         </div>
         <div className="form__field">
